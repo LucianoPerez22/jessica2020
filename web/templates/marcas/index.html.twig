@@ -1,0 +1,35 @@
+{% extends 'global/layout_list.html.twig' %}
+
+{% set titlePage = "page.marcas.title.list" | trans %}
+{% set menu = "marcas" %}
+
+{% set formFilterAction = path('marcas_index') %}
+{% set pathNew = path('marcas_new') %}
+{% set labelButtonNew = 'page.marcas.buttons.add' %}
+{% set rolesNew = ['ROLE_MARCAS_NEW'] %}
+
+{% block list %}
+    <div class="znv-header">
+        <div class="znv-col"> Descripcion
+        </div>       
+        <div class="znv-col-actions">
+        </div>
+    </div>
+
+    {% for marcas in entities %}
+        <div class="znv-line" data-path="{{ path('marcas_delete', { 'id' : marcas.id }) }}" data-name="{{ marcas.descripcion }}">
+            <div class="znv-col">
+                <div class="znv-header">Descripcion:</div>
+                {{ marcas.descripcion }}
+            </div>          
+            <div class="znv-col-actions">
+                <div class="znv-group">                    
+                    {{ macro_listActionButton(path('marcas_show', {'id' : marcas.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_EMPLEADOS_VIEW']) }}
+                    {{ macro_listActionButton(path('marcas_edit', {'id' : marcas.id}), 'page.list.buttons.edit', 'fa-pencil', ['ROLE_EMPLEADOS_EDIT']) }}
+                    {{ macro_liConfirmButton('page.list.buttons.delete', 'znv-icon fa-trash', ['ROLE_EMPLEADOS_DELETE'], 'setNameAndText') }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock list %}

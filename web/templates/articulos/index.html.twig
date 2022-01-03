@@ -1,0 +1,65 @@
+{% extends 'global/layout_list.html.twig' %}
+
+{% set titlePage = "page.articulos.title.list" | trans %}
+{% set menu = "marcas" %}
+
+{% set formFilterAction = path('articulos_index') %}
+{% set pathNew = path('articulos_new') %}
+{% set labelButtonNew = 'page.articulos.buttons.add' %}
+{% set rolesNew = ['ROLE_ARTICULOS_NEW'] %}
+
+{% block list %}
+    <div class="znv-header">    
+        <div class="znv-col"> Marca
+        </div>       
+        <div class="znv-col"> Codigo
+        </div>       
+        <div class="znv-col"> Descripcion
+        </div>       
+        <div class="znv-col"> Precio
+        </div>       
+        <div class="znv-col"> Ganancia
+        </div>       
+        <div class="znv-col"> P Venta
+        </div>       
+        <div class="znv-col-actions">
+        </div>
+    </div>
+
+    {% for articulo in entities %}
+        <div class="znv-line" data-path="{{ path('articulos_delete', { 'id' : articulo.id }) }}" data-name="{{ articulo.descripcion }}">
+            <div class="znv-col">
+                <div class="znv-header">Marca:</div>
+                    {{articulo.idMarca.descripcion}}
+            </div>    
+            <div class="znv-col">
+                <div class="znv-header">Codigo:</div>
+                    {{articulo.codigo}}
+            </div>          
+            <div class="znv-col">
+                <div class="znv-header">Descripcion:</div>
+                    {{articulo.descripcion}}
+            </div>    
+            <div class="znv-col">
+                <div class="znv-header">Precio:</div>
+                    {{articulo.precio}}
+            </div>    
+            <div class="znv-col">
+                <div class="znv-header">Ganancia:</div>
+                    {{articulo.ganancia}}
+            </div>    
+            <div class="znv-col">
+                <div class="znv-header">P Venta:</div>
+                    {{(articulo.precio * 1.21) | number_format(2, ',', '.')}}
+            </div>    
+            <div class="znv-col-actions">
+                <div class="znv-group">                    
+                    {{ macro_listActionButton(path('articulos_show', {'id' : articulo.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_EMPLEADOS_VIEW']) }}
+                    {{ macro_listActionButton(path('articulos_edit', {'id' : articulo.id}), 'page.list.buttons.edit', 'fa-pencil', ['ROLE_EMPLEADOS_EDIT']) }}
+                    {{ macro_liConfirmButton('page.list.buttons.delete', 'znv-icon fa-trash', ['ROLE_ARTICULOS_DELETE'], 'setNameAndText') }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock list %}

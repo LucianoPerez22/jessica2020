@@ -1,17 +1,29 @@
 {% extends 'global/layout_form.html.twig' %}
 
-{% set titlePage = 'page.group.title.new' | trans %}
-{% set menu = "group" %}
-{% set pathCancel = path('group_list') %}
+{% set titlePage = 'page.marcas.title.new' | trans %}
+{% set menu = "marcas" %}
+{% set pathCancel = path('marcas_index') %}
 
 {% block formContent %}
 <div class="znv-half">
-    {{ form_row(form.name) }}
+    {{ form_row(form.descripcion) }}
 </div>
 <div class="znv-half">
-  {{ form_row(form.description) }}
+  {{ form_row(form.state) }}
 </div>
-<div class="znv-full znv-column">
-  {{ form_row(form.roles) }}
+<div class="znv-half">
+  {{ form_row(form.city) }}
+</div>
+<div class="znv-half">
+  {{ form_row(form.address) }}
+</div>
+<div class="znv-half">
+  {{ form_row(form.phone) }}
+</div>
+<div class="znv-half">
+  {{ form_row(form.email) }}
+</div>
+<div class="znv-half">
+  {{ form_row(form.status) }}
 </div>
 {% endblock %}

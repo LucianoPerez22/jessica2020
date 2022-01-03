@@ -43,3 +43,25 @@ flash:
         delete:
             success: Grupo de permisos eliminado con éxito
             error: Este grupo está relacionado con otra entidad. No se puede quitar
+
+    marcas:
+        new:
+            success: Marca guardada correctamente
+            error: Se produjo un error al intentar guardar la marca
+        edit:
+            success: Marca editada con éxito. 
+            error: Se produjo un error al intentar editar la marca
+        delete:
+            success: Marca eliminada con éxito
+            error: Este marca está relacionado con otra entidad. No se puede quitar
+
+    articulos:
+        new:
+            success: Articulo guardado correctamente
+            error: Se produjo un error al intentar guardar el articulo
+        edit:
+            success: Articulo editado con éxito. 
+            error: Se produjo un error al intentar editar el articulo
+        delete:
+            success: Articulo eliminado con éxito
+            error: Este articulo está relacionado con otra entidad. No se puede quitar

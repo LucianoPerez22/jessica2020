@@ -104,6 +104,7 @@ page:
         sign_out: Salir
         user: Usuario
         group: Grupo
+        marcas: Marcas
     user:
         title:
             change_password: Cambiar Contraseña
@@ -136,3 +137,27 @@ page:
             description: Descripción
         buttons:
             add: Agregar Grupo
+    
+    marcas:
+        title:
+            list: Lista de Marcas
+            view: Vista de Marca
+            edit: Edición de Marca
+            new: Nueva Marca
+        labels:
+            name: Nombre
+            description: Descripción
+        buttons:
+            add: Agregar Marca
+    
+    articulos:
+        title:
+            list: Lista de Articulos
+            view: Vista de Articulos
+            edit: Edición de Articulo
+            new: Nueva Articulo
+        labels:
+            name: Nombre
+            description: Descripción
+        buttons:
+            add: Agregar Articulo
