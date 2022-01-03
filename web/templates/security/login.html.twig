@@ -1,0 +1,51 @@
+{% extends 'global/layout_no_user.html.twig' %}
+
+{% block content %}
+
+    <div class="znv-access">
+        <div class="znv-access-header">
+            <i class="znv-icon fa-sign-in"></i>
+            <h1>{{ 'page.login.title' | trans }}</h1>
+        </div><!-- znv-access-header -->
+
+        <div class="znv-access-body">
+        {% if error %}
+            {% set msg = error.messageKey|trans(error.messageData, 'security') %}
+            {{ macro_alertMessage('error',  msg) }}
+        {% endif %}
+
+            <form name="znv-form-vertical" action="{{ path('login') }}" method="POST" class="znv-form-vertical" novalidate>
+                <div class="znv-form-group">
+                    <label for="username">{{ 'form.labels.username_email' | trans | upper }}</label>
+                    <input class="znv-form-control" type="text" id="username" name="_username" value="{{ last_username }}" required="required"/>
+                </div>
+                <div class="znv-form-group">
+                    <label for="password" class="controlLabel">{{ 'form.labels.password' | trans | upper }}</label>
+                    <input class="znv-form-control" type="password" id="password" name="_password" required="required"/>
+                </div>
+                <div class="znv-form-group">
+                    <div class="znv-checkbox">
+                        <label for="T1">
+                            <input type="checkbox" id="T1" name="_remember_me">
+                            <span class="znv-label">{{ 'page.login.remember' | trans }}</span>
+                        </label>
+                    </div>
+                    <a href="{{ path('user_recover_password') }}" id="recoverPassword" class="link">
+                        {{ 'page.login.recover_password' | trans }}
+                    </a>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                <div class="znv-form-action">
+                    <div class="znv-form-buttons">
+                        <button type="submit" class="znv-btn znv-dark">
+                            {{ 'form.buttons.access' | trans | upper }}
+                            <span class="znv-icon fa-long-arrow-right"></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div><!-- znv-access-body -->
+
+    </div>
+{% endblock %}

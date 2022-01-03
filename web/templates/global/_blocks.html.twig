@@ -1,0 +1,52 @@
+{% block alertContainer %}
+    {% if alertContainerId is not defined %}
+        {% set alertContainerId = 'alert-container' %}
+    {% endif %}
+    {% if alertIsDismissible is not defined %}
+        {% set alertIsDismissible = true %}
+    {% endif %}
+    <div class="znv-alert {{ alertColor|default('znv-red') }} alert" role="alert" id="{{ alertContainerId }}"
+         style="{{ alertContainerStyle|default('') }}">
+        <button type="button"
+                class="znv-close" {% if alertIsDismissible == true %} data-dismiss="alert" {% endif %}>
+            <span aria-hidden="true" onclick="onClickCloseAlert()">×</span>
+        </button>
+        {% block alertContainerMessages %}
+            <strong>{{ alertContainerLabel|default('')|title }}</strong>
+            <div id="alert-messages-container">
+                <ul>
+                    {% for message in messages|default([]) %}
+                        <li>{{ message |trans({}, 'flashes') | raw }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endblock %}
+    </div>
+    <script>
+        var $alertContainer = $('#{{ alertContainerId }}');
+        var $alertMessagesContainer = $('#alert-messages-container ul');
+
+
+        function onClickCloseAlert() {
+            $alertContainer.hide();
+        }
+
+        function hideAlertContainer() {
+            $alertContainer.hide();
+        }
+
+        function showAlertContainer() {
+            $alertContainer.show();
+        }
+
+        function removeAlertMessagesContainerChildren() {
+            $alertMessagesContainer.children().remove();
+        }
+
+        function addMessageToAlert(message) {
+            $alertMessagesContainer.append("<li>" + message + "</li>");
+            showAlertContainer();
+        }
+    </script>
+{% endblock %}
+

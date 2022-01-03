@@ -1,0 +1,9 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    form_themes:
+        - 'form/form_theme.html.twig'
+        - 'form/custom_types.html.twig'
+    globals:
+        base_path: '%env(BASE_PATH)%'

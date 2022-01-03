@@ -1,0 +1,45 @@
+flash:
+    labels:
+        error: Error
+        success: Success
+        warning: Warning
+        info: Information
+    common:
+        error_save: There was an error trying to save the data
+        error_permission_create: You cannot create this entity
+        error_permission_edit: You cannot edit this entity
+    user:
+        common:
+            not_found: The link provided is invalid
+        change_password:
+            success : Password was successfully changed
+            error: There was an error trying to change the password
+        enable_disable:
+            not_disabled: This account can not be disabled
+            enabled: The user was successfully enabled
+            disabled: The user was successfully disabled
+        new:
+            success: User saved successfully
+            error: An error occurred while trying to save the user
+        edit:
+            success: User edited successfully. %linkEntity%
+            error: An error occurred while trying to edit the user
+        registration:
+            success: You registered successfully. Enter your new password to access the system
+            error: There was an error with the registration, please try again later
+        recover_password:
+            success: Email was successfully sent for password recovery
+            error: There was an error with the recover password, please try again later
+        reset_password:
+            success: Password was changed successfully
+
+    group:
+        new:
+            success: Permission group saved successfully
+            error: An error occurred while trying to save the permission group
+        edit:
+            success: Permission group edited successfully. %linkEntity%
+            error: An error occurred while trying to edit the permission group
+        delete:
+            success: Permission group deleted successfully
+            error: This group is related to another entity. It can't be removed

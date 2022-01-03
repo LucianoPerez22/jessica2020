@@ -1,0 +1,31 @@
+{% extends 'global/base.html.twig' %}
+
+{%- block body -%}
+<body>
+    <div class="znv-page-overlay"></div>
+
+    {% include "global/_header.html.twig" %}
+
+    <div class="znv-page-error">
+        {% set imagePath =  'build/images/'~ error~'.svg'%}
+        <img src="{{ asset(imagePath) }}" alt="error {{ error }}">
+
+        {% block content '' %}
+
+        <button type="button" class="znv-btn znv-greyDark js-backLink">
+            <div class="znv-icon fa-arrow-left"></div>
+            VOLVER
+        </button>
+    </div><!-- znv-page-error -->
+
+    {% include "global/_footer.html.twig" %}
+</body>
+
+<script>
+    // Button Back ---
+    $(".js-backLink").click(function(event) {
+        event.preventDefault();
+        history.back(1);
+    });
+</script>
+{%- endblock -%}

@@ -1,0 +1,39 @@
+<header>
+    <!-- Toggle Nav -->
+    <div class="znv-navbutton-toggle">
+        <button id="js-nav-trigger" class="znv-nav-trigger" type="button">
+            <span class="znv-nav-icon"></span>
+        </button>
+    </div>
+    <!-- Logo -->
+    <div class="znv-logo">
+        <a href="{{ path('home') }}" class="znv-brand btn">
+            <figure>
+                <img src="" alt="">
+            </figure>
+        </a>
+    </div>
+  {% if app.user.hasRole(['ROLE_MESSAGE_LIST_RECIEVED']) and not app.user.isSuperAdmin %}
+    <div class="znv-toolbar">
+        <div class="znv-notifications ">
+            <ul>
+                <li class="znv-icons">
+                    <a href="{{ path('message_received') }}" class="znv-btn" rel="tooltip" data-placement="bottom" data-original-title="Message">
+                        <div class="znv-icon fa-envelope"></div>
+                        <span class="badge" id="messageNotification"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+      <script>
+          $( document ).ready(function() {
+              $.get('{{ path('message_unread') }}', function (data) {
+                    if(data.quantity > 0){
+                        $('#messageNotification').text(data.quantity);
+                    }
+              });
+          });
+      </script>
+    {% endif %}
+</header>

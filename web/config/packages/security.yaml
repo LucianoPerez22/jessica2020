@@ -1,0 +1,40 @@
+security:
+    encoders:
+        App\Entity\User: { algorithm: auto, cost: 12 }
+    providers:
+        users:
+            entity:
+                class: App:User
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        secured_area:
+            pattern: ^/*
+            provider: users
+            anonymous: ~
+            switch_user: ~
+            user_checker: App\Security\UserChecker
+
+            form_login:
+                login_path: login
+                check_path: login
+                csrf_token_generator: security.csrf.token_manager
+
+            logout:
+                path: logout
+            remember_me:
+                secret:   '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path:     /
+                name: "RememberUser"
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/build/*, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: '%env(SECURE_SCHEME)%' }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: '%env(SECURE_SCHEME)%' }
+        - { path: ^/registration/*, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: '%env(SECURE_SCHEME)%' }
+        - { path: ^/recover-password, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: '%env(SECURE_SCHEME)%' }
+        - { path: ^/reset-password/*, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: '%env(SECURE_SCHEME)%' }
+        - { path: ^/*, roles: ROLE_USER, requires_channel: '%env(SECURE_SCHEME)%' }

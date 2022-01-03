@@ -1,0 +1,138 @@
+form:
+    buttons:
+        cancel: Cancelar
+        save: Guardar
+        save_continue: Guardar y Continuar
+        apply: Aplicar
+        clean: Limpiar
+        filter: Filtrar
+        enabled: Habilitado
+        disabled: Deshabilitado
+        accept_modal: Si, deseo continuar
+        pdf: PDF
+        return: Regresar
+        access: Acceso
+        send: Enviar
+        save_add_user: Guardar y Agregar Usuario
+        save_add_contact: Guardar y Agregar Contacto
+    info:
+        field_required: Todos los campos con * son obligatorios
+    labels:
+        password: Contraseña
+        current_password: Contraseña
+        new_password: Nueva Contraseña
+        repeat_password: Repetir Contraseña
+        user: Usuario
+        reciever: Para
+        send: ENVIAR
+        re: Reenviar
+        subject: Título
+        body: Cuerpo
+        name: Nombre
+        surname: Apellido
+        email: Email
+        status: Status
+        lastName: Apellido
+        username: Username
+        username_email: Username ó Email
+        admin: Administrador
+        description: Descripción
+        role: Rol
+        groups: Groupos
+        name_last_name: Nombre y Apellido
+        phone: Teléfono
+        fax: Fax
+        from: De
+        to: Para
+        short_name: Alias
+        datetime: Fecha y Hora
+    choices:
+        select: --- SELECCIONAR ---
+        all: Todo
+        enabled: Habilitado
+        disabled: Deshabilitado
+        "true": Si
+        "false": No
+    dates_formats:
+        date_time:
+            datetime_picker_js: Y/M/D HH:mm
+            php: Y/m/d H:i
+        date:
+            datetime_picker_js: Y/M/D
+            php: Y/m/d
+            readable_date: d M Y
+        month_day: M d
+        time:
+            datetime_picker_js: HH:mm
+            php: H:i
+page:
+    common:
+        confirm:
+            delete_record: Borrar registro
+            ask_continue: Confirma borrar ete registro?
+            label: Etiqueta
+            delete_text: Borrar texto
+    list:
+        buttons:
+            view: Vista
+            edit: Edición
+            enable: Habilitar
+            disale: Deshabilitar
+            switch: Cambiar
+            delete: Borrar
+        pagination:
+            show: Mostrar
+            records: registros
+            firstPage: Primera
+            lastPage: Última
+    login:
+        title: Acceso a usuarios
+        recover_password: Olvidó su contraseña?
+        remember: Recordarme
+    recover_password:
+        title: Olvidó su clave?
+        description: Ingrese su correo electrónico y luego le enviaremos un correo electrónico con instrucciones sobre cómo generar una nueva contraseña.
+        return_to: Regresar a
+    registration:
+        have_account: Posee una cuenta?
+        enter: Ingresar
+    dashboard:
+        title: Dashboard
+    menu:
+        menu: Menú
+        change_password: Cambiar Contraseña
+        sign_out: Salir
+        user: Usuario
+        group: Grupo
+    user:
+        title:
+            change_password: Cambiar Contraseña
+            reset_password: Resetear Contraseña
+            list: Lista de Usuarios
+            view: Vista de Usuario
+            edit: Edición de Usuario
+            new: Nuevo Usuario
+        labels:
+            name: Nombre
+            username: Apellido
+            email: Email
+            groups: Grupos
+            status: Status
+        buttons:
+            add: Agregar Usuario
+        confirm:
+            label_enable: Habilitar usuario
+            label_disable: Deshabilitar usuario
+            body_enable: Ha seleccionado el usuario para habilitar
+            body_disable: Ha seleccionado el usuario para deshabilitar
+    group:
+        title:
+            list: Lista de Grupos
+            view: Vista de Grupo
+            edit: Edición de Grupo
+            new: Nuevo Grupo
+        labels:
+            name: Nombre
+            description: Descripción
+        buttons:
+            add: Agregar Grupo

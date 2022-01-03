@@ -1,0 +1,10 @@
+custom:
+    validator:
+        empty_value: Este valor no debería estar vacío.
+        start_date_ets: Esta fecha debe ser menor que ETS
+        start_date_ats: Esta fecha debe ser menor que ATS
+        exchange_rate_currencies_equal: Las fechas no pueden ser iguales
+    password:
+        provide_current_password: Debe definir la clave actual
+        provide_new_password: Debe definir la nueva clave
+    

@@ -1,0 +1,31 @@
+{% extends 'global/layout_view.html.twig' %}
+
+{% set titlePage = "page.user.title.view" | trans %}
+{% set menu = "user" %}
+
+{% block buttonsTitle %}
+{% set referer = (app.request.server.get('HTTP_REFERER') is not null ?
+            app.request.server.get('HTTP_REFERER')|default('/') :
+            path('user_list')) %}
+<li>
+    {{ macro_buttonReturn(referer) }}
+</li>
+{% endblock %}
+
+{% block viewContent %}
+<div class="znv-card-full znv-highlight">
+    <div class="znv-form-group-view">
+        <p>{{ 'page.user.labels.name'|trans }}</p>
+        <h3>{{ user }}</h3>
+    </div>
+</div>
+
+<div class="znv-card-full znv-two-column">
+  {{ macro_cardHalfView('page.user.labels.username' | trans, user.username) }}
+  {{ macro_cardHalfView('page.user.labels.email' | trans, user.email) }}
+  {{ macro_cardHalfView('page.user.labels.status' | trans,
+     (user.enabled ? 'form.buttons.enabled' : 'form.buttons.disabled')|trans) }}
+  {{ macro_cardHalfView('page.user.labels.groups' | trans, user.groups | join(', ') | default(null)) }}
+</div>
+
+{% endblock %}

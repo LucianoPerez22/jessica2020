@@ -1,0 +1,57 @@
+{% extends 'global/layout.html.twig' %}
+
+{% set multipart = multipart is defined ? multipart : false %}
+{% set classForm = classForm is defined ? classForm : 'znv-form-horizontal' %}
+{% set formAction = formAction is defined ? formAction : path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+{% set formMethod = formMethod is defined ? formMethod : 'POST' %}
+{% set classDivContent = classDivContent is defined ? classDivContent : 'col12' %}
+{% set classDivContentButton = classDivContentButton is defined ? classDivContentButton : '' %}
+{% set pathCancel = pathCancel is defined ? pathCancel : path('home') %}
+
+{% block content %}
+    <div class="znv-card">
+        <div class="znv-card-body">
+            {% block beforeForm %}
+            {% endblock %}
+
+            {% block formFull %}
+                {{ form_start(form, {'action': formAction, 'multipart': multipart, 'method': formMethod,
+                    'attr': {'class': classForm, 'novalidate': 'novalidate' }}) }}
+                {% block formContent %}
+                    <div class="znv-full">
+                        {% for child in form.children %}
+                            {{ form_row(child) }}
+                        {% endfor %}
+                    </div>
+                    {% block formExtraContent %}
+                    {% endblock %}
+                {% endblock formContent %}
+
+                {% block formButtons %}
+                    <div class="znv-full">
+                        <div class="znv-buttons">
+                            <p>{{ 'form.info.field_required'|trans }}</p>
+
+                            {% block formCommonButtons %}
+                                {% if pathCancel != "" %}
+                                    <a href="{{ pathCancel }}"
+                                       class="znv-btn znv-greyDark">{{ 'form.buttons.cancel'|trans|upper }}</a>
+                                {% endif %}
+                                <button type="submit" id="save-button" class="znv-btn znv-greenDark">
+                                    {{ 'form.buttons.save'|trans|upper }}
+                                </button>
+                            {% endblock formCommonButtons %}
+
+                            {% block formExtraButtons '' %}
+                        </div>
+                    </div>
+                {% endblock formButtons %}
+                {{ form_end(form) }}
+
+                {% block formScripts '' %}
+
+            {% endblock %}
+        </div>
+    </div>
+            
+{% endblock content %}

@@ -1,0 +1,10 @@
+sas:
+    resource: "../src/Controller"
+    type:     annotation
+
+logout:
+    path: /logout
+
+home:
+   path: /
+   defaults: { _controller: 'App\Controller\DashboardController::indexAction' }

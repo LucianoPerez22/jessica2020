@@ -1,0 +1,140 @@
+form:
+    buttons:
+        cancel: Cancel
+        save: Save
+        save_continue: Save and Continue
+        apply: Apply
+        clean: Clean
+        filter: Filter
+        enabled: Enabled
+        disabled: Disabled
+        accept_modal: Yes, I want to continue
+        pdf: PDF
+        return: Return
+        access: Access
+        send: Send
+        save_add_user: Save & Add User
+        save_add_contact: Save & Add Contact
+    info:
+        field_required: All fields with * are required
+    labels:
+        password: Password
+        current_password: Password
+        new_password: New Password
+        repeat_password: Repeat Password
+        user: User
+        reciever: To
+        send: SEND
+        re: Re
+        subject: Subject
+        body: Body
+        name: Name
+        surname: Surname
+        email: Email
+        status: Status
+        lastName: Last Name
+        username: Username
+        username_email: Username or Email
+        admin: Administrator
+        description: Description
+        role: Role
+        groups: Groups
+        name_last_name: Name and Surname
+        phone: Phone
+        fax: Fax
+        from: From
+        to: To
+        short_name: Short Name
+        datetime: Date & Time
+    choices:
+        select: --- SELECT ---
+        all: All
+        enabled: Enabled
+        disabled: Disabled
+        "true": Yes
+        "false": No
+        load: Load
+        unload: Unload
+    dates_formats:
+        date_time:
+            datetime_picker_js: Y/M/D HH:mm
+            php: Y/m/d H:i
+        date:
+            datetime_picker_js: Y/M/D
+            php: Y/m/d
+            readable_date: d M Y
+        month_day: M d
+        time:
+            datetime_picker_js: HH:mm
+            php: H:i
+page:
+    common:
+        confirm:
+            delete_record: Delete record
+            ask_continue: Comfirm to remove this record?
+            label: Label
+            delete_text: Delete text
+    list:
+        buttons:
+            view: View
+            edit: Edit
+            enable: Enable
+            disable: Disable
+            switch: Switch
+            delete: Delete
+        pagination:
+            show: Show
+            records: records
+            firstPage: First
+            lastPage: Last
+    login:
+        title: Access to users
+        recover_password: Did you forget your password?
+        remember: Remember
+    recover_password:
+        title: Did you forget your password?
+        description: Enter your email and then we will send you an email with instructions on how to generate a new password.
+        return_to: Return to
+    registration:
+        have_account: Do you have an account?
+        enter: Enter
+    dashboard:
+        title: Dashboard
+    menu:
+        menu: Menu
+        change_password: Change Password
+        sign_out: Sign Out
+        user: User
+        group: Group
+    user:
+        title:
+            change_password: Change Password
+            reset_password: Reset Password
+            list: User List
+            view: User View
+            edit: User Edit
+            new: New User
+        labels:
+            name: Name
+            username: Username
+            email: Email
+            groups: Groups
+            status: Status
+        buttons:
+            add: Add User
+        confirm:
+            label_enable: Enable user
+            label_disable: Disable user
+            body_enable: You have selected the user to be enabled
+            body_disable: You have selected the user to be disabled
+    group:
+        title:
+            list: Group List
+            view: Group View
+            edit: Group Edit
+            new: Group New
+        labels:
+            name: Name
+            description: Description
+        buttons:
+            add: Add Group

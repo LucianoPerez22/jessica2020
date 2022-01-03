@@ -1,0 +1,87 @@
+<div class="znv-list-footer">
+    <div class="znv-selector">
+        <p>
+            {{ 'page.list.pagination.show'|trans }}
+        </p>
+        <div class="znv-form-group is-empty">
+            {% set options = ['10','25','50','100'] %}
+            <select id="js-znv-select-limit" class="znv-form-control">
+                {% for option in options %}
+                    <option value="{{ option }}" {% if (option == app.session.get('limit')) %} selected {% endif %} >{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <p>{{ 'page.list.pagination.records'|trans }}</p>
+        {% set params = {"limit": "placeholder"} %}
+        {% if app.request.attributes.get('_route_params')| length %}
+            {% set routeParams = app.request.attributes.get('_route_params') %}
+            {% set params = (params|merge(routeParams)) %}
+        {% endif %}
+        <script type="text/javascript">
+            $("#js-znv-select-limit").change(function () {
+                var route = "{{ path(route, params) }}";
+                window.location = route.replace("placeholder", $(this).val());
+            });
+        </script>
+    </div><!-- znv-pagination -->
+    <div class="znv-pagination">
+        <ul>
+            {% if current > 1 %}
+                <li>
+                    <a href="{{ path(route, query|merge({ (pageParameterName): 1 })) }}">{{ 'page.list.pagination.firstPage'|trans() }}</a>
+                </li>
+            {% else %}
+                <li class="">
+                    <span>{{ 'page.list.pagination.firstPage'|trans }}</span>
+                </li>
+            {% endif %}
+            {% if previous is defined %}
+                <li>
+                    <a href="{{ path(route, query|merge({ (pageParameterName): previous })) }}">
+                        <i class="fa-chevron-left"></i>
+                    </a>
+                </li>
+            {% else %}
+                <li class="">
+                    <span>
+                        <i class="fa-chevron-left"></i>
+                    </span>
+                </li>
+            {% endif %}
+            {% for page in pagesInRange %}
+                {% if page != current %}
+                    <li class="znv-active">
+                        <a href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+                    </li>
+                {% else %}
+                    <li class="znv-active">
+                        <span>{{ page }}</span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if next is defined %}
+                <li>
+                    <a href="{{ path(route, query|merge({(pageParameterName): next})) }}">
+                        <i class="fa-chevron-right"></i>
+                    </a>
+                </li>
+            {% else %}
+                <li class="">
+                    <span>
+                        <i class="fa-chevron-right"></i>
+                    </span>
+                </li>
+            {% endif %}
+            {% if pageCount > current %}
+                <li>
+                    <a href="{{ path(route, query|merge({(pageParameterName): pageCount})) }}">
+                        {{ 'page.list.pagination.lastPage'|trans }}</a>
+                </li>
+            {% else %}
+                <li class="">
+                    <span>{{ 'page.list.pagination.lastPage'|trans }}</span>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

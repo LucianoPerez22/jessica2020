@@ -1,0 +1,103 @@
+{% extends 'global/layout.html.twig' %}
+
+{% set classForm = classForm is defined ? classForm : 'znv-form-inline' %}
+{% set formFilterAction = formFilterAction is defined ? formFilterAction : path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+{% set formMethod = formMethod is defined ? formMethod : 'GET' %}
+{% set labelButtonNew = labelButtonNew is defined ? labelButtonNew : 'page.list.buttons.add' %}
+{% set rolesNew = rolesNew is defined ? rolesNew : false %}
+
+{% block buttonsTitle %}
+    {% block buttonNew %}
+        {% if rolesNew and app.user.hasRole(rolesNew) %}
+            <li>
+                <a href="{{ pathNew }}" class="znv-btn">
+                    <div class="znv-icon fa-plus"></div>
+                    {{ labelButtonNew|trans }}
+                </a>
+            </li>
+        {% endif %}
+    {% endblock %}
+    {% if rolesNew and app.user.hasRole(rolesNew) and form|default(null) %}
+        <li class="divider"></li>
+    {% endif %}
+    {% if form|default(null) %}
+      <li>
+        <button type="button" id="js-btn-filter" class="znv-btn js-active collapsed" data-toggle="collapse"
+                data-target="#js-filter" aria-expanded="false" aria-controls="js-filter">
+            <div class="znv-icon fa-filter"></div>
+            {{ 'form.buttons.filter'|trans }}
+        </button>
+      </li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% block formFilter %}
+        <div class="collapse znv-box-filter" id="js-filter" aria-expanded="true">
+            {{ form_start(form, {'action': formFilterAction, 'method': formMethod,
+                'attr': {'class': classForm, 'novalidate': 'novalidate' }}) }}
+            {% block formContent %}
+                {% set filtered = false %}
+                {% for child in form.children %}
+                    {% if child.vars.value|length > 0  %}
+                        {% set filtered = true %}
+                    {% endif %}
+                    {{ form_row(child) }}
+                {% endfor %}
+                {% if filtered %}
+                    <script type="text/javascript">
+                        $('#js-btn-filter').addClass('znv-yellow');
+                    </script>
+                {% endif %}
+            {% endblock formContent %}
+            <div class="znv-form-group znv-form-action">
+                <button type="submit" class="znv-btn znv-greenDark" name="filter" value="filter">
+                    {{ 'form.buttons.apply'|trans()|upper }}
+                </button>
+                <button type="button" class="znv-btn znv-greyDark" onclick="cleanFilters(this);" value="reset">
+                    {{ 'form.buttons.clean'|trans()|upper }}
+                </button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <script type="text/javascript">
+            function cleanFilters(button) {
+                $(button).parents('form').attr('method', 'POST');
+                $(button).parents('form').submit();
+            }
+        </script>
+    {% endblock %}
+
+    <div class="znv-card">
+        {% block header_block '' %}
+        <div class="znv-card-body">
+            <div class="znv-list-container znv-striped">
+                {% block list '' %}
+            </div>
+            {% block pagination %}
+                {% if totalEntitiesCount > 0 %}
+                    {{ knp_pagination_render(entities,'global/_pagination.html.twig') }}
+                {% endif %}
+            {% endblock pagination %}
+        </div>
+    </div>
+
+    {% block modalDelete %}
+        {{ macro_modal('page.common.confirm.delete_record', 'page.common.confirm.ask_continue', 'fa-trash', 'modalRed' ) }}
+
+        <script>
+            function setNameAndText(button) {
+
+                var $modal = $('#modalConfirm');
+                var $button = $(button);
+                var $div = $button.parents('div.znv-line');
+                var text = '{{ 'page.common.confirm.delete_text'|trans|raw }}' + '<br/>' + '{{ 'page.common.confirm.ask_continue' | trans | raw }}';
+
+                text = text.replace('%name%', $div.data('name'));
+                $modal.find('.js-modal-body').html(text);
+            }
+        </script>
+
+
+    {% endblock %}
+{% endblock content %}

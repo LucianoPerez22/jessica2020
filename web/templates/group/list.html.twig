@@ -1,0 +1,35 @@
+{% extends 'global/layout_list.html.twig' %}
+
+{% set titlePage = "page.group.title.list" | trans %}
+{% set menu = "group" %}
+
+{% set formFilterAction = path('group_list') %}
+{% set pathNew = path('group_new') %}
+{% set labelButtonNew = 'page.group.buttons.add' %}
+{% set rolesNew = ['ROLE_GROUP_NEW'] %}
+
+{% block list %}
+    <div class="znv-header">
+        <div class="znv-col"> {{ 'page.group.labels.name' | trans }}
+        </div>
+        <div class="znv-col-actions">
+        </div>
+    </div>
+
+    {% for group in entities %}
+        <div class="znv-line" data-path="{{ path('group_delete', { 'id' : group.id }) }}" data-name="{{ group.name }}">
+            <div class="znv-col">
+                <div class="znv-header">{{ 'page.group.labels.name' | trans }}:</div>
+                {{ group }}
+            </div>
+            <div class="znv-col-actions">
+                <div class="znv-group">
+                    {{ macro_listActionButton(path('group_view', {'id' : group.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_GROUP_VIEW']) }}
+                    {{ macro_listActionButton(path('group_edit', {'id' : group.id}), 'page.list.buttons.edit', 'fa-pencil', ['ROLE_GROUP_EDIT']) }}
+                    {{ macro_liConfirmButton('page.list.buttons.delete', 'znv-icon fa-trash', ['ROLE_GROUP_DELETE'], 'setNameAndText') }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock list %}

@@ -1,0 +1,38 @@
+{% extends 'global/layout_view.html.twig' %}
+
+{% set titlePage = "page.group.title.view" | trans %}
+{% set menu = "group" %}
+
+{% block buttonsTitle %}
+<li>
+    {{ macro_buttonReturn(path('group_list')) }}
+</li>
+{% endblock %}
+
+{% block viewContent %}
+<div class="znv-card-full znv-highlight">
+    <div class="znv-form-group-view">
+        <p>{{ 'page.group.labels.name' | trans }}</p>
+        <h3>{{ group }}</h3>
+    </div>
+</div>
+
+<div class="znv-card-full znv-two-column">
+  {{ macro_cardHalfView('page.group.labels.description' | trans, group.description) }}
+
+  {% set rolesByModule = group.getRolesByModule() %}
+
+  {% for module, roles in rolesByModule %}
+
+          <div class="znv-form-group-view">
+              <p>{{ module }}</p>
+              <ul>
+                  {% for rol in roles %}
+                  <li>{{ rol.title }}</li>
+                  {% endfor %}
+              </ul>
+          </div>
+
+  {% endfor %}
+</div>
+  {% endblock %}

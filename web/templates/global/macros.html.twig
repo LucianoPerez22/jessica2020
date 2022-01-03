@@ -1,0 +1,183 @@
+{% macro alertMessage(label, messages) %}
+{% set alertColor = 'red' %}
+{% if label == 'info' %}{% set alertColor = 'ligthBlue' %}{% endif %}
+{% if label == 'warning' %}{% set alertColor = 'yellow' %}{% endif %}
+{% if label == 'success' %}{% set alertColor = 'green' %}{% endif %}
+<div class="znv-alert znv-{{ alertColor }} alert" role="alert">
+    <button type="button" class="znv-close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+    <strong>{{ ('flash.labels.'~ label)| trans({}, 'flashes') }}!</strong>
+    {% if messages is iterable %}
+        {% for message in messages %}
+            {{ message |trans({}, 'flashes') | raw }} <br>
+        {% endfor %}
+    {% else %}
+        {{ messages |trans({}, 'flashes') | raw }} <br>
+    {% endif %}
+</div>
+{% endmacro alertMessage %}
+
+{% macro buttonReturn(path) %}
+    <a href="{{ path }}" class="znv-btn">
+        <i class="fa-arrow-left"></i>
+        {{ 'form.buttons.return'|trans|upper }}
+    </a>
+{% endmacro buttonReturn %}
+
+{% macro listActionButton(path, title, icon, roles) %}
+    {% if (roles is not empty and app.user.hasRole(roles)) or roles is empty %}
+        <a href="{{ path }}" rel="tooltip" data-placement="bottom" data-original-title="{{ title|trans }}"
+               class="znv-icon {{ icon }}"></a>
+    {% endif %}
+{% endmacro listActionButton %}
+
+{% macro listActionButtonSpan(path, title, spanClass, spanText, roles) %}
+    {% if (roles is not empty and app.user.hasRole(roles)) or roles is empty %}
+        <a href="{{ path }}" rel="tooltip" data-placement="bottom" data-original-title="{{ title|trans }}">
+        <span class="znv-label {{spanClass}}">{{ spanText | trans | upper}}</span></a>
+    {% endif %}
+{% endmacro listActionButtonSpan %}
+
+{% macro liConfirmButton(title, classIcon, roles, callback, modalId,selector, path, dataExtraBody) %}
+    {% set selector = (selector == "") ? 'div.znv-line' : selector %}
+    {% set modalId = (modalId == "") ? 'modalConfirm' : modalId %}
+    {% set callback = (callback == "") ? 'undefined' : callback %}
+    {% set path = (path == "") ? 'undefined' : path %}
+    {% set dataExtraBody = (dataExtraBody == "") ? 'undefined' : dataExtraBody %}
+    {% if (roles is not empty and app.user.hasRole(roles)) or roles is empty %}
+            <button type="button" data-rel="tooltip" data-placement="top" title="{{ title | trans }}"
+                    data-toggle="modal" class="{{ classIcon }}"
+                    data-target="#{{ modalId }}" onclick="show{{modalId}}(this, {{ callback }},'{{ selector }}', '{{path}}', '{{dataExtraBody}}')">
+            </button>
+    {% endif %}
+{% endmacro %}
+
+{% macro liConfirmButtonComercio(title, color, action, text, roles, callback, modalId,selector, path, dataExtraBody) %}
+    {% set selector = (selector == "") ? 'div.znv-line' : selector %}
+    {% set modalId = (modalId == "") ? 'modalConfirm' : modalId %}
+    {% set callback = (callback == "") ? 'undefined' : callback %}
+    {% set path = (path == "") ? 'undefined' : path %}
+    {% set dataExtraBody = (dataExtraBody == "") ? 'undefined' : dataExtraBody %}
+    {% if (roles is not empty and app.user.hasRole(roles)) or roles is empty %}
+        <button type="button" data-rel="tooltip" data-placement="top" title="{{ title}}"
+                class="znv-btn" data-toggle="modal" data-target="#{{ modalId }}" onclick="show{{modalId}}(this, {{ callback }},'{{ selector }}', '{{path}}', '{{dataExtraBody}}')"><span class="znv-label {{ color }}">{{ action }}</span> {{ text }}
+        </button>
+    {% endif %}
+{% endmacro %}
+
+{% macro listEmpty(totalEntitiesCount) %}
+    {% if totalEntitiesCount == 0 %}
+        <div class="boxListEmpty">
+            <p>{{ 'page.list.empty' | trans() | upper }}</p>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro modal(label, body, icon, modalClass, id) %}
+    {% set id = (id == "") ? 'modalConfirm' : id %}
+    <div class="znv-modal {{modalClass}} in" id="{{ id }}" tabindex="-1" role="dialog" aria-labelledby="delete">
+        <div class="znv-modal-dialog" role="document">
+            <div class="znv-modal-content">
+                <div class="znv-modal-header">
+                    <button type="button" class="znv-close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <div class="znv-icon {{ icon|default('fa-trash') }}"></div>
+                    <span class="js-modal-label">{{ label|trans|raw }}</span>
+                </div>
+                <div class="znv-modal-body">
+                    <p class="js-modal-body">{{ body|trans|raw }}<span class="js-modal-extra-body"></span></p>
+                </div>
+                <div class="znv-modal-footer">
+                    <button type="button" class="znv-btn znv-greyDark" data-dismiss="modal">
+                        {{ 'form.buttons.cancel'|trans|upper }}
+                        <div class="ripple-container">
+                            <div class="ripple ripple-on ripple-out"
+                                 style="left: 16.0313px; top: 18px; background-color: rgb(255, 255, 255); transform: scale(10.375);"></div>
+                        </div>
+                    </button>
+                    <button type="submit" class="znv-btn znv-greenDark js-modal-accept">
+                        {{ 'form.buttons.accept_modal'|trans|upper }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function show{{ id }}(button, callback, selector, path, dataExtraBody) {
+            {%if selector is not defined  %} {% set selector = 'div.znv-line' %} {%endif%}
+            if (typeof callback !== 'undefined') {
+                callback(button);
+            }
+
+            var $modal = $('#{{ id }}');
+            var $button = $(button);
+            var $div = $button.parents(selector);
+            if( path !== 'undefined'){
+                $path = path;
+            }else{
+                $path = $div.data('path');
+            }
+            $modal.find('.js-modal-extra-body').html (' '+ dataExtraBody);
+            $modal.find('.js-modal-accept').click(function(){window.location=$path});
+
+        }
+    </script>
+{% endmacro modal %}
+
+{% macro liNav(active, route, linkText, roles, icon, routeParams) %}
+{% if routeParams is null %}{% set routeParams = {} %}{% endif %}
+{% set classIcon = "" %}
+    {% if icon is defined  and icon != "" %}{% set classIcon = "znv-icon "~icon %}{% endif %}
+    {% if app.user.hasRole(roles) %}
+        <li {% if(active) %} class="znv-active" {% endif %}>
+            <a href="{{ path(route, routeParams) }}" class="znv-btn">
+                <div class="{{ classIcon }}"></div>
+                {{ linkText }}
+            </a>
+        </li>
+    {% endif %}
+{% endmacro %}
+
+{% macro cardHalfView(text, value) %}
+<div class="znv-form-group-view">
+    <p>{{ text }}</p>
+    <h3>{{ value | default(' ---- ') }}</h3>
+</div>
+{% endmacro %}
+
+{% macro viewHeaderFields(title, icon) %}
+<div class="znv-widgets-header">
+    <div class="znv-icon {{ icon }}"></div>
+    <h3>{{ title }}</h3>
+</div><!-- znv-widgets-header -->
+{% endmacro %}
+
+{% macro viewField(label, value) %}
+<div class="znv-form-group-view">
+    <p>{{ label }}</p>
+    <div class="znv-group">
+        <h3>{{ value | default(' ---- ') }}</h3>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro viewButtonManager(path, title) %}
+<div class="znv-full">
+    <div class="znv-buttons znv-go-right">
+        <a href="{{ path }}" class="znv-btn znv-sm znv-lightBlue">
+            <div class="znv-icon fa-cog"></div>
+            {{ title|default('Manager') }}
+        </a>
+    </div>
+</div>
+{% endmacro  %}
+
+{% macro viewEmptyList(text) %}
+<div class="znv-list-empty">
+    <h4>{{ text | default('List Empty') }}</h4>
+</div>
+{% endmacro %}
+
+
+{% import _self as macro %}

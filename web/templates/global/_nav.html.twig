@@ -1,0 +1,47 @@
+{% if menu is not defined %}
+    {% set menu = "" %}
+{% endif %}
+
+{% set rolesMenu = ['ROLE_USER_LIST', 'ROLE_GROUP_LIST'] %}
+
+{% set listMenu =  [] %}
+
+
+<nav class="znv-nav">
+    <div class="znv-nav-section">
+        <h3>{{ 'page.menu.menu'|trans }}</h3>
+        <ul>
+            {{ macro_liNav((menu == "dashboard"), 'home', 'page.dashboard.title'|trans, ['ROLE_USER'], 'fa-home') }}
+            {% if app.user.isSuperAdmin %}
+                {{ macro_liNav((menu == "user"), 'user_list', 'page.menu.user'|trans, ['ROLE_USER_LIST'], 'fa-user') }}
+                {{ macro_liNav((menu == "group"), 'group_list', 'page.menu.group'|trans, ['ROLE_GROUP_LIST'], 'fa-users') }}
+            {% endif %}
+            {# PARA EL USUARIO COMUN #}
+            {% if app.user.hasRole(rolesMenu) and not app.user.isSuperAdmin %}
+            <li id="js-addClass-catActive">
+                <button type="button" class="znv-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                    <div class="znv-icon fa-envelope"></div>
+                    {{ 'page.menu.message'|trans }}
+                    <div class="znv-icon fa-chevron-left"></div>
+                    <div class="ripple-container"></div>
+                </button>
+                <ul class="dropdown-menu">
+                    {{ macro_liNav((menu == "message_received"), 'message_received', 'page.menu.message_received'|trans, ['ROLE_MESSAGE_LIST_RECIEVED']) }}
+                    {{ macro_liNav((menu == "message_sent"), 'message_sent', 'page.menu.message_sent'|trans, ['ROLE_MESSAGE_LIST_SENT']) }}
+                    </ul>
+            </li>
+                <li id="js-addClass-catActive" class="open">
+                    <button type="button" class="znv-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                        <div class="znv-icon fa-wrench"></div>
+                        {{ 'page.menu.configuration'|trans }}
+                        <div class="znv-icon fa-chevron-left"></div>
+                        <div class="ripple-container"></div>
+                    </button>
+                    <ul class="dropdown-menu">
+                        
+                    </ul>
+                </li>
+            {% endif %}
+        </ul>
+    </div><!-- znv-nav-section -->
+</nav>

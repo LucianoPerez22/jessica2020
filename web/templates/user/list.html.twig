@@ -1,0 +1,93 @@
+{% extends 'global/layout_list.html.twig' %}
+
+{% set titlePage = "page.user.title.list" | trans %}
+{% set menu = "user" %}
+
+{% set formFilterAction = path('user_list') %}
+{% set pathNew = path('user_new') %}
+{% set labelButtonNew = 'page.user.buttons.add' %}
+{% set rolesNew = ['ROLE_USER_NEW'] %}
+
+{% block list %}
+
+    <div class="znv-header">
+        <div class="znv-col">
+            {{ 'page.user.labels.name' | trans() }}
+        </div>
+        <div class="znv-col">
+            {{ 'page.user.labels.username' | trans() }}
+        </div>
+        <div class="znv-col">
+            {{ 'page.user.labels.email' | trans() }}
+        </div>
+        <div class="znv-col">
+            {{ 'page.user.labels.groups' | trans() }}
+        </div>
+        <div class="znv-col-actions">
+        </div>
+    </div>
+
+    {% for user in entities %}
+        <div class="znv-line" data-path="{{ path('user_enable_disable', {id: user.id, value: '|CHECKED|'}) }}">
+            <div class="znv-col">
+                <div class="znv-header">{{ 'page.user.labels.name' | trans() }}</div>
+                {{ user }}
+            </div>
+            <div class="znv-col">
+                <div class="znv-header">{{ 'page.user.labels.username' | trans() }}</div>
+                {{ user.username }}
+            </div>
+            <div class="znv-col">
+                <div class="znv-header">{{ 'page.user.labels.email' | trans() }}</div>
+                {{ user.email }}
+            </div>
+            <div class="znv-col">
+                <div class="znv-header">{{ 'page.user.labels.groups' | trans() }}</div>
+                {{ user.groups | join(', ') }}
+            </div>
+            <div class="znv-col-actions">
+                <div class="znv-group">
+                    {{ macro_listActionButton(path('user_view', {'id' : user.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_USER_VIEW']) }}
+                    {{ macro_listActionButton(path('user_edit', {'id' : user.id}), 'page.list.buttons.edit', 'fa-pencil', ['ROLE_USER_EDIT']) }}
+                    {% if user.enabled %}
+                        {{ macro_listActionButton(path('user_enable_disable', {'id' : user.id, 'value': 0}), 'page.list.buttons.disable', 'fa-toggle-on', ['ROLE_USER_EDIT']) }}
+                    {% else %}
+                        {{ macro_listActionButton(path('user_enable_disable', {'id' : user.id, 'value': 1}), 'page.list.buttons.enable', 'fa-toggle-off', ['ROLE_USER_EDIT']) }}
+                    {% endif %}
+                    {% if not user.isSuperAdmin %}
+                        {{ macro_listActionButton(path('home')~'?_switch_user='~user.username, 'page.list.buttons.switch', 'fa-user', ['ROLE_ALLOWED_TO_SWITCH']) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <script>
+        function enabledDisabled(input) {
+            var $button = $(input);
+            var checked = ($button.is(":checked")) ? 1 : 0;
+            var label = "{{ 'page.user.confirm.label_enable' | trans() }}";
+            var body = "{{ 'page.user.confirm.body_enable' | trans() }}";
+            if (!checked) {
+                label = "{{ 'page.user.confirm.label_disable' | trans() }}";
+                body = "{{ 'page.user.confirm.body_disable' | trans() }}";
+            }
+
+            body += "<br> {{ 'page.common.confirm.ask_continue' | trans() }}";
+
+            var $modal = $("#modalEnDisUser");
+            $modal.find('.js-modal-label').html(label);
+            $modal.find('.js-modal-body').html(body);
+
+            var $div = $button.parents('div.line');
+            var path = $div.data('path').replace('|CHECKED|', checked);
+            $div.data('path', path);
+        }
+
+    </script>
+
+    {{ macro_modal('page.common.confirm.label', 'page.common.confirm.ask_continue', 'lock-open', 'modalYellow', 'modalEnDisUser' ) }}
+
+{% endblock list %}
+
+{% block modalDelete '' %}

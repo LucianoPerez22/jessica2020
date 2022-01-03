@@ -1,0 +1,64 @@
+{% extends 'global/layout.html.twig' %}
+
+{% set classForm = classForm is defined ? classForm : 'znv-form-inline' %}
+{% set formFilterAction = formFilterAction is defined ? formFilterAction : path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+{% set formMethod = formMethod is defined ? formMethod : 'GET' %}
+{% set labelButtonNew = labelButtonNew is defined ? labelButtonNew : 'page.list.buttons.add' %}
+{% set rolesNew = rolesNew is defined ? rolesNew : false %}
+
+
+
+{% block content %}
+
+    {% block formFilter %}
+        <div class="znv-box-filter" id="js-filter" aria-expanded="true">
+            {{ form_start(form, {'action': formFilterAction, 'method': formMethod,
+                'attr': {'class': classForm, 'novalidate': 'novalidate' }}) }}
+            {% block formContent %}
+                {% for child in form.children %}
+                    {{ form_row(child) }}
+                {% endfor %}
+            {% endblock formContent %}
+            <div class="znv-form-group znv-form-action">
+                <button type="submit" class="znv-btn znv-greenDark" name="filter" value="filter">
+                    {{ 'form.buttons.apply'|trans()|upper }}
+                </button>
+                <button type="button" class="znv-btn znv-greyDark" onclick="cleanFilters(this);" value="reset">
+                    {{ 'form.buttons.clean'|trans()|upper }}
+                </button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <script type="text/javascript">
+            function cleanFilters(button) {
+                $(button).parents('form').attr('method', 'POST');
+                $(button).parents('form').submit();
+            }
+        </script>
+    {% endblock %}
+
+
+        {% block header_block '' %}
+                {% block list '' %}
+
+
+    {% block modalDelete %}
+        {{ macro_modal('page.common.confirm.delete_record', 'page.common.confirm.ask_continue', 'fa-trash', 'modalRed' ) }}
+
+        <script>
+            function setNameAndText(button) {
+
+                var $modal = $('#modalConfirm');
+                var $button = $(button);
+                var $div = $button.parents('div.znv-line');
+                var text = '{{ 'page.common.confirm.delete_text'|trans|raw }}' + '<br/>' + '{{ 'page.common.confirm.ask_continue' | trans | raw }}';
+
+                text = text.replace('%name%', $div.data('name'));
+                $modal.find('.js-modal-body').html(text);
+            }
+        </script>
+
+
+    {% endblock %}
+
+{% endblock content %}

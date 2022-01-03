@@ -1,0 +1,32 @@
+{% extends 'global/layout.html.twig' %}
+
+{% block buttonsTitle %}
+    {% if pathEdit is defined %}
+    <li>
+        <a href="{{ pathEdit }}" type="button" class="znv-btn " onabort="">
+            <div class="znv-icon fa-pencil"></div>
+            {{ buttonTextEdit| default('page.list.buttons.edit' | trans) }}
+        </a>
+    </li>
+    {% endif %}
+    {% if pathReturn is defined %}
+    <li>
+        {{ macro_buttonReturn(pathReturn) }}
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="znv-card">
+        <div class="znv-card-body">
+            <div class="znv-card-view">
+                {% block viewContent %}
+                       {% block entity %}
+                       {% endblock %}
+                       {% block list %}
+                       {% endblock %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

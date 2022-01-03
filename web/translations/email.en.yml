@@ -1,0 +1,19 @@
+registration:
+    message:
+        subject: Registration for Zennovia Skeleton
+        welcome: Welcome to
+        explanation: If you are receiving this mail it is because Zennovia Skeleton has registered this mail to <strong> create a user for you on the system. </strong>
+        next_step: Select the following link and follow the corresponding steps to end the user registration process
+        greeting: Yours faithfully
+        email_empty: User does not have an email configured
+        send_error: There was an error trying to send the email
+
+recover_password:
+    message:
+        subject: Recover password from Zennovia Skeleton
+        title: Request for password recovery
+        explanation: We have received a password change request for the Zennovia Skeleton system user
+        next_step: Select the following link and follow the corresponding steps to end the password reset process
+        greeting: Yours faithfully
+        user_not_found: We do not have this registered user with the email entered.
+        send_error: The email with the code for the recovery of the password could not be sent. Please try again

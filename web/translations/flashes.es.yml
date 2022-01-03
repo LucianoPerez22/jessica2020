@@ -1,0 +1,45 @@
+flash:
+    labels:
+        error: Error
+        success: Exito
+        warning: Cuidado
+        info: Información
+    common:
+        error_save: Se produjo un error al intentar guardar los datos.
+        error_permission_create: No puedes crear esta entidad
+        error_permission_edit: No puedes editar esta entidad
+    user:
+        common:
+            not_found: El enlace proporcionado no es válido.
+        change_password:
+            success : La contraseña fue cambiada exitosamente
+            error: Se produjo un error al intentar cambiar la contraseña.
+        enable_disable:
+            not_disabled: Esta cuenta no puede ser deshabilitada
+            enabled: El usuario se habilitó correctamente
+            disabled: El usuario se deshabilitó correctamente.
+        new:
+            success: Usuario guardado con éxito
+            error: Se produjo un error al intentar salvar al usuario.
+        edit:
+            success: Usuario editado con éxito. % linkEntity%
+            error: Se produjo un error al intentar editar el usuario.
+        registration:
+            success: Te registraste con éxito. Ingrese su nueva contraseña para acceder al sistema
+            error: Se produjo un error con el registro. Vuelve a intentarlo más tarde.
+        recover_password:
+            success: El correo electrónico se envió correctamente para recuperar la contraseña
+            error: Se produjo un error con la contraseña de recuperación, intente nuevamente más tarde
+        reset_password:
+            success: La contraseña fue cambiada exitosamente
+
+    group:
+        new:
+            success: Grupo de permisos guardado correctamente
+            error: Se produjo un error al intentar guardar el grupo de permisos
+        edit:
+            success: Grupo de permisos editado con éxito. % linkEntity%
+            error: Se produjo un error al intentar editar el grupo de permisos
+        delete:
+            success: Grupo de permisos eliminado con éxito
+            error: Este grupo está relacionado con otra entidad. No se puede quitar

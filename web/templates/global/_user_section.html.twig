@@ -1,0 +1,40 @@
+<div class="znv-user-session-area">
+    <div class="znv-user-session">
+        <!--
+        <div class="znv-avatar">
+          <img src="{{ asset('build/images/men.svg') }}" alt="">
+        </div>
+        -->
+        <div class="znv-letter">
+          {{ app.user.name | first | upper }}
+        </div>
+        <div class="znv-info">
+            <h4>{{ app.user.name }} {{ app.user.lastName }}</h4>
+            <button type="button" class="znv-btn znv-icon fa-ellipsis-v dropdown-toggle"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="{{ path('user_change_password') }}">
+                        <div class="znv-icon fa-key"></div>
+                        {{ 'page.menu.change_password'|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('logout') }}">
+                        <div class="znv-icon fa-sign-out"></div>
+                        {{ 'page.menu.sign_out'|trans }}
+                    </a>
+                </li>
+                <li>
+                    {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                        <a href="{{ path('user_list', {'_switch_user': '_exit'}) }}">
+                            <div class="znv-icon far fa-user"></div>
+                            {{ 'page.menu.exit_impersonation'|trans }}
+                        </a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

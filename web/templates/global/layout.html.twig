@@ -1,0 +1,55 @@
+{% extends 'global/base.html.twig' %}
+{% use "global/_blocks.html.twig" %}
+
+{%- block body -%}
+    <body>
+        <div class="znv-page-overlay"></div>
+
+        {% include "global/_header.html.twig" %}
+
+        <section class="znv-panel-area">
+            <aside id="js-panel-primary" class="znv-panel-primary">
+                <!-- User Session -->
+                {% include "global/_user_section.html.twig" %}
+                <!-- Nav -->
+                {% include "global/_nav.html.twig" %}
+            </aside>
+        </section>
+        <main>
+            <div class="znv-main-header">
+                <div class="znv-title">
+                    <h2>{{ titlePage }}</h2>
+                </div>
+                <div class="znv-actions">
+                    <ul>
+                        {% block buttonsTitle '' %}
+                    </ul>
+                </div>
+            </div>
+            {% block alertOutContent '' %}
+            {% block znv_main_content %}
+                <div class="znv-main-content">
+                    <div class="znv-card-container {% if customStyleCard is defined  %}{{ customStyleCard }}{% endif %}">
+                       {% block contentContainer %}
+                        <div class="znv-card-full"><!--znv-flex-form-->
+                            {% block alertMessages %}
+                                {% for label, messages in app.flashes %}
+                                    {{ macro_alertMessage(label, messages) }}
+                                {% endfor %}
+                            {% endblock alertMessages %}
+
+                            {% block content '' %}
+
+                        </div>
+                        {% endblock %}
+                        {% block blockFloatLeft %}
+                        {% endblock %}
+                    </div>
+                </div>
+            {% endblock %}
+        </main>
+
+        {%- include 'global/_footer.html.twig' -%}
+
+    </body>
+{%- endblock body -%}

@@ -1,0 +1,23 @@
+{% extends 'global/base.html.twig' %}
+
+{% block body %}
+    <body class="znv-access-user">
+
+        <section class="goLeft">
+            <div class="znv-brand">
+                <img src="" alt="">
+            </div>
+            {% block alertMessages %}
+                {% for label, messages in app.flashes %}
+                    {{ macro_alertMessage(label, messages) }}
+                {% endfor %}
+            {% endblock alertMessages %}
+
+            {% block content '' %}
+
+        </section>
+
+        {% include 'global/_footer.html.twig' %}
+
+    </body>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'global/layout_form.html.twig' %}
+
+{% set titlePage = 'page.user.title.edit' | trans %}
+{% set menu = "user" %}
+{% set pathCancel = path('user_list') %}
+
+{% block formContent %}
+    <div class="znv-half">
+        {{ form_row(form.name) }}
+    </div>
+    <div class="znv-half">
+        {{ form_row(form.lastName) }}
+    </div>
+    <div class="znv-half">
+        {{ form_row(form.username, { attr: { readonly : true}}) }}
+    </div>
+    <div class="znv-half">
+        {{ form_row(form.email) }}
+    </div>
+    <div class="znv-half">
+      {{ form_row(form.enabled) }}
+    </div>
+    <div class="znv-half">
+        {% if app.user.superAdmin %}
+            {{ form_row(form.superAdmin) }}
+        {% endif %}
+    </div>
+    <div class="znv-half">
+        {{ form_row(form.groups) }}
+    </div>
+
+{% endblock %}

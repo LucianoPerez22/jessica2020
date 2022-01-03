@@ -1,0 +1,17 @@
+{% extends 'global/layout_form.html.twig' %}
+
+{% set titlePage = 'page.group.title.new' | trans %}
+{% set menu = "group" %}
+{% set pathCancel = path('group_list') %}
+
+{% block formContent %}
+<div class="znv-half">
+    {{ form_row(form.name) }}
+</div>
+<div class="znv-half">
+  {{ form_row(form.description) }}
+</div>
+<div class="znv-full znv-column">
+  {{ form_row(form.roles) }}
+</div>
+{% endblock %}

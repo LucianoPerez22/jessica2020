@@ -1,0 +1,61 @@
+{%- block custom_grouped_choices_widget -%}
+
+<div class="znv-collapse">
+    {% set index = 0 %}
+    {% set children = form.children %}
+
+    {% for role in form.vars.choices %}
+    <button type="button" class="znv-btn" data-toggle="collapse" data-target="#fgroup{{ index }}" aria-expanded="false"
+            aria-controls="fgroup{{ index }}">
+        {{ role.label }}
+        <div class="znv-icon fa-chevron-left"></div>
+    </button>
+    <div class="znv-group collapse" id="fgroup{{ index }}">
+        <div class="znv-checkbox znv-full">
+            <label>
+                <input type="checkbox" data-rol-group="{{ role.label | lower | replace({' ': '-'}) }}"
+                       class="js-all-choices">
+                <span class="znv-label">{{ 'form.choices.all' | trans }}</span>
+            </label>
+        </div>
+        <hr>
+        {% for key, rol in role.choices %}
+            <div class="znv-checkbox znv-small">
+                <label>
+                    {{ form_widget(form[key], {'attr' : {'class' : 'js-role-' ~ role.label| lower | replace({' ': '-'}) }}) }}
+                    <span class="znv-checkbox-material"><span class="check"></span></span>
+                    <span class="znv-label">{{ rol.label }}</span>
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+        {% set index = index + 1 %}
+    {% endfor %}
+</div>
+
+<script>
+    $(".js-all-choices").off('change.roleSelectAll')
+        .on('change.roleSelectAll', function () {
+            var $input = $(this);
+            var checked = $input.is(":checked");
+            var label = $input.data("rol-group");
+            $('.js-role-' + label).prop("checked", checked);
+        });
+</script>
+{%- endblock -%}
+
+{%- block custom_single_checkbox_widget -%}
+    <div class="znv-togglebutton">
+        <label>
+            <span class="znv-label">{{ form.vars.false_choice | trans }}</span>
+            {{ form_widget(form) }}
+            <span class="toggle"></span>
+            <span class="znv-label">{{ form.vars.true_choice | trans }}</span>
+        </label>
+    </div>
+{%- endblock -%}
+
+{%- block custom_from_and_to_datetime_widget -%}
+    {{ form_row(form.from) }}
+    {{ form_row(form.to) }}
+{%- endblock -%}

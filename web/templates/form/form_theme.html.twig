@@ -1,0 +1,91 @@
+{% use "form_div_layout.html.twig" %}
+
+{%- block form_row -%}
+    <div class="znv-form-group{{ (form.vars.errors|length > 0 ? ' znv-has-error':'') }}">
+        {{ form_label(form) }}
+        <div class="znv-group">
+            {% set widget_variables = widget_variables|default({}) %}
+            {{ form_widget(form, widget_variables) }}
+            {{ block('form_helptext') }}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{%- endblock form_row -%}
+
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 %}
+        {% for error in errors %}
+            <p class="znv-text-error">{{ error.message }}</p>
+        {% endfor %}
+    {% endif -%}
+{%- endblock form_errors -%}
+
+{%- block form_helptext -%}
+    {%- if form.vars.attr.helptext is defined %}
+        <p class="znv-text-help">{{ form.vars.attr.helptext }}</p>
+    {% endif -%}
+{%- endblock -%}
+
+{%- block widget_attributes -%}
+    id="{{ id }}" name="{{ full_name }}"
+    {%- if disabled %} disabled="disabled"{% endif -%}
+    {%- if required %} required="required"{% endif -%}
+    {% set addClass = ' znv-form-control' %}
+    {%- if 'class' not in attr|keys %}
+        {% set attr = attr|merge({ 'class' : addClass}) %}
+    {% else %}
+        {% set attr = attr|merge({ 'class': attr.class ~ addClass}) %}
+    {% endif -%}
+    {{ block('attributes') }}
+{%- endblock -%}
+
+{%- block form_label -%}
+    {% if label is not same as(false) -%}
+        {% set addClass = ' inputTextHelp' %}
+        {%- if 'class' not in attr|keys %}
+            {% set attr = attr|merge({ 'class' : addClass}) %}
+        {% else %}
+            {% set attr = attr|merge({ 'class': attr.class ~ addClass}) %}
+        {% endif -%}
+    {% endif %}
+    {{ parent() }}
+{%- endblock form_label -%}
+
+{%- block choice_widget_expanded -%}
+    {% for child in form %}
+        <div class="znv-checkbox">
+            <label>
+                {{ form_widget(child) }}
+                <span class="znv-checkbox-material"><span class="check"></span></span>
+                <span class="znv-label">{{ child.vars.label }}</span>
+            </label>
+        </div>
+    {% endfor %}
+{%- endblock choice_widget_expanded -%}
+
+{%- block datetime_widget -%}
+    {% if form.vars.widget == 'single_text' %}
+        {% set type = 'text' %}
+        {{- block('form_widget_simple') -}}
+        <script>
+            $('#{{ form.vars.id }}').datetimepicker({
+                format: '{{ form.vars.label_format|trans }}'
+            });
+            $("#{{ form.vars.id }}").on("dp.change", function (e) {
+                var $input = $(e.currentTarget);
+                var $formGroup = $input.closest(".znv-form-group");
+
+                if ($input.val() === "") {
+                    $formGroup.addClass("is-empty");
+                }
+                else {
+                    $formGroup.removeClass("is-empty");
+                }
+
+            });
+        </script>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{%- endblock -%}
