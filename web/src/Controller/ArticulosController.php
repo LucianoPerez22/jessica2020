@@ -32,8 +32,8 @@ class ArticulosController extends BaseController
         $repo = $this->getDoctrine()->getRepository('App:Articulos');
 
         $dataResult = $helper->getDataResultFiltered($repo, $form);
-        $dataResult['form'] = $form->createView();
-       
+        $dataResult['form'] = $form->createView();       
+
         return $this->render('articulos/index.html.twig', $dataResult);       
     }
 

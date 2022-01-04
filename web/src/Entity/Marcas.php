@@ -14,16 +14,21 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity("descripcion")
  */
 class Marcas
-{
+{    
     /**
      * @var int
      *
-     * @ORM\OneToMany(targetEntity="Articulos", mappedBy="idMarca")
-     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
     private $id;
+
+     /**
+     * @ORM\OneToMany(targetEntity="Articulos", mappedBy="idMarca", indexBy="id")
+     */
+
+    private $articulos;
 
     /**
      * @var string
@@ -32,7 +37,12 @@ class Marcas
      * @Assert\NotBlank()
      */
     private $descripcion;
-  
+    
+    public function __construct()
+    {
+        $this->articulos = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,7 +88,6 @@ class Marcas
         }
 
         return $this;
-    }
-
+    }    
 
 }
