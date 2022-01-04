@@ -71,7 +71,7 @@ page:
             delete_record: Borrar registro
             ask_continue: Confirma borrar ete registro?
             label: Etiqueta
-            delete_text: Borrar texto
+            delete_text: 
     list:
         buttons:
             view: Vista
@@ -105,6 +105,7 @@ page:
         user: Usuario
         group: Grupo
         marcas: Marcas
+        articulos: Articulos
     user:
         title:
             change_password: Cambiar Contraseña
@@ -159,5 +160,10 @@ page:
         labels:
             name: Nombre
             description: Descripción
+            marca: Marca
+            ganancia: Ganancia
+            codigo: Codigo
+            precio: Precio
         buttons:
             add: Agregar Articulo
+

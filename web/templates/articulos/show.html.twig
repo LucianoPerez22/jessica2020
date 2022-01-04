@@ -1,38 +1,33 @@
-{% extends 'base.html.twig' %}
+{% extends 'global/layout_view.html.twig' %}
 
-{% block title %}Articulos{% endblock %}
+{% set titlePage = "page.articulos.title.view" | trans %}
+{% set menu = "articulos" %}
 
-{% block body %}
-    <h1>Articulos</h1>
+{% block buttonsTitle %}
+{% set referer = (app.request.server.get('HTTP_REFERER') is not null ?
+            app.request.server.get('HTTP_REFERER')|default('/') :
+            path('articulos_index')) %}
+<li>
+    {{ macro_buttonReturn(referer) }}
+</li>
+{% endblock %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ articulo.id }}</td>
-            </tr>
-            <tr>
-                <th>Codigo</th>
-                <td>{{ articulo.codigo }}</td>
-            </tr>
-            <tr>
-                <th>Descripcion</th>
-                <td>{{ articulo.descripcion }}</td>
-            </tr>
-            <tr>
-                <th>Precio</th>
-                <td>{{ articulo.precio }}</td>
-            </tr>
-            <tr>
-                <th>Ganancia</th>
-                <td>{{ articulo.ganancia }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block viewContent %}
+<div class="znv-card-full znv-highlight">
+    <div class="znv-form-group-view">
+        <p>{{ 'page.articulos.labels.name'|trans }}</p>
+        <h3>{{ articulo.descripcion }}</h3>
+    </div>
+</div>
 
-    <a href="{{ path('articulos_index') }}">back to list</a>
+<div class="znv-card-full znv-two-column">
+  {{ macro_cardHalfView('page.articulos.labels.marca' | trans, articulo.idMarca.descripcion) }}
+  {{ macro_cardHalfView('page.articulos.labels.codigo' | trans, articulo.codigo) }}
+  {{ macro_cardHalfView('page.articulos.labels.ganancia' | trans, articulo.precio) }}
+  {{ macro_cardHalfView('page.articulos.labels.precio' | trans, articulo.ganancia) }}
+  {# {{ macro_cardHalfView('page.user.labels.status' | trans,
+     (user.enabled ? 'form.buttons.enabled' : 'form.buttons.disabled')|trans) }} #}
+  {# {{ macro_cardHalfView('page.user.labels.groups' | trans, user.groups | join(', ') | default(null)) }} #}
+</div>
 
-    <a href="{{ path('articulos_edit', {'id': articulo.id}) }}">edit</a>
-
-    {{ include('articulos/_delete_form.html.twig') }}
 {% endblock %}

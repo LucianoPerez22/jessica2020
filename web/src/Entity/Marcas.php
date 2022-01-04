@@ -25,7 +25,7 @@ class Marcas
     private $id;
 
      /**
-     * @ORM\OneToMany(targetEntity="Articulos", mappedBy="idMarca", indexBy="id")
+     * @ORM\OneToMany(targetEntity=Articulos::class, mappedBy="idMarca")
      */
 
     private $articulos;
@@ -88,6 +88,5 @@ class Marcas
         }
 
         return $this;
-    }    
-
+    }   
 }

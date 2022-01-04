@@ -1,13 +1,23 @@
-{% extends 'base.html.twig' %}
+{% extends 'global/layout_form.html.twig' %}
 
-{% block title %}Edit Articulos{% endblock %}
+{% set titlePage = 'page.marcas.title.edit' | trans %}
+{% set menu = 'marcas' %}
+{% set pathCancel = path('marcas_index') %}
 
-{% block body %}
-    <h1>Edit Articulos</h1>
-
-    {{ include('articulos/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('articulos_index') }}">back to list</a>
-
-    {{ include('articulos/_delete_form.html.twig') }}
+{% block formContent %}
+<div class="znv-half">
+    {{ form_row(form.idMarca) }}
+</div>
+<div class="znv-half">
+    {{ form_row(form.codigo) }}
+</div>
+<div class="znv-half">
+    {{ form_row(form.descripcion) }}
+</div>
+<div class="znv-half">
+    {{ form_row(form.precio) }}
+</div>
+<div class="znv-half">
+    {{ form_row(form.ganancia) }}
+</div>
 {% endblock %}

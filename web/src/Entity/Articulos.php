@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArticulosRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+//use Doctrine\Common\Collections\ArrayCollection;
+//use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -24,9 +24,7 @@ class Articulos
     private $id;
 
     /**
-     * @var int|null
-     *
-     * @ORM\ManyToOne(targetEntity="Marcas", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Marcas", inversedBy="articulos")
      * @ORM\JoinColumn(name="id_marca", referencedColumnName="id")
      */
     private $idMarca;
@@ -59,10 +57,10 @@ class Articulos
      */
     private $ganancia;    
 
-    public function __construct()
-    {    
-        $this->idMarca = new ArrayCollection();        
-    }
+    // public function __construct()
+    // {    
+    //     $this->idMarca = new ArrayCollection();        
+    // }
 
 
     public function getId(): ?int

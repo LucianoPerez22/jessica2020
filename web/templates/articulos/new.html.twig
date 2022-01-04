@@ -1,11 +1,24 @@
-{% extends 'base.html.twig' %}
+{% extends 'global/layout_form.html.twig' %}
 
-{% block title %}New Articulos{% endblock %}
+{% set titlePage = 'page.articulos.title.new' | trans %}
+{% set menu = "articulos" %}
+{% set pathCancel = path('articulos_index') %}
 
-{% block body %}
-    <h1>Create new Articulos</h1>
+{% block formContent %}
+<div class="znv-half">
+    {{ form_row(form.idMarca) }}
+</div>
+<div class="znv-half">
+    {{ form_row(form.codigo) }}
+</div>
+<div class="znv-half">
+    {{ form_row(form.descripcion) }}
+</div>
+<div class="znv-half">
+    {{ form_row(form.precio) }}
+</div>
+<div class="znv-half">
+    {{ form_row(form.ganancia) }}
+</div>
 
-    {{ include('articulos/_form.html.twig') }}
-
-    <a href="{{ path('articulos_index') }}">back to list</a>
 {% endblock %}

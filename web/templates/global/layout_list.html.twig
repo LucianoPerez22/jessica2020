@@ -91,7 +91,7 @@
                 var $modal = $('#modalConfirm');
                 var $button = $(button);
                 var $div = $button.parents('div.znv-line');
-                var text = '{{ 'page.common.confirm.delete_text'|trans|raw }}' + '<br/>' + '{{ 'page.common.confirm.ask_continue' | trans | raw }}';
+                var text = '{{ 'page.common.confirm.ask_continue' | trans | raw }}';
 
                 text = text.replace('%name%', $div.data('name'));
                 $modal.find('.js-modal-body').html(text);

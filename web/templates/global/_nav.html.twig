@@ -17,7 +17,7 @@
                 {{ macro_liNav((menu == "group"), 'group_list', 'page.menu.group'|trans, ['ROLE_GROUP_LIST'], 'fa-users') }}
                 <hr />
                 {{ macro_liNav((menu == "marcas"), 'marcas_index', 'page.menu.marcas'|trans, ['ROLE_MARCAS_LIST'], 'fa-list') }}
-                {{ macro_liNav((menu == "articulos"), 'articulos_index', 'page.menu.articulos'|trans, ['ROLE_ARTICULOS_LIST'], 'fa-list') }}
+                {{ macro_liNav((menu == "articulos"), 'articulos_index', 'page.menu.articulos'|trans, ['ROLE_ARTICULOS_LIST'], 'fa-list-alt') }}
             {% endif %}
             {# PARA EL USUARIO COMUN #}
             {% if app.user.hasRole(rolesMenu) and not app.user.isSuperAdmin %}
