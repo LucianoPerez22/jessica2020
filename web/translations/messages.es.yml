@@ -80,6 +80,7 @@ page:
             disale: Deshabilitar
             switch: Cambiar
             delete: Borrar
+            stock: Stock
         pagination:
             show: Mostrar
             records: registros
@@ -166,4 +167,15 @@ page:
             precio: Precio
         buttons:
             add: Agregar Articulo
+    
+    stock:
+        title:
+            list: Lista de Stock
+            view: Vista de Stock
+            edit: Edición de Stock
+            new: Nueva Stock
+        labels:
+            actual: Stock Actual
+        buttons:
+            add: Agregar Stock
 

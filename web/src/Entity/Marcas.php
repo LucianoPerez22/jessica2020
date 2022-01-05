@@ -27,7 +27,6 @@ class Marcas
      /**
      * @ORM\OneToMany(targetEntity=Articulos::class, mappedBy="idMarca")
      */
-
     private $articulos;
 
     /**

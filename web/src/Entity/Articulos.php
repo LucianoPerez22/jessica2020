@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArticulosRepository;
-//use Doctrine\Common\Collections\ArrayCollection;
-//use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -57,11 +57,15 @@ class Articulos
      */
     private $ganancia;    
 
-    // public function __construct()
-    // {    
-    //     $this->idMarca = new ArrayCollection();        
-    // }
+     /**
+     * @ORM\OneToMany(targetEntity=Stock::class, mappedBy="idArticulo")
+     */
+    private $stock;
 
+    public function __construct()
+    {
+        $this->stock = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -124,6 +128,36 @@ class Articulos
     public function setGanancia(?float $ganancia): self
     {
         $this->ganancia = $ganancia;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Articulos[]
+     */
+    public function getStock(): Collection
+    {
+        return $this->stock;
+    }
+
+    public function addStock(Articulos $stock): self
+    {
+        if (!$this->stock->contains($stock)) {
+            $this->stock[] = $stock;
+            //$stock->setIdArticulo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStock(Articulos $stock): self
+    {
+        if ($this->stock->removeElement($stock)) {
+            // set the owning side to null (unless already changed)
+            //if ($stock->getIdArticulo() === $this) {
+                //$stock->setIdArticulo(null);
+           // }
+        }
 
         return $this;
     }

@@ -21,6 +21,8 @@
         <div class="znv-col"> Ganancia
         </div>       
         <div class="znv-col"> P Venta
+        </div>
+        <div class="znv-col"> Stock
         </div>       
         <div class="znv-col-actions">
         </div>
@@ -42,7 +44,7 @@
             </div>    
             <div class="znv-col">
                 <div class="znv-header">Precio:</div>
-                    {{articulo.precio}}
+                    {{articulo.precio | number_format(2, ',', '.')}}
             </div>    
             <div class="znv-col">
                 <div class="znv-header">Ganancia:</div>
@@ -51,9 +53,18 @@
             <div class="znv-col">
                 <div class="znv-header">P Venta:</div>
                     {{(articulo.precio * 1.21) | number_format(2, ',', '.')}}
+            </div>   
+            <div class="znv-col">
+                <div class="znv-header">Stock:</div>
+                    {% set sum = 0 %}
+                    {% for stock in articulo.stock %}
+                        {% set sum = sum + stock.cantidad %}      
+                    {% endfor %}
+                    {{sum}}
             </div>    
             <div class="znv-col-actions">
                 <div class="znv-group">                    
+                    {{ macro_listActionButton(path('stock_index', {'id' : articulo.id}), 'page.list.buttons.stock', 'fa-list', ['ROLE_STOCK_LIST']) }}
                     {{ macro_listActionButton(path('articulos_show', {'id' : articulo.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_EMPLEADOS_VIEW']) }}
                     {{ macro_listActionButton(path('articulos_edit', {'id' : articulo.id}), 'page.list.buttons.edit', 'fa-pencil', ['ROLE_EMPLEADOS_EDIT']) }}
                     {{ macro_liConfirmButton('page.list.buttons.delete', 'znv-icon fa-trash', ['ROLE_ARTICULOS_DELETE'], 'setNameAndText') }}

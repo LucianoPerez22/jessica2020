@@ -2,13 +2,11 @@
 
 namespace App\Entity;
 
+use App\Repository\StockRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Stock
- *
- * @ORM\Table(name="stock")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=StockRepository::class)
  */
 class Stock
 {
@@ -22,9 +20,8 @@ class Stock
     private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_articulo", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Articulos", inversedBy="stock")
+     * @ORM\JoinColumn(name="id_articulo", referencedColumnName="id")
      */
     private $idArticulo;
 
