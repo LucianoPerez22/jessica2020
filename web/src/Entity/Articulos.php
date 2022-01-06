@@ -37,23 +37,23 @@ class Articulos
     private $codigo;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=300, nullable=true)
+     * @ORM\Column(name="descripcion", type="string", length=300, nullable=false)
      */
     private $descripcion;
 
     /**
-     * @var float|null
+     * @var float
      *
-     * @ORM\Column(name="precio", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="precio", type="float", precision=10, scale=0, nullable=false)
      */
     private $precio;
 
     /**
-     * @var float|null
+     * @var float
      *
-     * @ORM\Column(name="ganancia", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="ganancia", type="float", precision=10, scale=0, nullable=false)
      */
     private $ganancia;    
 

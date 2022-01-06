@@ -20,8 +20,8 @@ final class Version20220104144517 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE articulos ADD CONSTRAINT FK_9C6F8597E98F4023 FOREIGN KEY (id_marca) REFERENCES marcas (id)');
-        $this->addSql('CREATE INDEX IDX_9C6F8597E98F4023 ON articulos (id_marca)');
+        // $this->addSql('ALTER TABLE articulos ADD CONSTRAINT FK_9C6F8597E98F4023 FOREIGN KEY (id_marca) REFERENCES marcas (id)');
+        // $this->addSql('CREATE INDEX IDX_9C6F8597E98F4023 ON articulos (id_marca)');
     }
 
     public function down(Schema $schema): void

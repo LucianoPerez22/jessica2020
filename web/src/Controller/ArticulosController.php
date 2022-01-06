@@ -69,7 +69,7 @@ class ArticulosController extends BaseController
     }
 
     /**
-     * @Route(path="/admin/articulos/{id}/view", name="articulos_show")
+     * @Route(path="/admin/articulos/view/{id}", name="articulos_show")
      * @Security("user.hasRole(['ROLE_ARTICULOS_VIEW'])")
      * @param Articulos $articulo
      * @return Response

@@ -65,3 +65,14 @@ flash:
         delete:
             success: Articulo eliminado con éxito
             error: Este articulo está relacionado con otra entidad. No se puede quitar
+    
+    stock:
+        new:
+            success: Stock guardado correctamente
+            error: Se produjo un error al intentar guardar el stock
+        edit:
+            success: Stock editado con éxito. 
+            error: Se produjo un error al intentar editar el stock
+        delete:
+            success: Stock eliminado con éxito
+            error: Este stock está relacionado con otra entidad. No se puede quitar

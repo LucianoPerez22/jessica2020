@@ -4,42 +4,97 @@
 {% set menu = "articulos" %}
 
 {% block buttonsTitle %}
-{% set referer = (app.request.server.get('HTTP_REFERER') is not null ?
-            app.request.server.get('HTTP_REFERER')|default('/') :
-            path('articulos_index')) %}
-<li>
-    {{ macro_buttonReturn(referer) }}
-</li>
-{% endblock %}
+    {% set referer = (app.request.server.get('HTTP_REFERER') is not null ?
+                        app.request.server.get('HTTP_REFERER')|default('/') :
+                        path('articulos_index')) %}
+    <li>
+        {{ macro_buttonReturn(referer) }}
+    </li>
+    {% endblock %}
 
-{% block viewContent %}
+    {% block viewContent %}
 
-<div class="znv-card-full znv-highlight">
-    <div class="znv-form-group-view">
-        <p>{{ 'page.marcas.labels.name'|trans }}</p>
-        <h3>{{ articulos.descripcion }}</h3>
+    <div class="znv-card-full znv-highlight">
+        <div class="znv-form-group-view">
+            <p>{{ 'page.marcas.labels.name'|trans }}</p>
+            <h3>{{ articulos.descripcion }}</h3>
+        </div>
     </div>
-</div>
 
-<div class="znv-card-full znv-two-column">
-    {% set sum = 0 %}
-    {% for stock in articulos.stock %}
-        {% set sum = sum + stock.cantidad %}      
-    {% endfor %}
+    <div class="znv-card-full znv-two-column">
+        {% set sum = 0 %}
+        {% for stock in articulos.stock %}
+            {% set sum = sum + stock.cantidad %}      
+        {% endfor %}
 
-    {{ macro_cardHalfView('page.stock.labels.actual' | trans, sum) }}
-    <button id="adminStock" type="submit" class="znv-button">Cargar</button>  
-</div>
+        {{ macro_cardHalfView('page.stock.labels.actual' | trans, sum) }}
+        <button id="adminStock" type="submit" class="znv-button">Cargar</button>  
+    </div>
 
-<script>
-    $(document).ready(function() {
-        $('#adminStock').on('click', function(e) {          
-            let valor = prompt("Ingrese Valor")        
+    <br/>
 
-            if (valor){
-                (valor !== null  && valor !== ''  && valor!==undefined) ? console.log(valor) : ''
+    <!-- List Stock -->
+    <br/>
+
+     {% if articulos.stock|length == 0 %}                             
+        <div class="znv-header">
+            <div class="znv-col"> {{ 'page.fields.labels.fieldsvalues' | trans }}
+            </div>                   
+        </div>
+
+        <div class="znv-list-empty ">
+            <h4>{{  "page.category.title.empty" |trans  }}</h4>
+        </div>                                                                                              
+
+        {% else %}        
+            <div class="znv-card-full">
+                <div class="znv-list-container">
+                    <div class="znv-header">
+                        <div class="znv-col ">Cantidad
+                        </div>
+                        <div class="znv-col ">Fecha
+                        </div>
+                        <div class="znv-col ">Usuario
+                        </div>                       
+                    </div>
+                        {% for stock in articulos.stock %}                
+                            <div class="znv-line">
+                                <div class="znv-col">
+                                    <div class="znv-header"></div>
+                                        {{ stock.cantidad }}
+                                </div>
+                                <div class="znv-col">
+                                     <div class="znv-header"></div>
+                                        {{ stock.fecha |date('d-m-Y') }}
+                                </div>
+                                <div class="znv-col">
+                                    <div class="znv-header"></div>
+                                        {{ stock.usuario }}
+                                </div>                                                                                             
+                            </div>
+                
+                        {% endfor %}   
+                </div>
+            </div>          
+        {% endif %}                    
+
+    <script>
+        $(document).ready(function() {
+            $('#adminStock').on('click', function(e) {          
+                let valor = prompt("Ingrese Valor")        
+
+                if (valor){                
+                    let url = document.URL                                     
+                    
+                    stockCargar(url.split("/").pop(), valor)
+                }
+            })
+        })
+
+        function stockCargar(empleado, cargar) {
+            if (empleado != null && cargar != null ){                
+                location.href = '/stock/articulo/' + empleado + '/cargar/' + cargar
             }
-        });
-    })
-</script>
+        }
+    </script>
 {% endblock %}
