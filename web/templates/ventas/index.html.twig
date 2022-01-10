@@ -1,0 +1,54 @@
+{% extends 'global/layout_list.html.twig' %}
+
+{% set titlePage = "page.ventas.title.list" | trans %}
+{% set menu = "ventas" %}
+
+{% set formFilterAction = path('articulos_index') %}
+{% set pathNew = path('venta_new') %}
+{% set labelButtonNew = 'page.ventas.buttons.add' %}
+{% set rolesNew = ['ROLE_VENTAS_NEW'] %}
+
+{% block list %}
+    <div class="znv-header">    
+        <div class="znv-col"> Cliente
+        </div>       
+        <div class="znv-col"> Tipo
+        </div>       
+        <div class="znv-col"> Fecha
+        </div>       
+        <div class="znv-col"> Total
+        </div>       
+       
+        <div class="znv-col-actions">
+        </div>
+    </div>    
+
+    {% for ventas in entities %}
+        <div class="znv-line" data-path="{{ path('articulos_delete', { 'id' : ventas.id }) }}" data-name="{{ ventas.id }}">
+            <div class="znv-col">
+                <div class="znv-header">Cliente:</div>
+                    {{ventas.idCliente.nombre}}
+            </div>    
+            <div class="znv-col">
+                <div class="znv-header">Tipo:</div>
+                    {{ventas.tipo}}
+            </div>          
+            <div class="znv-col">
+                <div class="znv-header">Fecha:</div>
+                    {{ventas.fecha|date('d-m-Y') }}
+            </div>    
+            <div class="znv-col">
+                <div class="znv-header">Total:</div>
+                    {{ventas.total | number_format(2, ',', '.')}}
+            </div>             
+            <div class="znv-col-actions">
+                <div class="znv-group">                                        
+                    {{ macro_listActionButton(path('venta_show', {'id' : ventas.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_VENTAS_VIEW']) }}
+                    {# {{ macro_listActionButton(path('articulos_edit', {'id' : ventas.id}), 'page.list.buttons.edit', 'fa-pencil', ['ROLE_VENTAS_EDIT']) }}
+                    {{ macro_liConfirmButton('page.list.buttons.delete', 'znv-icon fa-trash', ['ROLE_ARTICULOS_DELETE'], 'setNameAndText') }} #}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock list %}

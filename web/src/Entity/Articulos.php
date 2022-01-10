@@ -62,9 +62,15 @@ class Articulos
      */
     private $stock;
 
+     /**
+     * @ORM\OneToMany(targetEntity=VentasArt::class, mappedBy="articulo")
+     */
+    private $articulo;
+
     public function __construct()
     {
         $this->stock = new ArrayCollection();
+        $this->articulo = new ArrayCollection();        
     }
 
     public function getId(): ?int
@@ -157,6 +163,36 @@ class Articulos
             //if ($stock->getIdArticulo() === $this) {
                 //$stock->setIdArticulo(null);
            // }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VentasArt[]
+     */
+    public function getArticulo(): Collection
+    {
+        return $this->articulo;
+    }
+
+    public function addArticulo(VentasArt $articulo): self
+    {
+        if (!$this->articulo->contains($articulo)) {
+            $this->articulo[] = $articulo;
+            $articulo->setIdArticulo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticulo(VentasArt $articulo): self
+    {
+        if ($this->articulo->removeElement($articulo)) {
+            // set the owning side to null (unless already changed)
+            if ($articulo->getIdArticulo() === $this) {
+                $articulo->setIdArticulo(null);
+            }
         }
 
         return $this;

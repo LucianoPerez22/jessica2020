@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\VentasRepository;
+
 
 /**
- * Ventas
- *
- * @ORM\Table(name="ventas", indexes={@ORM\Index(name="id_cliente", columns={"id_cliente"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=VentasRepository::class)
  */
 class Ventas
 {
@@ -86,6 +87,22 @@ class Ventas
      * })
      */
     private $idCliente;
+
+     /**
+     * @ORM\OneToMany(targetEntity=VentasArt::class, mappedBy="idVentas")
+     */
+    private $ventas;
+
+     /**
+     * @ORM\OneToMany(targetEntity=VentasArt::class, mappedBy="idArt")
+     */
+    private $articulo;
+
+    public function __construct()
+    {
+        $this->ventas = new ArrayCollection();
+        $this->articulo = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -196,6 +213,66 @@ class Ventas
     public function setIdCliente(?ListaDeUsuarios $idCliente): self
     {
         $this->idCliente = $idCliente;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VentasArt[]
+     */
+    public function getVentas(): Collection
+    {
+        return $this->ventas;
+    }
+
+    public function addVenta(VentasArt $venta): self
+    {
+        if (!$this->ventas->contains($venta)) {
+            $this->ventas[] = $venta;
+            $venta->setIdVentas($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVenta(VentasArt $venta): self
+    {
+        if ($this->ventas->removeElement($venta)) {
+            // set the owning side to null (unless already changed)
+            if ($venta->getIdVentas() === $this) {
+                $venta->setIdVentas(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VentasArt[]
+     */
+    public function getArticulo(): Collection
+    {
+        return $this->articulo;
+    }
+
+    public function addArticulo(VentasArt $articulo): self
+    {
+        if (!$this->articulo->contains($articulo)) {
+            $this->articulo[] = $articulo;
+            $articulo->setIdArt($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticulo(VentasArt $articulo): self
+    {
+        if ($this->articulo->removeElement($articulo)) {
+            // set the owning side to null (unless already changed)
+            if ($articulo->getIdArt() === $this) {
+                $articulo->setIdArt(null);
+            }
+        }
 
         return $this;
     }

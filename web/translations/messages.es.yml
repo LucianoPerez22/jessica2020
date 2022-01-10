@@ -107,6 +107,7 @@ page:
         group: Grupo
         marcas: Marcas
         articulos: Articulos
+        ventas: Ventas
     user:
         title:
             change_password: Cambiar Contraseña
@@ -160,7 +161,7 @@ page:
             new: Nueva Articulo
         labels:
             name: Nombre
-            description: Descripción
+            descripcion: Descripción
             marca: Marca
             ganancia: Ganancia
             codigo: Codigo
@@ -179,3 +180,20 @@ page:
         buttons:
             add: Agregar Stock
 
+    ventas:
+        title:
+            list: Lista de Ventas
+            view: Vista de Venta
+            edit: Edición de Venta
+            new: Nueva Venta
+        labels:
+            actual: Venta Actual
+            nombre: Nombre
+            total: Total
+            fecha: Fecha
+            numero: Numero
+            tipo: Tipo
+        buttons:
+            add: Agregar Venta
+
+    

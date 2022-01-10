@@ -1,0 +1,42 @@
+{% extends 'global/layout_view.html.twig' %}
+
+{% set titlePage = "page.ventas.title.view" | trans %}
+{% set menu = "ventas" %}
+
+{% block buttonsTitle %}
+{% set referer = (app.request.server.get('HTTP_REFERER') is not null ?
+            app.request.server.get('HTTP_REFERER')|default('/') :
+            path('ventas_index')) %}
+<li>
+    {{ macro_buttonReturn(referer) }}
+</li>
+{% endblock %}
+
+{% block viewContent %}
+<div class="znv-card-full znv-highlight">
+    <div class="znv-form-group-view">
+        <p>{{ 'page.ventas.labels.nombre'|trans }}</p>
+        <h3>{{ venta.idCliente.nombre }}</h3>
+    </div>
+</div>
+<div class="znv-card-full znv-two-column">
+  {{ macro_cardHalfView('page.ventas.labels.fecha' | trans, venta.fecha|date('d-m-Y')) }}
+  {{ macro_cardHalfView('page.ventas.labels.numero' | trans, venta.tipo ~ ' - ' ~ venta.numero) }}
+</div>
+
+<br />
+<h4 class="text-primary" >Articulos</h4>
+{% for articulo in articulos %}
+<div class="znv-card-full znv-two-column">
+  {{ macro_cardHalfView('page.articulos.labels.descripcion' | trans, articulo.articulo.descripcion) }}
+  {{ macro_cardHalfView('page.articulos.labels.precio' | trans, '$ ' ~ (articulo.precio)) }}
+</div>
+{% endfor %}
+<div class="znv-card-full znv-highlight">
+    <div class="znv-form-group-view">
+        <p>{{ 'page.ventas.labels.total'|trans }}</p>
+        <h3>{{ '$ ' ~ venta.total }}</h3>
+    </div>
+</div>
+
+{% endblock %}

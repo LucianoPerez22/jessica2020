@@ -3,7 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 /**
  * VentasArt
  *
@@ -21,19 +22,23 @@ class VentasArt
      */
     private $id;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_ventas", type="integer", nullable=false)
+    /**     
+     * @ORM\ManyToOne(targetEntity="Ventas", inversedBy="ventas")
+     * @ORM\JoinColumn(name="id_ventas", referencedColumnName="id")     
      */
     private $idVentas;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_art", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Ventas", inversedBy="articulo")
+     * @ORM\JoinColumn(name="id_art", referencedColumnName="id")   
      */
     private $idArt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Articulos", inversedBy="articulo")
+     * @ORM\JoinColumn(name="id_art", referencedColumnName="id")   
+     */
+    private $articulo;
 
     /**
      * @var float
@@ -48,6 +53,11 @@ class VentasArt
      * @ORM\Column(name="precio", type="float", precision=10, scale=0, nullable=false)
      */
     private $precio;
+
+    public function __construct()
+    {
+        $this->articulo = new ArrayCollection();    
+    }
 
     public function getId(): ?int
     {
@@ -98,6 +108,18 @@ class VentasArt
     public function setPrecio(float $precio): self
     {
         $this->precio = $precio;
+
+        return $this;
+    }
+
+    public function getArticulo(): ?Articulos
+    {
+        return $this->articulo;
+    }
+
+    public function setArticulo(?Articulos $articulo): self
+    {
+        $this->articulo = $articulo;
 
         return $this;
     }

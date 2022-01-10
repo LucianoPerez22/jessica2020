@@ -76,3 +76,14 @@ flash:
         delete:
             success: Stock eliminado con éxito
             error: Este stock está relacionado con otra entidad. No se puede quitar
+
+    ventas:
+        new:
+            success: Venta guardad correctamente
+            error: Se produjo un error al intentar guardar la venta
+        edit:
+            success: Venta editada con éxito. 
+            error: Se produjo un error al intentar editar la venta
+        delete:
+            success: Venta eliminada con éxito
+            error: Esta venta está relacionado con otra entidad. No se puede quitar
