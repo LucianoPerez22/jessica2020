@@ -1,0 +1,26 @@
+{% extends 'global/layout_form.html.twig' %}
+
+{% set titlePage = 'page.ventas.title.new' | trans %}
+{% set menu = "ventas" %}
+{% set pathCancel = path('ventas_index') %}
+
+{% block formContent %}
+<div class="znv-half">
+    {{ form_row(form.idCliente) }}
+</div>
+
+ {# ## JQuery ## #}
+    <script>        
+        $(document).ready(function() {
+            $('#save_ventas_idCliente').on('change', function(e) {
+                var selectedArea = $(this).val();
+
+                console.log('Cambie: ' + selectedArea)
+                // if (selectedArea) {
+                //    loadAreaProperties(selectedArea);              
+                //} 
+            });
+        })
+       
+    </script>
+{% endblock %}

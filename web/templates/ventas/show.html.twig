@@ -24,14 +24,63 @@
   {{ macro_cardHalfView('page.ventas.labels.numero' | trans, venta.tipo ~ ' - ' ~ venta.numero) }}
 </div>
 
-<br />
-<h4 class="text-primary" >Articulos</h4>
-{% for articulo in articulos %}
-<div class="znv-card-full znv-two-column">
-  {{ macro_cardHalfView('page.articulos.labels.descripcion' | trans, articulo.articulo.descripcion) }}
-  {{ macro_cardHalfView('page.articulos.labels.precio' | trans, '$ ' ~ (articulo.precio)) }}
-</div>
-{% endfor %}
+<div class="znv-card-container">
+	<!-- Card Column 100% -->
+	<div class="znv-card-full">
+		<!-- Card -->
+		<div class="znv-card">			
+			<div class="znv-card-header">
+				<div class="znv-title">
+					{# <div class="znv-icon fa-wrench"></div>#}
+					<h3>Articulos</h3> 
+				</div>
+			</div><!-- znv-card-header -->
+			<!-- Card Body  -->
+			<div class="znv-card-body">
+				<!-- List Container -->
+				
+				<div class="znv-list-container">
+                    <div class="znv-header">
+                        <div class="znv-col">Cant</div><!-- znv-list-col -->
+                        <div class="znv-col">Descripcion</div><!-- znv-list-col -->           
+                        <div class="znv-col">P Unit</div><!-- znv-list-col -->        
+                        <div class="znv-col">P Total</div><!-- znv-list-col -->                        
+                    </div><!-- znv-list-header -->
+					
+    {% for articulo in articulos %}
+<!-- Card Line -->
+                    <div class="znv-line">
+                        <div class="znv-col">
+                            <div class="znv-header">Cant</div>
+                            {{articulo.cant}}
+                        </div><!-- znv-list-col -->
+                         <div class="znv-col">
+                            <div class="znv-header">Descripcion</div>
+                            {{articulo.articulo.descripcion}}
+                        </div><!-- znv-list-col -->
+                         <div class="znv-col">
+                            <div class="znv-header">P Unit</div>
+                            $ {{articulo.precio}}
+                        </div><!-- znv-list-col -->
+                         <div class="znv-col">
+                            <div class="znv-header">P Total</div>
+                            $ {{articulo.precio * articulo.cant}}
+                        </div><!-- znv-list-col -->    
+                    </div>                
+    {% endfor %}
+
+				</div><!-- znv-list-container -->
+				<!-- List Footer -->
+				<div class="znv-list-footer">
+					
+				</div><!-- znv-list-footer -->
+
+				<div class="znv-space"></div>				
+
+			</div><!-- znv-card-body -->
+		</div><!-- znv-card -->
+	</div><!-- znv-card-full -->
+</div><!-- znv-card-container -->
 <div class="znv-card-full znv-highlight">
     <div class="znv-form-group-view">
         <p>{{ 'page.ventas.labels.total'|trans }}</p>

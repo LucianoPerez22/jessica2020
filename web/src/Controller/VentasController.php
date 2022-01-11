@@ -7,6 +7,7 @@ use App\Entity\VentasArt;
 use App\Form\Filter\VentasFilterType;
 use App\Form\Handler\SaveCommonFormHandler;
 use App\Form\Type\SaveArticuloType;
+use App\Form\Type\SaveVentasType;
 use App\Zennovia\Common\BaseController;
 use App\Zennovia\Common\EntityManagerHelper;
 use App\Zennovia\Common\FindEntitiesHelper;
@@ -30,7 +31,7 @@ class VentasController extends BaseController
      */
     public function indexAction(FindEntitiesHelper $helper)
     {
-        $form = $this->createForm(VentasFilterType::class, null, ['csrf_protection' => false]);
+        $form = $this->createForm(VentasFilterType::class, null, ['csrf_protection' => false]);        
         $repo = $this->getDoctrine()->getRepository('App:Ventas');
 
         $dataResult = $helper->getDataResultFiltered($repo, $form);
@@ -47,26 +48,26 @@ class VentasController extends BaseController
      * @return RedirectResponse|Response
      */
     public function newAction(Request $request, SaveCommonFormHandler $handler){
-        $articulo = new Ventas();       
+        $venta = new Ventas();       
 
-        $handler->setClassFormType(SaveArticuloType::class);
-        $handler->createForm($articulo);
+        $handler->setClassFormType(SaveVentasType::class);
+        $handler->createForm($venta);
         
         if($handler->isSubmittedAndIsValidForm($request)){                
             try {                                                           
                 if ($handler->processForm()) {
-                    $this->addFlashSuccess('flash.articulos.new.success');
+                    $this->addFlashSuccess('flash.ventas.new.success');
     
-                    return $this->redirectToRoute('articulos_index');
+                    return $this->redirectToRoute('ventas_index');
                 }               
                 
             }catch (\Exception $e) {
-                $this->addFlashError('flash.marcas.new.error');
+                $this->addFlashError('flash.ventas.new.error');
                 $this->addFlashError($e->getMessage());
             }                           
         }
 
-        return $this->render('articulos/new.html.twig', array('form' => $handler->getForm()->createView()));
+        return $this->render('ventas/new.html.twig', array('form' => $handler->getForm()->createView()));
     }
 
     /**
@@ -78,11 +79,7 @@ class VentasController extends BaseController
     public function viewAction(Ventas $venta)
     {      
         $artRepo = $this->getDoctrine()->getRepository(VentasArt::class);
-        $info    = $artRepo->findBy(['idVentas' => $venta->getId()]);
-
-        // foreach ($info as $key => $value) {            
-        //     dump($value->getArticulo()->getDescripcion());
-        // }
+        $info    = $artRepo->findBy(['idVentas' => $venta->getId()]);        
         
         return $this->render('ventas/show.html.twig', ['venta' => $venta, 'articulos' => $info]);
     }   

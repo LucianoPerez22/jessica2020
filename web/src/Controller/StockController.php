@@ -4,11 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Articulos;
 use App\Entity\Stock;
-use App\Form\Handler\SaveCommonFormHandler;
 use App\Zennovia\Common\BaseController;
-use App\Zennovia\Common\EntityManagerHelper;
 use App\Zennovia\Common\FindEntitiesHelper;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -27,8 +24,10 @@ class StockController extends BaseController
      * @return Response
      */
     public function indexAction(FindEntitiesHelper $helper, Articulos $articulo)
-    {        
-        return $this->render('stock/index.html.twig', ['articulos' => $articulo]);
+    {          
+        $stockRepo = $this->getDoctrine()->getRepository(Stock::class);
+        $stock     = $stockRepo->findBy(['idArticulo' => $articulo->getId()], ['id' => 'desc'], 20);
+        return $this->render('stock/index.html.twig', ['articulos' => $articulo, 'stock' => $stock]);
     }
 
      /**
@@ -58,11 +57,6 @@ class StockController extends BaseController
         } catch (\Exception $e) {
             $this->addFlashError('flash.stock.new.error');
             $this->addFlashError($e->getMessage());            
-        }
-        
-        
+        }                
     }
-
-
-   
 }
