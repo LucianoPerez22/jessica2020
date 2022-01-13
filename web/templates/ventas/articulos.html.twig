@@ -1,0 +1,72 @@
+ {# {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %} #}
+		<!-- Card Line -->
+		<div class="znv-line">
+			<div class="znv-col">
+				<div class="znv-header">Cant</div>                            
+				{{ form_row(attribute(form, 'cant' ~ num_control)) }}
+
+				{# {{form_row(dato)}} #}
+			</div>
+			<!-- znv-list-col -->
+			<div class="znv-col">
+				<div class="znv-header">Descripcion</div>
+				{{ form_row(attribute(form, 'idArt' ~ num_control)) }}							
+			</div>
+			<!-- znv-list-col -->			
+			<div class="znv-col">
+				<div class="znv-header">P Unit</div>
+				{{ form_row(attribute(form, 'precio' ~ num_control)) }}							
+			</div>
+			<!-- znv-list-col -->
+			<div class="znv-col">
+				<div class="znv-header">P Total</div>
+				{{ form_row(attribute(form, 'total' ~ num_control)) }}							
+			</div>			
+			<!-- znv-list-col -->			
+		</div>    		
+		<div> <button id="btn{{ num_control }}">Agregar Articulo</button> </div>
+<script>        
+        $(document).ready(function() {   
+			 $('#art_idArt' + {{ num_control }}).on('change', function(e) {
+                 let urlAjaxFormFields = "{{ path('ajax_venta_art_get') }}";          
+                $.ajax({
+                    url: urlAjaxFormFields + '/' + $('#art_idArt' + {{ num_control }}).val(),
+                    type: "GET",
+                    async: false,
+                    success: function (response) {                              
+                       $('#art_precio' + {{ num_control }}).val(response)
+					   $('#art_total' + {{ num_control }}).val($('#art_precio' + {{ num_control }}).val() * $('#art_cant' + {{ num_control }}).val())                                                                  
+                    },
+                    error: function (err) {
+                        alert("An error ocurred while loading data ...");
+                    }
+                });                       
+            });
+
+            $('#art_cant' + {{ num_control }}).on('change', function(e) {
+                 $('#art_total' + {{ num_control }}).val($('#art_precio' + {{ num_control }}).val() * $('#art_cant' + {{ num_control }}).val())               
+            });
+
+			$('#art_cant' + {{ num_control }}).on('keypress', function(e) {
+				if (event.key === "Enter") {
+					//alert(event.key  + " " + event.which);
+					event.preventDefault();
+				}
+            });
+
+			//Boton para agregar mas articulos
+			$('#btn' + {{ num_control }}).on('keypress', function(e) {
+				if (event.key === "Enter") {
+					//alert(event.key  + " " + event.which);
+					event.preventDefault();
+				}
+            });
+        })        
+       
+    </script>                					

@@ -6,17 +6,14 @@ use App\Entity\Ventas;
 use App\Entity\VentasArt;
 use App\Form\Filter\VentasFilterType;
 use App\Form\Handler\SaveCommonFormHandler;
-use App\Form\Type\SaveArticuloType;
+use App\Form\Type\SaveVentasArtType;
 use App\Form\Type\SaveVentasType;
 use App\Zennovia\Common\BaseController;
-use App\Zennovia\Common\EntityManagerHelper;
 use App\Zennovia\Common\FindEntitiesHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-
 
 /**
  * @Route("/")
@@ -82,5 +79,27 @@ class VentasController extends BaseController
         $info    = $artRepo->findBy(['idVentas' => $venta->getId()]);        
         
         return $this->render('ventas/show.html.twig', ['venta' => $venta, 'articulos' => $info]);
+    }   
+
+     /**
+     * @Route(path="/venta/art/{num_control}", name="ajax_venta_art")
+     * @Security("user.hasRole(['ROLE_VENTAS_NEW'])")
+     * @param Ventas $venta
+     * @param Request $request
+     * @return Response
+     */
+    public function ajaxAction($num_control = null, Request $request)
+    {           
+        if ($request->isXmlHttpRequest()) {                
+            $dato = [
+                0 => $num_control
+            ];                                                 
+            $form = $this->createForm(SaveVentasArtType::class, null, ['algo' => $dato]);              
+           
+            return $this->render('ventas/articulos.html.twig', [
+                'form'          => $form->createView(),
+                'num_control'          => $num_control,                                    
+            ]);
+        }
     }   
 }

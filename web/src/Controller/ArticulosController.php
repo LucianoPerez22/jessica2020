@@ -15,7 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
-
 /**
  * @Route("/articulos")
  */
@@ -131,4 +130,18 @@ class ArticulosController extends BaseController
 
         return $this->redirectToRoute('articulos_index');
     }     
+
+    /**
+     * @Route(path="/venta/art/get/{articulo}", name="ajax_venta_art_get")
+     * @Security("user.hasRole(['ROLE_ARTICULOS_VIEW'])")
+     * @param Articulos $articulo
+     * @param Request $request
+     * @return Response
+     */
+    public function ajaxAction(Articulos $articulo = null, Request $request)
+    {                              
+        if ($request->isXmlHttpRequest()) {
+            return new Response($articulo->getPrecio());
+        }
+    }   
 }
