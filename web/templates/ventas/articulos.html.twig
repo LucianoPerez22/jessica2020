@@ -1,17 +1,7 @@
- {# {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
-
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %} #}
-		<!-- Card Line -->
 		<div class="znv-line">
 			<div class="znv-col">
 				<div class="znv-header">Cant</div>                            
-				{{ form_row(attribute(form, 'cant' ~ num_control)) }}
-
-				{# {{form_row(dato)}} #}
+				{{ form_row(attribute(form, 'cant' ~ num_control)) }}				
 			</div>
 			<!-- znv-list-col -->
 			<div class="znv-col">
@@ -30,43 +20,69 @@
 			</div>			
 			<!-- znv-list-col -->			
 		</div>    		
-		<div> <button id="btn{{ num_control }}">Agregar Articulo</button> </div>
+		<div> <button id="btn{{ num_control }}">Agregar Articulo</button> </div>		
 <script>        
-        $(document).ready(function() {   
-			 $('#art_idArt' + {{ num_control }}).on('change', function(e) {
-                 let urlAjaxFormFields = "{{ path('ajax_venta_art_get') }}";          
-                $.ajax({
-                    url: urlAjaxFormFields + '/' + $('#art_idArt' + {{ num_control }}).val(),
-                    type: "GET",
-                    async: false,
-                    success: function (response) {                              
-                       $('#art_precio' + {{ num_control }}).val(response)
-					   $('#art_total' + {{ num_control }}).val($('#art_precio' + {{ num_control }}).val() * $('#art_cant' + {{ num_control }}).val())                                                                  
-                    },
-                    error: function (err) {
-                        alert("An error ocurred while loading data ...");
-                    }
-                });                       
-            });
+	$(document).ready(function() {   
+			$('#art_idArt' + {{ num_control }}).on('change', function(e) {
+				let urlAjaxFormFields = "{{ path('ajax_venta_art_get') }}";          
+			$.ajax({
+				url: urlAjaxFormFields + '/' + $('#art_idArt' + {{ num_control }}).val(),
+				type: "GET",
+				async: false,
+				success: function (response) {                              
+					$('#art_precio' + {{ num_control }}).val(response)
+					$('#art_total' + {{ num_control }}).val($('#art_precio' + {{ num_control }}).val() * $('#art_cant' + {{ num_control }}).val())                                                                  
 
-            $('#art_cant' + {{ num_control }}).on('change', function(e) {
-                 $('#art_total' + {{ num_control }}).val($('#art_precio' + {{ num_control }}).val() * $('#art_cant' + {{ num_control }}).val())               
-            });
-
-			$('#art_cant' + {{ num_control }}).on('keypress', function(e) {
-				if (event.key === "Enter") {
-					//alert(event.key  + " " + event.which);
-					event.preventDefault();
+					total()
+				},
+				error: function (err) {
+					alert("An error ocurred while loading data ...");
 				}
-            });
+			});                       
+		});
 
-			//Boton para agregar mas articulos
-			$('#btn' + {{ num_control }}).on('keypress', function(e) {
-				if (event.key === "Enter") {
-					//alert(event.key  + " " + event.which);
-					event.preventDefault();
+		$('#art_cant' + {{ num_control }}).on('change', function(e) {				
+				$('#art_total' + {{ num_control }}).val($('#art_precio' + {{ num_control }}).val() * $('#art_cant' + {{ num_control }}).val())               
+				
+				total()
+		});
+
+		$('#art_cant' + {{ num_control }}).on('keypress', function(e) {
+			if (event.key === "Enter") {					
+				event.preventDefault();
+			}
+		});
+
+		//Boton para agregar mas articulos
+		$('#btn' + {{ num_control }}).on('click', function(e) {									
+			event.preventDefault();	
+			let urlAjaxFormFields = "{{ path('ajax_venta_art') }}";          
+			$.ajax({
+				url: urlAjaxFormFields + '/' + {{num_control + 1}},
+				type: "GET",
+				async: false,
+				success: function (response) {            
+					$('#btn' + {{ num_control }}).remove();                  
+					{% set num_control = num_control + 1 %}        
+					$('#form_art').before(response);
+
+					total()						
+				},
+				error: function (err) {
+					alert("An error ocurred while loading data ...");
 				}
-            });
-        })        
-       
+			});			
+		});
+
+		function total (){
+			let total = parseFloat(0)				
+			let control = {{ num_control }}
+							
+			for (let i = 0; i < control; i++) {																
+				total += parseFloat($('#art_total' + i).val())				
+			}
+			$('#total').remove();
+			$('#divTotal').before(`<div id="total" class="znv-card-full">  <div class="znv-card d-flex flex-row-reverse"><span id="total" class="badge badge-danger mt-3" style="font-size:1.3em">Total $: ${total.toFixed(2)} </span></div> </div>`) 
+		}
+	})               
     </script>                					

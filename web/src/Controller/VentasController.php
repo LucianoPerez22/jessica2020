@@ -30,7 +30,7 @@ class VentasController extends BaseController
     {
         $form = $this->createForm(VentasFilterType::class, null, ['csrf_protection' => false]);        
         $repo = $this->getDoctrine()->getRepository('App:Ventas');
-
+       
         $dataResult = $helper->getDataResultFiltered($repo, $form);
         $dataResult['form'] = $form->createView();       
 
@@ -50,9 +50,61 @@ class VentasController extends BaseController
         $handler->setClassFormType(SaveVentasType::class);
         $handler->createForm($venta);
         
+        //Obtengo ultimo numero remito
+        $numero = $this->getDoctrine()->getRepository('App:Ventas')->findLastNumber();
+        
+        //Recibo request y chequeo si existen los datos 
+        //de articulos para guardar la venta
+        $data = $request->request->all();    
+              
+        if (array_key_exists('art', $data)){          
+            $venta->setFecha(new \DateTime());        
+            $venta->setHora(date("h:i:sa"));                       
+            $venta->setEstado('ok');
+
+            $numeroR = $numero->getResult();           
+            $venta->setNumero(intval($numeroR[0][1])+1);
+
+            $venta->setCae('');
+            $venta->setTipo('R');
+            $total = 0;
+            foreach ($data['art'] as $key => $value) {
+                (substr($key, 0, 5) == 'total') ? $total += floatval($value) : '';                         
+            }
+           
+            $venta->setTotal($total);
+        }            
+        
         if($handler->isSubmittedAndIsValidForm($request)){                
             try {                                                           
-                if ($handler->processForm()) {
+                if ($handler->processForm()) {                     
+                    $ventaRepo = $this->getDoctrine()->getRepository('App:Ventas')->findOneBy([], ['id' => 'desc']);                                        
+                                        
+                    $manager = $this->getDoctrine()->getManager();                                        
+                    
+                    foreach ($data['art'] as $key => $value) {                                                                    
+                        if (substr($key, 0, 4) == 'cant') {
+                            $articulos = new VentasArt();
+                            $articulos->setCant($value);
+                        } 
+                        
+                        if (substr($key, 0, 5) == 'idArt') {                           
+                            $artRepo = $this->getDoctrine()->getRepository('App:Articulos');
+                            $articulo  = $artRepo->findOneBy(["id" => intval($value)]);
+                           
+                            $articulos->setIdArt($articulo);
+                        }                         
+                        (substr($key, 0, 6) == 'precio') ? $articulos->setPrecio(floatval($value)) : '';
+                        if (substr($key, 0, 5) == 'total') {
+                            $articulos->setIdVentas($ventaRepo);
+                            $articulos->setTotal(floatval($value));
+
+                            $manager->persist($articulos);
+                            $manager->flush($articulos);  
+                        }                                                                      
+                    }
+
+                    
                     $this->addFlashSuccess('flash.ventas.new.success');
     
                     return $this->redirectToRoute('ventas_index');

@@ -18,17 +18,26 @@ class VentasRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Ventas::class);
     }
-                    
+        
     public function findAllWithFilterAndOrderQuery(array $filters, array $order=null)
     {       
         $q = $this->createQueryBuilder('a')
-            ->select('a');          
-            
+            ->select('a')          
+            ->addOrderBy("a.fecha", "desc");
             if (!empty($filters['name'])) {
                 $name = '%' . $filters['name'] . '%';
                 $q->andWhere('a.numero LIKE :name')
-                ->setParameter('name', $name);
+                ->setParameter('name', $name);               
             }
+            
+           
+        return $q->getQuery();                                            
+    }    
+
+    public function findLastNumber()
+    {              
+        $q = $this->createQueryBuilder('a')
+            ->select('Max(a.numero)');                                                                  
            
         return $q->getQuery();                                            
     }    

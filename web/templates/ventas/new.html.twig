@@ -8,6 +8,9 @@
 <div class="znv-half">
     {{ form_row(form.idCliente) }}
 </div>
+<div class="znv-half">
+    {{ form_row(form.formaPago) }}
+</div>
 
 {# INICIO FORM ART #}
 <div id="form_art + {{num_control}}" class="znv-full"></div>
@@ -54,10 +57,14 @@
 			</div>
 			<!-- znv-card -->
 		</div>
+		{# DIV PARA TOTAL #}
+		<div id="divTotal" class=""></div>
 		<!-- znv-card-full -->
-	</div>
+	</div>	
 	<!-- znv-card-container -->
 </div>
+
+
 
  {# ## JQuery ## #}
     <script>        

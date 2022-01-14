@@ -29,17 +29,11 @@ class VentasArt
     private $idVentas;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Ventas", inversedBy="articulo")
-     * @ORM\JoinColumn(name="id_art", referencedColumnName="id")   
-     */
-    private $idArt;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Articulos", inversedBy="articulo")
      * @ORM\JoinColumn(name="id_art", referencedColumnName="id")   
      */
-    private $articulo;
-
+    private $idArt;
+    
     /**
      * @var float
      *
@@ -54,9 +48,16 @@ class VentasArt
      */
     private $precio;
 
+     /**
+     * @var float
+     *
+     * @ORM\Column(name="total", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $total;
+
     public function __construct()
     {
-        $this->articulo = new ArrayCollection();    
+        //$this->articulo = new ArrayCollection();    
     }
 
     public function getId(): ?int
@@ -64,24 +65,24 @@ class VentasArt
         return $this->id;
     }
 
-    public function getIdVentas(): ?int
+    public function getIdVentas(): ?Ventas
     {
         return $this->idVentas;
     }
 
-    public function setIdVentas(int $idVentas): self
+    public function setIdVentas(?Ventas $idVentas): self
     {
         $this->idVentas = $idVentas;
 
         return $this;
     }
 
-    public function getIdArt(): ?int
+    public function getIdArt(): ?Articulos
     {
         return $this->idArt;
     }
 
-    public function setIdArt(int $idArt): self
+    public function setIdArt(?Articulos $idArt): self
     {
         $this->idArt = $idArt;
 
@@ -112,17 +113,16 @@ class VentasArt
         return $this;
     }
 
-    public function getArticulo(): ?Articulos
+    public function getTotal(): ?float
     {
-        return $this->articulo;
+        return $this->total;
     }
 
-    public function setArticulo(?Articulos $articulo): self
+    public function setTotal(float $total): self
     {
-        $this->articulo = $articulo;
+        $this->total = $total;
 
         return $this;
-    }
-
+    }  
 
 }
