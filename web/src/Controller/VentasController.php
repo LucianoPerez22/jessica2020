@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Stock;
 use App\Entity\Ventas;
 use App\Entity\VentasArt;
 use App\Form\Filter\VentasFilterType;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/")
@@ -44,7 +46,7 @@ class VentasController extends BaseController
      * @param SaveCommonFormHandler $handler
      * @return RedirectResponse|Response
      */
-    public function newAction(Request $request, SaveCommonFormHandler $handler){
+    public function newAction(Request $request, SaveCommonFormHandler $handler, UserInterface $user){
         $venta = new Ventas();       
 
         $handler->setClassFormType(SaveVentasType::class);
@@ -78,14 +80,19 @@ class VentasController extends BaseController
         if($handler->isSubmittedAndIsValidForm($request)){                
             try {                                                           
                 if ($handler->processForm()) {                     
-                    $ventaRepo = $this->getDoctrine()->getRepository('App:Ventas')->findOneBy([], ['id' => 'desc']);                                        
-                                        
+                    $ventaRepo = $this->getDoctrine()->getRepository('App:Ventas')->findOneBy([], ['id' => 'desc']);                                                            
+                    
                     $manager = $this->getDoctrine()->getManager();                                        
                     
                     foreach ($data['art'] as $key => $value) {                                                                    
                         if (substr($key, 0, 4) == 'cant') {
                             $articulos = new VentasArt();
-                            $articulos->setCant($value);
+                            $stock = new Stock();
+
+                            $articulos->setCant($value);    
+                            $stock->setCantidad($value * -1);
+                            $stock->setFecha(new \DateTime());
+                            $stock->setUsuario("Venta: " . $user);
                         } 
                         
                         if (substr($key, 0, 5) == 'idArt') {                           
@@ -93,6 +100,7 @@ class VentasController extends BaseController
                             $articulo  = $artRepo->findOneBy(["id" => intval($value)]);
                            
                             $articulos->setIdArt($articulo);
+                            $stock->setIdArticulo($articulo);
                         }                         
                         (substr($key, 0, 6) == 'precio') ? $articulos->setPrecio(floatval($value)) : '';
                         if (substr($key, 0, 5) == 'total') {
@@ -101,6 +109,9 @@ class VentasController extends BaseController
 
                             $manager->persist($articulos);
                             $manager->flush($articulos);  
+
+                            $manager->persist($stock);
+                            $manager->flush($stock);
                         }                                                                      
                     }
 
@@ -142,16 +153,16 @@ class VentasController extends BaseController
      */
     public function ajaxAction($num_control = null, Request $request)
     {           
-        if ($request->isXmlHttpRequest()) {                
+        //if ($request->isXmlHttpRequest()) {                
             $dato = [
                 0 => $num_control
             ];                                                 
             $form = $this->createForm(SaveVentasArtType::class, null, ['algo' => $dato]);              
-           
+            
             return $this->render('ventas/articulos.html.twig', [
                 'form'          => $form->createView(),
                 'num_control'          => $num_control,                                    
             ]);
-        }
+        //}
     }   
 }

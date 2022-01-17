@@ -23,8 +23,8 @@
 <div class="znv-card-full znv-two-column">
   {{ macro_cardHalfView('page.articulos.labels.marca' | trans, articulo.idMarca.descripcion) }}
   {{ macro_cardHalfView('page.articulos.labels.codigo' | trans, articulo.codigo) }}
-  {{ macro_cardHalfView('page.articulos.labels.ganancia' | trans, articulo.precio) }}
-  {{ macro_cardHalfView('page.articulos.labels.precio' | trans, articulo.ganancia) }}
+  {{ macro_cardHalfView('page.articulos.labels.ganancia' | trans, articulo.ganancia) }}
+  {{ macro_cardHalfView('page.articulos.labels.precio' | trans, (articulo.precio * 1.21) | number_format(2, ',', '.')) }}
   {# {{ macro_cardHalfView('page.user.labels.status' | trans,
      (user.enabled ? 'form.buttons.enabled' : 'form.buttons.disabled')|trans) }} #}
   {# {{ macro_cardHalfView('page.user.labels.groups' | trans, user.groups | join(', ') | default(null)) }} #}

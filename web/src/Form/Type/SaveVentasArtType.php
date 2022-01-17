@@ -2,14 +2,10 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Articulos;
-use App\Entity\VentasArt;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
@@ -21,18 +17,28 @@ class SaveVentasArtType extends AbstractType
         $this->_additionalName = $additionalName;
     }
     public function buildForm(FormBuilderInterface $builder, array $options): void
-    {           
+    {       
         $this->_additionalName = $options['algo'][0];                
         $builder
-            ->add('cant' . $options['algo'][0], NumberType::class, ['label'         => false, 'data'    => 1,])
+            ->add('cant' . $options['algo'][0], NumberType::class, ['label'  => false, 'data'  => 1,])
             ->add('idArt' . $options['algo'][0], EntityType::class, [ 
-                'class'         => Articulos::class,
+                'class'         => 'App:Articulos',
                 'required'      => true, 
                 'label'         => false,                      
                 'choice_label'  => 'descripcion',    
                 'placeholder'   => 'Seleccione un Articulo',               
                 'attr'          => ['class' => 'js-select2'],    
                 'empty_data'    => null,                 
+                'query_builder' => function (EntityRepository $er) {                                            
+                      return $er->createQueryBuilder('a')  
+                             ->select('a')                         
+                             ->addSelect('sum(s.cantidad) HIDDEN cant')
+                             ->join('a.stock', 's' )
+                             ->having('cant > 0')
+                             ->groupBy("a.id")                            
+                             ->orderBy('cant', 'DESC')
+                             ;                                                                                                         
+                    },                                
             ])                            
             ->add('precio' . $this->_additionalName, NumberType::class, ['label' => false, 'data' => 0, 'attr'=> [ 'readonly' => true ]])
             ->add('total' . $this->_additionalName, NumberType::class, ['label'  => false, 'data' => 0, 'attr'=> [ 'readonly' => true ]])

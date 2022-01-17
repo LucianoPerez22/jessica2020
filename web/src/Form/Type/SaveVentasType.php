@@ -34,9 +34,9 @@ class SaveVentasType extends AbstractType
                 'choices' => [
                     'Efectivo'      => 'Efectivo',
                     'Tarjeta'       => 'Tarjeta' ,
-                    'MercadoPago'  => 'Mercado Pago',
-                    
+                    'MercadoPago'  => 'Mercado Pago',                    
                 ],
+                'attr'          => ['class' => 'js-select2'],    
              ])                 
         ;
     }

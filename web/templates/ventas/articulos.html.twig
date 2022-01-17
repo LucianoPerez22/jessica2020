@@ -23,6 +23,8 @@
 		<div> <button id="btn{{ num_control }}">Agregar Articulo</button> </div>		
 <script>        
 	$(document).ready(function() {   
+			$('#art_idArt' + {{ num_control }}).select2() //Se usa para agregar el estilo select2 
+		
 			$('#art_idArt' + {{ num_control }}).on('change', function(e) {
 				let urlAjaxFormFields = "{{ path('ajax_venta_art_get') }}";          
 			$.ajax({

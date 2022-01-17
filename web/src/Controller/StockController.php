@@ -45,7 +45,7 @@ class StockController extends BaseController
             $stock->setIdArticulo($articulo);
             $stock->setCantidad($cargar);
             $stock->setFecha(new \DateTime());
-            $stock->setUsuario($user);
+            $stock->setUsuario("Stock: " . $user);
 
             $em->persist($stock);
             $em->flush();

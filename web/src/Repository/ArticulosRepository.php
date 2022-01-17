@@ -32,4 +32,5 @@ class ArticulosRepository extends ServiceEntityRepository
            
         return $q->getQuery();                                            
     }    
+
 }

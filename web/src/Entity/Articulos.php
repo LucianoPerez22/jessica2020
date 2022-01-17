@@ -63,7 +63,7 @@ class Articulos
     private $stock;
 
      /**
-     * @ORM\OneToMany(targetEntity=VentasArt::class, mappedBy="articulo")
+     * @ORM\OneToMany(targetEntity=VentasArt::class, mappedBy="idArt")
      */
     private $articulo;
 
