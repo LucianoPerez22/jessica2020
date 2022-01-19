@@ -82,11 +82,8 @@ class GroupController extends BaseController
 
         if ($handler->isSubmittedAndIsValidForm($request)) {
             if ($handler->processForm()) {
-                $translator = $this->get('translator');
-                $text = '<a href="' . $this->generateUrl('group_view', ['id' => $entity->getId()]) . '">' .
-                    $translator->trans('page.group.labels.group') . '</a>';
 
-                $this->addFlashSuccess($translator->trans('flash.group.edit.success', ['%linkEntity%' => $text], 'flashes'));
+                $this->addFlashSuccess('flash.group.edit.success');
 
                 return $this->redirectToRoute('group_list');
             }

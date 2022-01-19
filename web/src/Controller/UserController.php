@@ -120,11 +120,7 @@ class UserController extends BaseController
         if ($handler->isSubmittedAndIsValidForm($request)) {
             try {
                 if ($handler->processTransactionForm()) {
-                    $translator = $this->get('translator');
-                    $text = '<a href="' . $this->generateUrl('user_view', ['id' => $entity->getId()]) . '">' .
-                        $translator->trans('page.user.labels.user') . '</a>';
-
-                    $this->addFlashSuccess($translator->trans('flash.user.edit.success', ['%linkEntity%' => $text], 'flashes'));
+                    $this->addFlashSuccess('flash.user.edit.success');
 
                     return $this->redirectToRoute($route, $params);
                 }
