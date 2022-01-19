@@ -108,6 +108,7 @@ page:
         marcas: Marcas
         articulos: Articulos
         ventas: Ventas
+        clientes: Clientes
     user:
         title:
             change_password: Cambiar Contraseña
@@ -116,6 +117,7 @@ page:
             view: Vista de Usuario
             edit: Edición de Usuario
             new: Nuevo Usuario
+            create_password: Crear Contraseña
         labels:
             name: Nombre
             username: Apellido
@@ -195,5 +197,21 @@ page:
             tipo: Tipo
         buttons:
             add: Agregar Venta
+        
+    clientes:
+        title:
+            list: Lista de Clientes
+            view: Vista de Cliente
+            edit: Edición de Cliente
+            new: Nuevo Cliente
+        labels:
+            actual: Cliente Actual
+            nombre: Nombre
+            direccion: Direccion
+            telefono: Telefono/s
+            tipoIva: Tipo Iva
+            documento: Documento
+        buttons:
+            add: Agregar Cliente
 
     

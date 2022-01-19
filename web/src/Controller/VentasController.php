@@ -24,7 +24,7 @@ class VentasController extends BaseController
 {
     /**
      * @Route(path="/ventas/list", name="ventas_index")
-     * @Security("user.hasRole(['ROLE_USER'])")
+     * @Security("user.hasRole(['ROLE_VENTAS_LIST'])")
      * @param FindEntitiesHelper $helper
      * @return Response
      */
@@ -41,7 +41,7 @@ class VentasController extends BaseController
 
     /**
      * @Route(path="/venta/new", name="venta_new")
-     * @Security("user.hasRole(['ROLE_MARCAS_NEW'])")
+     * @Security("user.hasRole(['ROLE_VENTAS_NEW'])")
      * @param Request $request
      * @param SaveCommonFormHandler $handler
      * @return RedirectResponse|Response
@@ -132,7 +132,7 @@ class VentasController extends BaseController
 
     /**
      * @Route(path="/venta/view/{id}", name="venta_show")
-     * @Security("user.hasRole(['ROLE_ARTICULOS_VIEW'])")
+     * @Security("user.hasRole(['ROLE_VENTAS_VIEW'])")
      * @param Ventas $venta
      * @return Response
      */

@@ -1,0 +1,61 @@
+{% extends 'global/layout_list.html.twig' %}
+
+{% set titlePage = "page.clientes.title.list" | trans %}
+{% set menu = "clientes" %}
+
+{% set formFilterAction = path('clientes_index') %}
+{% set pathNew = path('clientes_new') %}
+{% set labelButtonNew = 'page.clientes.buttons.add' %}
+{% set rolesNew = ['ROLE_CLIENTES_NEW'] %}
+
+{% block list %}
+    <div class="znv-header">    
+        <div class="znv-col"> Nombre
+        </div>       
+        <div class="znv-col"> Direccion
+        </div>       
+        <div class="znv-col"> Telefono
+        </div>       
+        <div class="znv-col"> Iva
+        </div>       
+        <div class="znv-col"> Documento
+        </div>       
+        <div class="znv-col-actions">
+        </div>
+    </div>    
+
+    {% for cliente in entities %}
+        <div class="znv-line" data-path="{{ path('clientes_delete', { 'id' : cliente.id }) }}" data-name="{{ cliente.nombre }}">
+            <div class="znv-col">
+                <div class="znv-header">Nombre:</div>
+                    {{cliente.nombre}}
+            </div>    
+            <div class="znv-col">
+                <div class="znv-header">Direccion:</div>
+                    {{cliente.direccion}}
+            </div>          
+            <div class="znv-col">
+                <div class="znv-header">Telefono:</div>
+                    {{cliente.telefono}}
+            </div>    
+            <div class="znv-col">
+                <div class="znv-header">Iva:</div>
+                    {{cliente.tipoIva}}
+            </div>    
+            <div class="znv-col">
+                <div class="znv-header">Documento:</div>
+                    {{cliente.documento}}
+            </div>    
+           
+            <div class="znv-col-actions">
+                <div class="znv-group">                    
+                     {# {{ macro_listActionButton(path('stock_index', {'id' : cliente.id}), 'page.list.buttons.stock', 'fa-list', ['ROLE_STOCK_LIST']) }} #}
+                    {{ macro_listActionButton(path('clientes_show', {'id' : cliente.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_CLIENTES_VIEW']) }}
+                    {{ macro_listActionButton(path('clientes_edit', {'id' : cliente.id}), 'page.list.buttons.edit', 'fa-pencil', ['ROLE_CLIENTES_EDIT']) }}
+                    {{ macro_liConfirmButton('page.list.buttons.delete', 'znv-icon fa-trash', ['ROLE_CLIENTES_DELETE'], 'setNameAndText') }} 
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock list %}

@@ -79,7 +79,7 @@ flash:
 
     ventas:
         new:
-            success: Venta guardad correctamente
+            success: Venta guardada correctamente
             error: Se produjo un error al intentar guardar la venta
         edit:
             success: Venta editada con éxito. 
@@ -87,3 +87,14 @@ flash:
         delete:
             success: Venta eliminada con éxito
             error: Esta venta está relacionado con otra entidad. No se puede quitar
+
+    clientes:
+        new:
+            success: Cliente guardado correctamente
+            error: Se produjo un error al intentar guardar el cliente
+        edit:
+            success: Cliente editado con éxito. 
+            error: Se produjo un error al intentar editar el cliente
+        delete:
+            success: Cliente eliminado con éxito
+            error: Este cliente está relacionado con otra entidad. No se puede quitar

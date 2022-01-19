@@ -35,13 +35,13 @@ class UserChecker implements UserCheckerInterface
             return;
         }
         
-        if ($this->entityManager->getRepository(AppUser::class)->esConsumidor($user->getId())) {
-            throw new CustomUserMessageAuthenticationException($this->translator->trans('flash.common.error_unauthorized'));
-        }
+        // if ($this->entityManager->getRepository(AppUser::class)->esConsumidor($user->getId())) {
+        //     throw new CustomUserMessageAuthenticationException($this->translator->trans('flash.common.error_unauthorized'));
+        // }
         
-        if ($this->entityManager->getRepository(AppUser::class)->esRepartidor($user->getId())) {
-            throw new CustomUserMessageAuthenticationException($this->translator->trans('flash.common.error_unauthorized'));
-        }
+        // if ($this->entityManager->getRepository(AppUser::class)->esRepartidor($user->getId())) {
+        //     throw new CustomUserMessageAuthenticationException($this->translator->trans('flash.common.error_unauthorized'));
+        // }
     }
 
     public function checkPostAuth(UserInterface $user)

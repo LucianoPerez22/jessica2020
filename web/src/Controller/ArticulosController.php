@@ -22,7 +22,7 @@ class ArticulosController extends BaseController
 {
     /**
      * @Route(path="/admin/articulos/list", name="articulos_index")
-     * @Security("user.hasRole(['ROLE_USER'])")
+     * @Security("user.hasRole(['ROLE_ARTICULOS_LIST'])")
      * @param FindEntitiesHelper $helper
      * @return Response
      */
@@ -39,7 +39,7 @@ class ArticulosController extends BaseController
 
     /**
      * @Route(path="/admin/articulos/new", name="articulos_new")
-     * @Security("user.hasRole(['ROLE_MARCAS_NEW'])")
+     * @Security("user.hasRole(['ROLE_ARTICULOS_NEW'])")
      * @param Request $request
      * @param SaveCommonFormHandler $handler
      * @return RedirectResponse|Response
@@ -113,7 +113,7 @@ class ArticulosController extends BaseController
      * Eliminar una entidad Empleados.
      *
      * @Route(path="/admin/articulos/{id}/delete", name="articulos_delete")
-     * @Security("user.hasRole(['ROLE_MARCAS_DELETE'])")
+     * @Security("user.hasRole(['ROLE_ARTICULOS_DELETE'])")
      * @param Articulos $entity
      * @param EntityManagerHelper $helper
      * @return RedirectResponse

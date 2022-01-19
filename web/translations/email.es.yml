@@ -1,8 +1,8 @@
 registration:
     message:
-        subject: Registración para Zennovia Skeleton
+        subject: Registración para JessyStock V2
         welcome: Bienvenido a
-        explanation: Si recibe este correo es porque Zennovia Skeleton ha registrado este correo para <strong> crear un usuario para usted en el sistema. </strong>
+        explanation: Si recibe este correo es porque JessyStock V2 ha registrado este correo para <strong> crear un usuario para usted en el sistema. </strong>
         next_step: Seleccione el siguiente enlace y siga los pasos correspondientes para finalizar el proceso de registro de usuarios
         greeting: Atentamente
         email_empty: El usuario no tiene un correo electrónico configurado
@@ -10,9 +10,9 @@ registration:
 
 recover_password:
     message:
-        subject: Recuperar contraseña de Zennovia Skeleton
+        subject: Recuperar contraseña de JessyStock V2
         title: Solicitud de recuperación de contraseña
-        explanation: Hemos recibido una solicitud de cambio de contraseña para el usuario del sistema Zennovia Skeleton
+        explanation: Hemos recibido una solicitud de cambio de contraseña para el usuario del sistema JessyStock V2
         next_step: Seleccione el siguiente enlace y siga los pasos correspondientes para finalizar el proceso de restablecimiento de contraseña
         greeting: Atentamente
         user_not_found: No tenemos este usuario registrado con el correo electrónico ingresado.

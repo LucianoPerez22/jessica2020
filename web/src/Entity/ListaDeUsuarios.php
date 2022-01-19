@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
+use App\Repository\ClientesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * ListaDeUsuarios
- *
- * @ORM\Table(name="lista_de_usuarios")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=ClientesRepository::class)
  */
 class ListaDeUsuarios
 {
@@ -23,35 +23,35 @@ class ListaDeUsuarios
 
     /**
      * @var string|null
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="Nombre", type="string", length=46, nullable=true)
      */
     private $nombre;
 
     /**
      * @var string|null
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="Direccion", type="string", length=82, nullable=true)
      */
     private $direccion;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="Telefono", type="string", length=100, nullable=false)
      */
     private $telefono;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="Tipo_Iva", type="string", length=40, nullable=false)
      */
     private $tipoIva;
 
     /**
      * @var int
-     *
+     * @Assert\NotNull()
      * @ORM\Column(name="Documento", type="bigint", nullable=false)
      */
     private $documento;
