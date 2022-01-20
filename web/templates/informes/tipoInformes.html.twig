@@ -1,0 +1,50 @@
+{% extends 'global/layout_view.html.twig' %}
+
+{% set titlePage = "page.informes.title.view" | trans %}
+{% set menu = "infomres" %}
+
+{% block buttonsTitle %}
+{% set referer = (app.request.server.get('HTTP_REFERER') is not null ?
+            app.request.server.get('HTTP_REFERER')|default('/') :
+            path('home')) %}
+<li>
+    {{ macro_buttonReturn(referer) }}
+</li>
+{% endblock %}
+
+{% block viewContent %}
+{# <div class="znv-card-full znv-highlight">
+    <div class="znv-form-group-view">
+        <p>{{ 'page.informes.labels.name'|trans }}</p>
+         <h3>{{ marcas.descripcion }}</h3> 
+    </div>
+</div> #}
+
+<div class="znv-card-full znv-two-column d-flex justify-content-center">  
+  {{form_row(form.desde)}}
+  {{form_row(form.hasta)}}  
+</div>
+<hr />
+<div class="znv-card-full znv-two-column d-flex justify-content-center">
+  <button type="button" id="generarVentas" class="ml-3 btn btn-primary">Informe de Ventas</button>
+  <button type="button" id="generarArticulos" class="ml-3 btn btn-success">Informe de Articulos</button> 
+</div>
+
+<script>
+$(document).ready(function() {   
+    $( "#generarVentas" ).click(function() {
+      let desde = $("#informes_tipo_desde").val()
+      let hasta = $("#informes_tipo_hasta").val()    
+
+      if (desde == null || desde == "" || hasta == null || hasta == ""){
+        alert("Seleccione fechas para generar sus reportes!")
+      }else{
+        let url   = "{{ path('informes_ventas') }}" + "/" + desde + "/" + hasta
+      
+        location.href = url
+      }      
+    });  
+    })
+</script>
+
+{% endblock %}

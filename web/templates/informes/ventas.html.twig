@@ -1,0 +1,76 @@
+{% extends 'global/layout_view.html.twig' %}
+
+{% set titlePage = "page.informes.title.ventas" | trans %}
+{% set menu = "informes" %}
+
+{% set contado = 0 %}
+{% set tarjetas = 0 %}
+{% set transferencias = 0 %}
+
+{% block buttonsTitle %}
+{% set referer = (app.request.server.get('HTTP_REFERER') is not null ?
+            app.request.server.get('HTTP_REFERER')|default('/') :
+            path('informes_tipo')) %}
+<li>
+    {{ macro_buttonReturn(referer) }}
+</li>
+{% endblock %}
+
+{% block viewContent %}   
+ <div id="Totales">
+    
+</div>    
+            <div class="znv-card-full">           
+                <div class="znv-list-container">
+                    <div class="znv-header">
+                        <div class="znv-col "> {{ 'page.informes.labels.fecha' | trans }}
+                        </div>
+                        <div class="znv-col "> {{ 'page.informes.labels.cliente' | trans }}
+                        </div>
+                        <div class="znv-col "> {{ 'page.informes.labels.importe' | trans }}
+                        </div>
+                        <div class="znv-col "> {{ 'page.informes.labels.formaPago' | trans }}
+                        </div>                       
+                    </div>
+            {% for venta in ventas %} 
+                    <div class="znv-line">
+                        <div class="znv-col">
+                            <div class="znv-header">{{ 'page.informes.labels.fecha' | trans() }}</div>                                                 
+                                {{ venta.fecha | date('d-m-Y') }}                                            
+                        </div>
+
+                        <div class="znv-col">
+                            <div class="znv-header">{{ 'page.infomes.labels.cliente' | trans() }}</div>                                                                                                                      
+                                {{ venta.idCliente.nombre }}                                
+                        </div>
+
+                        <div class="znv-col">
+                            <div class="znv-header">{{ 'page.informes.labels.importe' | trans() }}</div>                                                                              
+                                {{ venta.total }}                                
+                        </div>
+
+                        <div class="znv-col">
+                            <div class="znv-header">{{ 'page.informe.labels.formaPago' | trans() }}</div>                                                                                
+                                    {{ venta.formaPago }}     
+                                    {% if venta.formaPago == 'efectivo' %}
+                                        {% set contado = contado + venta.total %}
+
+                                        {% elseif venta.formaPago == 'tarjeta' %}
+                                            {% set tarjetas = tarjetas + venta.total %}
+
+                                            {% elseif venta.formaPago == 'transferencia' %}
+                                                {% set transferencias = transferencias + venta.total %}
+                                    {% endif %}                           
+                        </div>                                       
+                    </div>                                                                                                                                                          
+            {% endfor %}                          
+                </div>
+            </div>   
+
+<script>
+    $(document).ready(function() {   
+        $( "#Totales" ).html(`<p>Total: $ {{ contado + transferencias + tarjetas }}</p>`)
+    })
+</script>                     
+{% endblock  %}
+

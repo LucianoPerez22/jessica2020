@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ListaDeUsuarios;
+use App\Entity\User;
 use App\Form\Filter\ClientesFilterType;
 use App\Form\Handler\SaveCommonFormHandler;
 use App\Form\Type\SaveClienteType;
@@ -30,8 +31,8 @@ class ClientesController extends BaseController
         $repo = $this->getDoctrine()->getRepository('App:ListaDeUsuarios');
 
         $dataResult = $helper->getDataResultFiltered($repo, $form);
-        $dataResult['form'] = $form->createView();
-       
+        $dataResult['form'] = $form->createView();                
+
         return $this->render('clientes/index.html.twig', $dataResult);       
     }
 

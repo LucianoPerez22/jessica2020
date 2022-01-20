@@ -153,7 +153,7 @@ class VentasController extends BaseController
      */
     public function ajaxAction($num_control = null, Request $request)
     {           
-        //if ($request->isXmlHttpRequest()) {                
+        if ($request->isXmlHttpRequest()) {                
             $dato = [
                 0 => $num_control
             ];                                                 
@@ -163,6 +163,6 @@ class VentasController extends BaseController
                 'form'          => $form->createView(),
                 'num_control'          => $num_control,                                    
             ]);
-        //}
+        }
     }   
 }

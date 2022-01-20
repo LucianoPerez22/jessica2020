@@ -109,6 +109,9 @@ page:
         articulos: Articulos
         ventas: Ventas
         clientes: Clientes
+        informes: Informes
+        informesVentas: Ventas
+        informesTipo: Informes
     user:
         title:
             change_password: Cambiar Contraseña
@@ -213,5 +216,25 @@ page:
             documento: Documento
         buttons:
             add: Agregar Cliente
+    
+    informes:
+        title:
+            list: Lista de Informes
+            view: Seleccione Tipo de Informe
+            edit: Edición de Informes
+            new: Nuevo Informe
+            ventas: Informe de Ventas
+            tipo: Tipo
+            articulos: Informe Venta x Articulos
+        labels:
+            desde: Desde
+            hasta: Hasta
+            fecha: Fecha
+            cliente: Cliente
+            importe: Importe
+            formaPago: Forma Pago
+          
+        buttons:
+            add: Agregar Informe
 
     
