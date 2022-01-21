@@ -224,8 +224,10 @@ page:
             edit: Edición de Informes
             new: Nuevo Informe
             ventas: Informe de Ventas
+            ventasShow: Vista Venta
             tipo: Tipo
-            articulos: Informe Venta x Articulos
+            articulos: Informe Ventas - Articulos
+            articulosShow: Vista Ventas - Articulo
         labels:
             desde: Desde
             hasta: Hasta
@@ -236,5 +238,6 @@ page:
           
         buttons:
             add: Agregar Informe
+   
 
     

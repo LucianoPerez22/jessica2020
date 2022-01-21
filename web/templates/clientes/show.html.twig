@@ -24,10 +24,7 @@
   {{ macro_cardHalfView('page.clientes.labels.direccion' | trans, cliente.direccion) }}
   {{ macro_cardHalfView('page.clientes.labels.telefono' | trans, cliente.telefono) }}
   {{ macro_cardHalfView('page.clientes.labels.tipoIva' | trans, cliente.tipoIva) }}
-  {{ macro_cardHalfView('page.clientes.labels.documento' | trans, cliente.documento) }}
-  {# {{ macro_cardHalfView('page.user.labels.status' | trans,
-     (user.enabled ? 'form.buttons.enabled' : 'form.buttons.disabled')|trans) }} #}
-  {# {{ macro_cardHalfView('page.user.labels.groups' | trans, user.groups | join(', ') | default(null)) }} #}
+  {{ macro_cardHalfView('page.clientes.labels.documento' | trans, cliente.documento) }} 
 </div>
 
 {% endblock %}

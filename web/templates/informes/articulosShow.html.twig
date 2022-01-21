@@ -1,0 +1,64 @@
+{% extends 'global/layout_view.html.twig' %}
+
+{% set titlePage = "page.informes.title.articulosShow" | trans %}
+{% set menu = "informes" %}
+
+{% block buttonsTitle %}
+{% set referer = (app.request.server.get('HTTP_REFERER') is not null ?
+            app.request.server.get('HTTP_REFERER')|default('/') :
+            path('informes_tipo')) %}
+<li>
+    {{ macro_buttonReturn(referer) }}
+</li>
+{% endblock %}
+
+{% block viewContent %}
+<div class="znv-card-full znv-highlight">
+    <div class="znv-form-group-view">
+        <p>{{ 'page.clientes.labels.nombre'|trans }}</p>
+        <h3>{{ ventas.idCliente.nombre ~ ' - Fecha ' ~ ventas.fecha|date('d-m-Y') }}</h3>
+    </div>
+</div>
+
+<div class="znv-card-full">           
+                <div class="znv-list-container">
+                    <div class="znv-header">
+                        <div class="znv-col "> {{ 'Cant' }}
+                        </div>
+                        <div class="znv-col "> {{ 'Articulo' }}
+                        </div>
+                        <div class="znv-col "> {{ 'Precio' }}
+                        </div>
+                        <div class="znv-col "> {{ 'SubTotal' }}                       
+                        </div>                
+                    </div>
+            {% for articulo in ventas.ventas %} 
+                    <div class="znv-line">
+                        <div class="znv-col">
+                            <div class="znv-header">{{ 'Cant' }}</div>                                                 
+                                {{ articulo.cant }}                                            
+                        </div>
+
+                        <div class="znv-col">
+                            <div class="znv-header">{{ 'Articulo' }}</div>                                                                                                                      
+                                {{ articulo.idArt.descripcion }}                                
+                        </div>
+
+                        <div class="znv-col">
+                            <div class="znv-header">{{ 'Precio' }}</div>                                                                              
+                                {{ articulo.precio }}                                
+                        </div>
+
+                        <div class="znv-col">
+                            <div class="znv-header">{{ 'SubTotal' }}</div>                                                                              
+                                {{ articulo.precio * articulo.cant }}                                
+                        </div>
+
+                        
+            </div>                                    
+                    </div>                                                                                                                                                          
+            {% endfor %}                          
+                </div>
+            </div>   
+
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Articulos;
 use App\Entity\Ventas;
 use App\Entity\VentasArt;
 use App\Form\Handler\SaveCommonFormHandler;
@@ -22,7 +23,7 @@ class InformesController extends BaseController
 {
     /**
      * @Route(path="admin/informes/tipo", name="informes_tipo")
-     * @Security("user.hasRole(['ROLE_INFORME_TIPO'])")
+     * @Security("user.hasRole(['ROLE_INFORMES'])")
      * @param FindEntitiesHelper $helper
      * @return Response
      */
@@ -34,7 +35,7 @@ class InformesController extends BaseController
 
     /**
      * @Route(path="admin/informes/ventas/{desde}/{hasta}", name="informes_ventas")
-     * @Security("user.hasRole(['ROLE_INFORME_VENTAS'])")
+     * @Security("user.hasRole(['ROLE_INFORMES'])")
      * @return Response
      */
     public function informesVentasAction(DateTime $desde = null, DateTime $hasta = null)
@@ -45,5 +46,47 @@ class InformesController extends BaseController
         
         return $this->render('informes/ventas.html.twig', ['ventas' => $ventas]);
     }
+
+    /**
+     * @Route(path="admin/informes/ventasshow/{id}", name="informeVentas_show")
+     * @Security("user.hasRole(['ROLE_INFORMES'])")
+     * @param Ventas $venta
+     * @return Response
+     */
+    public function informeVentasShowAction(Ventas $venta)
+    {               
+        return $this->render('informes/ventasShow.html.twig', ['ventas' => $venta]);
+    }
+
+     /**
+     * @Route(path="admin/informes/articulos/{desde}/{hasta}", name="informes_articulos")
+     * @Security("user.hasRole(['ROLE_INFORMES'])")
+     * @return Response
+     */
+    public function informesArticulosAction(DateTime $desde = null, DateTime $hasta = null)
+    {   
+        $ventasArt = []; 
+        $ventasArt = $this->getDoctrine()->getRepository('App:VentasArt')
+                                                ->findByDate($desde, $hasta);               
+                
+        return $this->render('informes/articulos.html.twig', [
+            'ventasArt' => $ventasArt,
+            'desde'     => $desde,
+            'hasta'     => $hasta
+        ]);
+    }
+
+     /**
+     * @Route(path="admin/informes/articulosshow/{id}/{desde}/{hasta}", name="informeArticulos_show")
+     * @Security("user.hasRole(['ROLE_INFORMES'])")
+     * @param Articulos $articulo
+     * @return Response
+     */
+    public function informeArticulosShowAction(Articulos $articulo, DateTime $desde = null, DateTime $hasta = null)
+    {                       
+        $venta = [];
+        return $this->render('informes/articulosShow.html.twig', ['ventas' => $venta]);
+    }
+
           
 }

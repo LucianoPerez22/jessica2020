@@ -44,6 +44,19 @@ $(document).ready(function() {
         location.href = url
       }      
     });  
+
+     $( "#generarArticulos" ).click(function() {
+      let desde = $("#informes_tipo_desde").val()
+      let hasta = $("#informes_tipo_hasta").val()    
+
+      if (desde == null || desde == "" || hasta == null || hasta == ""){
+        alert("Seleccione fechas para generar sus reportes!")
+      }else{
+        let url   = "{{ path('informes_articulos') }}" + "/" + desde + "/" + hasta
+      
+        location.href = url
+      }      
+    });  
     })
 </script>
 

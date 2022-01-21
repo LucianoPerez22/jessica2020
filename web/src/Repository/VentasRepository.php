@@ -45,9 +45,9 @@ class VentasRepository extends ServiceEntityRepository
     public function findByDate($desde, $hasta)
     {
         $qb = $this->createQueryBuilder('v')
-                    ->where('v.fecha BETWEEN :desde AND :hasta')
-                    ->setParameter('desde', $desde)
-                    ->setParameter('hasta', $hasta);
+                        ->where('v.fecha BETWEEN :desde AND :hasta')
+                        ->setParameter('desde', $desde)
+                        ->setParameter('hasta', $hasta);
         return $qb->getQuery()->getResult();
-    }
+    }   
 }

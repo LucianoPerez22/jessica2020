@@ -137,11 +137,8 @@ class VentasController extends BaseController
      * @return Response
      */
     public function viewAction(Ventas $venta)
-    {      
-        $artRepo = $this->getDoctrine()->getRepository(VentasArt::class);
-        $info    = $artRepo->findBy(['idVentas' => $venta->getId()]);        
-        
-        return $this->render('ventas/show.html.twig', ['venta' => $venta, 'articulos' => $info]);
+    {            
+        return $this->render('ventas/show.html.twig', ['venta' => $venta]);
     }   
 
      /**

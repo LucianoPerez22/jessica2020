@@ -30,7 +30,9 @@
                         <div class="znv-col "> {{ 'page.informes.labels.importe' | trans }}
                         </div>
                         <div class="znv-col "> {{ 'page.informes.labels.formaPago' | trans }}
-                        </div>                       
+                        </div>       
+                        <div class="znv-col-actions">
+                        </div>                
                     </div>
             {% for venta in ventas %} 
                     <div class="znv-line">
@@ -61,7 +63,12 @@
                                             {% elseif venta.formaPago == 'transferencia' %}
                                                 {% set transferencias = transferencias + venta.total %}
                                     {% endif %}                           
-                        </div>                                       
+                        </div>   
+                        <div class="znv-col-actions">
+                            <div class="znv-group">                                                
+                                {{ macro_listActionButton(path('informeVentas_show', {'id' : venta.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_INFORMES']) }}                            
+                            </div>
+                        </div>                                    
                     </div>                                                                                                                                                          
             {% endfor %}                          
                 </div>
@@ -69,7 +76,14 @@
 
 <script>
     $(document).ready(function() {   
-        $( "#Totales" ).html(`<p>Total: $ {{ contado + transferencias + tarjetas }}</p>`)
+        $( "#Totales" ).html(`
+                <div class="znv-card-full znv-two-column">
+                    {{ macro_cardHalfView('TOTAL', '$ ' ~ (contado + tarjetas + transferencias) ~ ' - CANT ' ~ ventas|length) }}
+                    {{ macro_cardHalfView('EFECTIVO', '$ ' ~ (contado)) }}
+                    {{ macro_cardHalfView('TARJETA', '$ ' ~ (tarjetas)) }}
+                    {{ macro_cardHalfView('TRANSFERENCIAS', '$ ' ~ (transferencias)) }}            
+                </div>
+        `)
     })
 </script>                     
 {% endblock  %}
