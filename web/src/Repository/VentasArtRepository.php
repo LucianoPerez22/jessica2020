@@ -32,15 +32,15 @@ class VentasArtRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();                
     }
 
-    public function findByDateAndName($desde, $hasta){
+    public function findByDateAndProduct($articulo, $desde, $hasta){
         $qb = $this->createQueryBuilder('va')
-                        ->select('va', 'v', 'SUM(va.cant) as total')                        
+                        ->select('va', 'v')                        
                         ->innerJoin('va.idVentas', 'v' )
-                        ->where('v.fecha BETWEEN :desde AND :hasta AND va.description')                        
+                        ->where('v.fecha BETWEEN :desde AND :hasta AND va.idArt = :articulo')   
+                        ->setParameter('articulo', $articulo)                     
                         ->setParameter('desde', $desde)
                         ->setParameter('hasta', $hasta)
-                        ->groupBy("va.idArt")
-                        ->orderBy('total', 'DESC')
+                        ->groupBy("v.id")
                         ;
         return $qb->getQuery()->getResult();   
         
@@ -52,4 +52,5 @@ class VentasArtRepository extends ServiceEntityRepository
             GROUP BY jessica.ventas_art.id_art;
         */
     }
+
 }

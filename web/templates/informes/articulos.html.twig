@@ -19,8 +19,6 @@
     </div>
 </div> 
 
-{{ dump(ventasArt) }}
-
 <div class="znv-card-full">           
                 <div class="znv-list-container">
                     <div class="znv-header">
@@ -31,21 +29,21 @@
                         <div class="znv-col-actions">
                         </div>                  
                     </div>
-            {% for key, value in ventasArt %}                
+            {% for articulo in ventasArt %}             
                     <div class="znv-line">
                         <div class="znv-col">
                             <div class="znv-header">{{ 'Cant' }}</div>                                                 
-                                {{ value.total }}
+                                 {{ articulo.total }} 
                         </div>
 
                         <div class="znv-col">
                             <div class="znv-header">{{ 'Articulo' }}</div>                                                                                                                      
-                                {{ value[0].idArt.descripcion }}
+                                {{ articulo[0].idArt.descripcion }}  
                         </div>  
 
                          <div class="znv-col-actions">
                             <div class="znv-group">                                                
-                                {{ macro_listActionButton(path('informeVentas_show', {'id' : value[0].idArt.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_INFORMES']) }}                            
+                                {{ macro_listActionButton(path('informeArticulos_show', {'id' : articulo[0].idArt.id, 'desde' : desde|date('d-m-Y'), 'hasta' : hasta|date('d-m-Y')}), 'page.list.buttons.view', 'fa-eye', ['ROLE_INFORMES']) }}                            
                             </div>
                         </div>                                                
                     </div> 

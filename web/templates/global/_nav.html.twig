@@ -14,10 +14,7 @@
             {{ macro_liNav((menu == "dashboard"), 'home', 'page.dashboard.title'|trans, ['ROLE_USER'], 'fa-home') }}
             {% if app.user.isSuperAdmin %}
                 {{ macro_liNav((menu == "user"), 'user_list', 'page.menu.user'|trans, ['ROLE_USER_LIST'], 'fa-user') }}
-                {{ macro_liNav((menu == "group"), 'group_list', 'page.menu.group'|trans, ['ROLE_GROUP_LIST'], 'fa-users') }}
-                <hr />               
-                {{ macro_liNav((menu == "informes"), 'informes_tipo', 'page.menu.informesTipo'|trans, ['ROLE_CLIENTES_LIST'], 'fa-list') }}    
-                
+                {{ macro_liNav((menu == "group"), 'group_list', 'page.menu.group'|trans, ['ROLE_GROUP_LIST'], 'fa-users') }}  
             {% endif %}
             <hr />
             {# PARA EL USUARIO COMUN #}
@@ -35,6 +32,8 @@
                 <li>
                     {{ macro_liNav((menu == "ventas"), 'ventas_index', 'page.menu.ventas'|trans, ['ROLE_VENTAS_LIST'], 'fa fa-shopping-cart') }}
                 </li>
+                <hr />               
+                {{ macro_liNav((menu == "informes"), 'informes_tipo', 'page.menu.informesTipo'|trans, ['ROLE_INFORMES'], 'fa-list') }}  
             {% endif %}
         </ul>
 

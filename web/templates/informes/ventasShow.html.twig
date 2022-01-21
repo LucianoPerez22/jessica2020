@@ -6,7 +6,7 @@
 {% block buttonsTitle %}
 {% set referer = (app.request.server.get('HTTP_REFERER') is not null ?
             app.request.server.get('HTTP_REFERER')|default('/') :
-            path('informes_tipo')) %}
+            path('informes_ventas', {'desde' : desde, 'hasta' : hasta})) %}
 <li>
     {{ macro_buttonReturn(referer) }}
 </li>
@@ -52,10 +52,7 @@
                         <div class="znv-col">
                             <div class="znv-header">{{ 'SubTotal' }}</div>                                                                              
                                 {{ articulo.precio * articulo.cant }}                                
-                        </div>
-
-                        
-            </div>                                    
+                        </div>                                 
                     </div>                                                                                                                                                          
             {% endfor %}                          
                 </div>

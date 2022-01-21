@@ -44,18 +44,26 @@ class InformesController extends BaseController
         $ventas = $this->getDoctrine()->getRepository('App:Ventas')
                                                 ->findByDate($desde, $hasta);
         
-        return $this->render('informes/ventas.html.twig', ['ventas' => $ventas]);
+        return $this->render('informes/ventas.html.twig', [
+                'ventas' => $ventas,
+                'desde'     => $desde->format('Y-m-d'),
+                'hasta'     => $hasta->format('Y-m-d')
+            ]);
     }
 
     /**
-     * @Route(path="admin/informes/ventasshow/{id}", name="informeVentas_show")
+     * @Route(path="admin/informes/ventasshow/{id}/{desde}/{hasta}", name="informeVentas_show")
      * @Security("user.hasRole(['ROLE_INFORMES'])")
      * @param Ventas $venta
      * @return Response
      */
-    public function informeVentasShowAction(Ventas $venta)
+    public function informeVentasShowAction(Ventas $venta, DateTime $desde = null, DateTime $hasta = null)
     {               
-        return $this->render('informes/ventasShow.html.twig', ['ventas' => $venta]);
+        return $this->render('informes/ventasShow.html.twig', [
+                'ventas' => $venta,
+                'desde'     => $desde->format('Y-m-d'),
+                'hasta'     => $hasta->format('Y-m-d')
+            ]);
     }
 
      /**
@@ -68,11 +76,11 @@ class InformesController extends BaseController
         $ventasArt = []; 
         $ventasArt = $this->getDoctrine()->getRepository('App:VentasArt')
                                                 ->findByDate($desde, $hasta);               
-                
+        
         return $this->render('informes/articulos.html.twig', [
             'ventasArt' => $ventasArt,
-            'desde'     => $desde,
-            'hasta'     => $hasta
+            'desde'     => $desde->format('Y-m-d'),
+            'hasta'     => $hasta->format('Y-m-d')
         ]);
     }
 
@@ -82,11 +90,15 @@ class InformesController extends BaseController
      * @param Articulos $articulo
      * @return Response
      */
-    public function informeArticulosShowAction(Articulos $articulo, DateTime $desde = null, DateTime $hasta = null)
+    public function informeArticulosShowAction(Articulos $articulo, DateTime $desde, DateTime $hasta)
     {                       
-        $venta = [];
-        return $this->render('informes/articulosShow.html.twig', ['ventas' => $venta]);
-    }
+        $ventasArt = $this->getDoctrine()->getRepository('App:VentasArt')
+                                                ->findByDateAndProduct($articulo, $desde, $hasta); 
 
-          
+        return $this->render('informes/articulosShow.html.twig', [
+                'ventas' => $ventasArt,
+                'desde'  => $desde->format('d-m-Y'),
+                'hasta'  => $hasta->format('d-m-Y'),
+            ]);
+    }
 }

@@ -66,7 +66,7 @@
                         </div>   
                         <div class="znv-col-actions">
                             <div class="znv-group">                                                
-                                {{ macro_listActionButton(path('informeVentas_show', {'id' : venta.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_INFORMES']) }}                            
+                                {{ macro_listActionButton(path('informeVentas_show', {'id' : venta.id, 'desde' : desde, 'hasta' : hasta}), 'page.list.buttons.view', 'fa-eye', ['ROLE_INFORMES']) }}                            
                             </div>
                         </div>                                    
                     </div>                                                                                                                                                          

@@ -6,7 +6,7 @@
 {% block buttonsTitle %}
 {% set referer = (app.request.server.get('HTTP_REFERER') is not null ?
             app.request.server.get('HTTP_REFERER')|default('/') :
-            path('informes_tipo')) %}
+            path('informes_articulos', {'desde' : desde, 'hasta' : hasta})) %}
 <li>
     {{ macro_buttonReturn(referer) }}
 </li>
@@ -15,24 +15,21 @@
 {% block viewContent %}
 <div class="znv-card-full znv-highlight">
     <div class="znv-form-group-view">
-        <p>{{ 'page.clientes.labels.nombre'|trans }}</p>
-        <h3>{{ ventas.idCliente.nombre ~ ' - Fecha ' ~ ventas.fecha|date('d-m-Y') }}</h3>
+        <h3>{{ ventas[0].idArt.descripcion }}</h3> 
     </div>
-</div>
+</div> 
 
 <div class="znv-card-full">           
                 <div class="znv-list-container">
                     <div class="znv-header">
                         <div class="znv-col "> {{ 'Cant' }}
                         </div>
-                        <div class="znv-col "> {{ 'Articulo' }}
+                        <div class="znv-col "> {{ 'Cliente' }}
                         </div>
-                        <div class="znv-col "> {{ 'Precio' }}
-                        </div>
-                        <div class="znv-col "> {{ 'SubTotal' }}                       
-                        </div>                
+                        <div class="znv-col "> {{ 'Fecha' }}
+                        </div>            
                     </div>
-            {% for articulo in ventas.ventas %} 
+            {% for articulo in ventas %} 
                     <div class="znv-line">
                         <div class="znv-col">
                             <div class="znv-header">{{ 'Cant' }}</div>                                                 
@@ -41,21 +38,13 @@
 
                         <div class="znv-col">
                             <div class="znv-header">{{ 'Articulo' }}</div>                                                                                                                      
-                                {{ articulo.idArt.descripcion }}                                
+                                {{ articulo.idVentas.idCliente.nombre }}                                
                         </div>
 
                         <div class="znv-col">
                             <div class="znv-header">{{ 'Precio' }}</div>                                                                              
-                                {{ articulo.precio }}                                
-                        </div>
-
-                        <div class="znv-col">
-                            <div class="znv-header">{{ 'SubTotal' }}</div>                                                                              
-                                {{ articulo.precio * articulo.cant }}                                
-                        </div>
-
-                        
-            </div>                                    
+                                {{ articulo.idVentas.fecha| date('d-m-Y') }}                                
+                        </div>                                   
                     </div>                                                                                                                                                          
             {% endfor %}                          
                 </div>
