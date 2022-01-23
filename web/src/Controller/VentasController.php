@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Afip\WsFE;
 use App\Entity\Stock;
 use App\Entity\Ventas;
 use App\Entity\VentasArt;
@@ -113,8 +114,84 @@ class VentasController extends BaseController
                             $manager->persist($stock);
                             $manager->flush($stock);
                         }                                                                      
-                    }
+                    }                    
 
+                    //INICIO FACTURA ELECTRONICA
+                    $cliente= 'CONSUMIDOR FINAL';
+                    $cuit_cliente= '99999999';
+                    $tipo_cuit=96;
+
+                    $tipo_comprobante=6; //6 Fct B | 1 Fct A
+                    $punto_venta=6;
+                    $mi_cuit=  '27-31316689-4';
+
+                    $data['products'][] = array(
+                        "type" => "P",
+                        "code" => "COD2",
+                        "description" => "Articulo",
+                        "price" => 100.00,
+                        "quantity" => 1,
+                        "sum_price" => 100.00,
+                        "sum_tax" => 21.00,
+                        "discount" => 0,
+                        "total" => 121.00);
+
+                        $cust_cuit = floatval(str_replace('-', '', $cuit_cliente)); //floatval(str_replace('-', '', $data['customer_data']['ident']));
+                        $cust_doc_type = $tipo_cuit;
+                        $subtotal = floatval(str_replace(',', '.', 100)); //floatval(str_replace(',', '.', $data['base']['subtotal']));
+                        $sum_tax = floatval(str_replace(',', '.', 21)); //floatval(str_replace(',', '.', $data['base']['sum_tax']));
+                        $total = floatval(str_replace(',', '.', 121)); //floatval(str_replace(',', '.', $data['base']['total']));
+
+
+                        $nro = 0;
+                        $PtoVta = $punto_venta; //$data['pto_vta'];
+                        $TipoComp = $tipo_comprobante; //$data['tipo_comp'];
+                        $FechaComp = date("Ymd");
+                        $certificado = "JessyV2_3f77b088f7129c9.crt";
+                        $clave = "jessy.key";
+                        $cuit = str_replace('-', '', $mi_cuit); //str_replace('-', '', $data['company_data']['ident']);
+                        $urlwsaa = "https://wsaa.afip.gov.ar/ws/services/LoginCms";
+
+                        // Los parametros de metodos y propiedades estan en www.bitingenieria.com.ar/webhelp
+                        $wsfe = new WsFE();
+                        $wsfe->CUIT = floatval($cuit);
+                        $wsfe->setURL("https://servicios1.afip.gov.ar/wsfev1/service.asmx");
+                        if ($wsfe->Login($certificado, $clave, $urlwsaa)) {
+
+                            if (!$wsfe->RecuperaLastCMP($PtoVta, $TipoComp)) {
+                                echo $wsfe->ErrorDesc;
+                            } else {
+                                $wsfe->Reset();
+                                $nro = $wsfe->RespUltNro + 1;
+                                $wsfe->AgregaFactura(1, $cust_doc_type, $cust_cuit, $nro, $nro, $FechaComp, $total, 0.0, $subtotal, 0.0, "", "", "", "PES", 1);
+                                $wsfe->AgregaIVA(5, $subtotal, $sum_tax); //5 es 21% y 3 es 0%
+                                // $wsfe->AgregaTributo(2, "Perc IIBB", 1000, 3.5, 35); En caso de tributo
+                                $auth = false;
+                                //try {
+                                    if ($wsfe->Autorizar($PtoVta, $TipoComp)) {
+                                        $auth = true;                                        
+                                    } else {                                       
+                                        echo $wsfe->ErrorDesc;
+                                    }
+                                //} catch (Exception $e) {
+                                    if ($wsfe->CmpConsultar($TipoComp, $PtoVta, $nro, $cbte)) {
+
+                                        $auth = true;
+                                    } else {
+                                        //cii
+                                    }
+                                //}
+                                if ($auth) {
+                                    $data['invoice_num'] = sprintf('%05d-', $PtoVta) . sprintf('%08d', $nro);
+                                    $data['CAE'] = $wsfe->RespCAE;
+                                    $data['Vto'] = $wsfe->RespVencimiento;
+                                    $data['barcode'] = $cuit . sprintf('%03d', $TipoComp) . sprintf('%05d', $PtoVta) . $wsfe->RespCAE . $wsfe->RespVencimiento;                                                                      
+                                } 
+                            }
+                        } else {
+                            echo $wsfe->ErrorDesc;
+                        }
+                    //FIN FACTURA ELECTRONICA
                     
                     $this->addFlashSuccess('flash.ventas.new.success');
     
