@@ -10,6 +10,18 @@
 <li>
     {{ macro_buttonReturn(referer) }}
 </li>
+<li>
+    <a href="{{ path('venta_factura', {'id' : venta.id}) }}" target="_blank" class="znv-btn">
+        <i class="fa-ticket"></i>
+        FACTURA
+    </a>
+</li>
+<li>
+    <a href="{{ path('venta_recibo', {'id' : venta.id}) }}" target="_blank" class="znv-btn">
+        <i class="fa-print"></i>
+        RECIBO
+    </a>
+</li>
 {% endblock %}
 
 {% block viewContent %}

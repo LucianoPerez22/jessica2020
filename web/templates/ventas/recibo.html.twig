@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>JessyStock V2 - Recibo</title>
+		<link rel="stylesheet" href="{{ asset('build/css/style.min.css') }}"/>
+
+	<style>
+  html, body {       
+		font-size: 10px;
+  }  
+</style>
+
+</head>
+	<body class="container" style="width: 100%;">	
+	 {% set total = 0 %}		
+		 <table style="width: 100%;">
+			<tr>
+				<th></th> <!-- Lado Izquierdo  -->
+				<th></th> <!-- Lado Centro  -->				
+				<th></th> <!-- Lado Derecho  -->				
+			</tr>
+			<tr>
+				<td  style="border: 1px solid black;">
+					<h2>Business Soft - Comm</h2>											
+					<h5><strong>Razon Social:</strong> Perez Luciano David</h5>
+					<h5><strong>Direccion:</strong> Mendoza 166  - Rincon de los Sauces, Neuquen</h5>
+					<h5><strong>Condicion Iva:</strong> IVA Responsable Inscripto</h5>	
+					<p></p>
+					<p></p>				
+				</td>
+
+				<td class="text-center" style="border: 1px solid black;">
+					<h1 style="text-align: center;" >
+						R
+					</h1>	
+				</td>
+
+				<td  style="border: 1px solid black;">
+					<h2>RECIBO</h2>											
+					<h5>Comp. Nro.: {{ venta.numero }}</h5>
+					<h5><strong>Fecha Emision:</strong> {{venta.fecha |date('d-m-Y')}}</h5>
+					<h5><strong> CUIT:</strong> 20-30391056-6</h5>
+					<h5><strong> IIBB:</strong> 000-102779/04</h5>
+					<h5><strong> Inicio Actividad:</strong> 20/07/2015</h5>					
+				</td>				
+			</tr>			
+		</table> 
+
+		 <table style="width: 100%;">
+			<tr>
+				<th></th>	
+				<th></th>				
+			</tr>
+			<tr>
+				<td>
+					<h5><strong>CUIT:</strong> {{ venta.idCliente.documento }} </h5>																				  					
+					<h5><strong>Condicion Iva:</strong> {{ venta.idCliente.documento }}</h5>
+					<h5><strong>Tipo Venta: </strong> {{ venta.formaPago }}</h5>
+				</td>			
+				<td>
+				    <h5><strong>Razon Social: </strong> {{ venta.idCliente.nombre }}</h5>
+					<h5><strong>Direccion: </strong> {{ venta.idCliente.direccion }}</h5>						
+				</td>				
+			</tr>			
+		</table> 
+
+		<hr style="border: 1px solid black;" />
+
+		<!--Listado Productos -->
+		<table style="width: 100%;">
+			<thead>
+			<tr>
+				<th style="border-right: 1px solid black; text-align: left;"><strong>Cant</strong></th>	
+				<th style="border-right: 1px solid black; text-align: left;"><strong>Descripcion</strong></th>				
+				<th style="border-right: 1px solid black; text-align: left;"><strong>P. Unit</strong></th>
+				<th style="text-align: left;"><strong>Total</strong></th>				
+			</tr>	
+			</thead>
+
+			<tbody>	
+			{% for articulo in venta.ventas %}	
+				<tr>
+					<td class="text-center">{{ articulo.cant }}</td>			
+					<td>{{ articulo.idArt.descripcion }}</td>				
+					<td>${{ articulo.precio }}</td>				
+					<td>${{ articulo.precio * articulo.cant }}</td>	
+
+					{% set total = total + (articulo.precio * articulo.cant) %}			
+				</tr>	
+			{% endfor %}
+
+			</tbody>		
+		</table> 
+
+		<!--Cierre Factura -->
+		<table style="width: 100%;border: 1px solid black; position: absolute; bottom:160px;">
+			<thead>
+			<tr>									
+                <th style="border: 1px solid black; text-align: left;"></th>	
+                <th style="border: 1px solid black; text-align: left;"></th>				
+                <th style="border: 1px solid black; text-align: right;"><strong>Total: ${{ total * 1.21 }} </strong></th>											
+			</tr>	
+			</thead>			
+		</table> 		
+	</body>
+</html>

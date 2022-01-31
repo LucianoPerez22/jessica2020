@@ -79,6 +79,13 @@ class Ventas
     private $tipo;
 
     /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="caeVenc", type="date", nullable=true)
+     */
+    private $caeVenc;
+
+    /**
      * @var \ListaDeUsuarios
      *
      * @ORM\ManyToOne(targetEntity="ListaDeUsuarios")
@@ -201,6 +208,18 @@ class Ventas
     public function setTipo(?string $tipo): self
     {
         $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    public function getCaeVenc(): ?\DateTimeInterface
+    {
+        return $this->caeVenc;
+    }
+
+    public function setCaeVenc(?\DateTimeInterface $caeVenc): self
+    {
+        $this->caeVenc = $caeVenc;
 
         return $this;
     }

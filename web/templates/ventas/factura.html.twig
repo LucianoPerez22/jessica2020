@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>JessyStock V2 - Factura</title>
+		<link rel="stylesheet" href="{{ asset('build/css/style.min.css') }}"/>
+
+	<style>
+  html, body {       
+		font-size: 10px;
+  }  
+</style>
+
+</head>
+	<body class="container" style="width: 100%;">	
+	 {% set total = 0 %}		
+		 <table style="width: 100%;">
+			<tr>
+				<th></th> <!-- Lado Izquierdo  -->
+				<th></th> <!-- Lado Centro  -->				
+				<th></th> <!-- Lado Derecho  -->				
+			</tr>
+			<tr>
+				<td  style="border: 1px solid black;">
+					<h2>Business Soft - Comm</h2>											
+					<h5><strong>Razon Social:</strong> Perez Luciano David</h5>
+					<h5><strong>Direccion:</strong> Mendoza 166  - Rincon de los Sauces, Neuquen</h5>
+					<h5><strong>Condicion Iva:</strong> IVA Responsable Inscripto</h5>	
+					<p></p>
+					<p></p>				
+				</td>
+
+				<td class="text-center" style="border: 1px solid black;">
+					<h1 style="text-align: center;" >
+						{% if venta.idCliente.tipoIva == 'responsable' %}
+							A
+							{% else %}
+								B
+						{% endif %}
+					</h1>	
+				</td>
+
+				<td  style="border: 1px solid black;">
+					<h2>Factura</h2>											
+					<h5>Comp. Nro.: {{ data.invoice_num }}</h5>
+					<h5><strong>Fecha Emision:</strong> {{venta.fecha |date('d-m-Y')}}</h5>
+					<h5><strong> CUIT:</strong> 20-30391056-6</h5>
+					<h5><strong> IIBB:</strong> 000-102779/04</h5>
+					<h5><strong> Inicio Actividad:</strong> 20/07/2015</h5>					
+				</td>				
+			</tr>			
+		</table> 
+
+		 <table style="width: 100%;">
+			<tr>
+				<th></th>	
+				<th></th>				
+			</tr>
+			<tr>
+				<td>
+					<h5><strong>CUIT:</strong> {{ venta.idCliente.documento }} </h5>																				  					
+					<h5><strong>Condicion Iva:</strong> {{ venta.idCliente.documento }}</h5>
+					<h5><strong>Tipo Venta: </strong> {{ venta.formaPago }}</h5>
+				</td>			
+				<td>
+				    <h5><strong>Razon Social: </strong> {{ venta.idCliente.nombre }}</h5>
+					<h5><strong>Direccion: </strong> {{ venta.idCliente.direccion }}</h5>						
+				</td>				
+			</tr>			
+		</table> 
+
+		<hr style="border: 1px solid black;" />
+
+		<!--Listado Productos -->
+		<table style="width: 100%;">
+			<thead>
+			<tr>
+				<th style="border-right: 1px solid black; text-align: left;"><strong>Cant</strong></th>	
+				<th style="border-right: 1px solid black; text-align: left;"><strong>Descripcion</strong></th>				
+				<th style="border-right: 1px solid black; text-align: left;"><strong>P. Unit</strong></th>
+				<th style="text-align: left;"><strong>Total</strong></th>				
+			</tr>	
+			</thead>
+
+			<tbody>	
+			{% for articulo in venta.ventas %}	
+				<tr>
+					<td class="text-center">{{ articulo.cant }}</td>			
+					<td>{{ articulo.idArt.descripcion }}</td>				
+					<td>${{ articulo.precio }}</td>				
+					<td>${{ articulo.precio * articulo.cant }}</td>	
+
+					{% set total = total + (articulo.precio * articulo.cant) %}			
+				</tr>	
+			{% endfor %}
+
+			</tbody>		
+		</table> 
+
+		<!--Cierre Factura -->
+		<table style="width: 100%;border: 1px solid black; position: absolute; bottom:160px;">
+			<thead>
+			<tr>
+				{% if venta.idCliente.tipoIva == 'responsable' %}
+					<th style="border: 1px solid black; text-align: left;"><strong>Importe Neto Gravado: ${{ total / 1.21 }} </strong></th>	
+					<th style="border: 1px solid black; text-align: left;"><strong>Iva 21%: ${{ total - total /1.21 }} </strong></th>				
+					<th style="border: 1px solid black; text-align: left;"><strong>Total: ${{ total }} </strong></th>			
+						{% else %}
+							<th style="border: 1px solid black; text-align: left;"></th>	
+							<th style="border: 1px solid black; text-align: left;"></th>				
+							<th style="border: 1px solid black; text-align: right;"><strong>Total: ${{ total * 1.21 }} </strong></th>			
+					{% endif %}
+				
+			</tr>	
+			</thead>			
+		</table> 
+
+		<!--CAE Y QR -->
+		<table style="width: 100%;border: 1px solid black; position: absolute; bottom:110px;">
+			<thead>
+			<tr>
+				<th><strong></strong></th>
+				<th><strong></strong></th>
+				{# <th style="border: 1px solid black; text-align: left;"><strong> CAE Nro.: {{ caeNumero }} </strong></th>	 #}
+				{# <th style="border: 1px solid black; text-align: left;"><strong>Vto CAE: {{ caeVenc }}</strong></th>											 #}
+			</tr>	
+			</thead>
+
+			<tbody>		
+			<tr>
+				<td>
+					{# <img src="{{ asset('build/images/qrafip.png') }}" /> #}
+				{# CODIGO QR #}
+				<img src="data:image/png;base64,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" width="120" height="120"/>
+				</td>	
+				<td>
+					<p>CAE Nro. {{ data.CAE }} </p>
+					<p>CAE Venc. {{ data.Vto |date('d-m-Y') }} </p> 
+				</td>												
+			</tr>	
+			</tbody>		
+		</table> 
+	</body>
+</html>

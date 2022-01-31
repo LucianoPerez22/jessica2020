@@ -19,10 +19,10 @@ class SaveClienteType extends AbstractType
             ->add('telefono', TextType::class, [])
             ->add('tipoIva', ChoiceType::class, [
                 'choices' =>[
-                    'Consumidor Final' => 'Consumidor Final',
-                    'Responsable Inscripto' => 'Responsable Inscripto',
-                    'Monotributista' => 'Monotributista',
-                    'Exento' => 'Exento',
+                    'Consumidor Final' => 'final',
+                    'Responsable Inscripto' => 'responsable',
+                    'Monotributista' => 'monotributo',
+                    'Exento' => 'exento',
 
                 ]
             ])

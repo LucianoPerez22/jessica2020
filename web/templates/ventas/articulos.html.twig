@@ -1,4 +1,4 @@
-		<div class="znv-line">
+		<div class="znv-line" id="div ~ {{ num_control }}">
 			<div class="znv-col">
 				<div class="znv-header">Cant</div>                            
 				{{ form_row(attribute(form, 'cant' ~ num_control)) }}				
@@ -16,11 +16,18 @@
 			<!-- znv-list-col -->
 			<div class="znv-col">
 				<div class="znv-header">P Total</div>
-				{{ form_row(attribute(form, 'total' ~ num_control)) }}							
+				{{ form_row(attribute(form, 'total' ~ num_control)) }}					
 			</div>			
-			<!-- znv-list-col -->			
+			<!-- znv-list-col -->		
+			<div class="znv-col">
+				<div class="znv-header"></div>
+					<button class="btn btn-danger" id="btnDelete{{ num_control }}">X</button>
+			</div>		
+			
 		</div>    		
-		<div> <button id="btn{{ num_control }}">Agregar Articulo</button> </div>		
+		<div> 
+			<button id="btn{{ num_control }}">Agregar Articulo</button> 			
+		</div>		
 <script>        
 	$(document).ready(function() {   
 			$('#art_idArt' + {{ num_control }}).select2() //Se usa para agregar el estilo select2 
@@ -74,6 +81,13 @@
 					alert("An error ocurred while loading data ...");
 				}
 			});			
+		});
+
+		//Boton para eliminar articulo
+		$('#btnDelete' + {{ num_control }}).on('click', function(e) {									
+			event.preventDefault();	
+			
+			total()
 		});
 
 		function total (){
