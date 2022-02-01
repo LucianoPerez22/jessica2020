@@ -11,6 +11,7 @@ use App\Form\Handler\SaveCommonFormHandler;
 use App\Form\Type\SaveVentasArtType;
 use App\Form\Type\SaveVentasType;
 use App\Zennovia\Common\BaseController;
+use App\Zennovia\Common\EntityManagerHelper;
 use App\Zennovia\Common\FindEntitiesHelper;
 use DateTime;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +21,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use Symfony\Component\VarDumper\Cloner\Data;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+
 
 /**
  * @Route("/")
@@ -62,75 +64,79 @@ class VentasController extends BaseController
         
         //Recibo request y chequeo si existen los datos 
         //de articulos para guardar la venta
-        $data = $request->request->all();    
-              
-        if (array_key_exists('art', $data)){          
-            $venta->setFecha(new \DateTime());        
-            $venta->setHora(date("h:i:sa"));                       
-            $venta->setEstado('ok');
+        $data = $request->request->all();           
 
-            $numeroR = $numero->getResult();           
-            $venta->setNumero(intval($numeroR[0][1])+1);
-
-            $venta->setCae('');
-            $venta->setTipo('R');
-            $total = 0;
-            foreach ($data['art'] as $key => $value) {
-                (substr($key, 0, 5) == 'total') ? $total += floatval($value) : '';                         
-            }
-           
-            $venta->setTotal($total);
-        }            
-        
-        if($handler->isSubmittedAndIsValidForm($request)){                
-            try {                                                           
-                if ($handler->processForm()) {                     
-                    $ventaRepo = $this->getDoctrine()->getRepository('App:Ventas')->findOneBy([], ['id' => 'desc']);                                                            
-                    
-                    $manager = $this->getDoctrine()->getManager();                                        
-                    
-                    foreach ($data['art'] as $key => $value) {                                                                    
-                        if (substr($key, 0, 4) == 'cant') {
-                            $articulos = new VentasArt();
-                            $stock = new Stock();
-
-                            $articulos->setCant($value);    
-                            $stock->setCantidad($value * -1);
-                            $stock->setFecha(new \DateTime());
-                            $stock->setUsuario("Venta: " . $user);
-                        } 
-                        
-                        if (substr($key, 0, 5) == 'idArt') {                           
-                            $artRepo = $this->getDoctrine()->getRepository('App:Articulos');
-                            $articulo  = $artRepo->findOneBy(["id" => intval($value)]);
-                           
-                            $articulos->setIdArt($articulo);
-                            $stock->setIdArticulo($articulo);
-                        }                         
-                        (substr($key, 0, 6) == 'precio') ? $articulos->setPrecio(floatval($value)) : '';
-                        if (substr($key, 0, 5) == 'total') {
-                            $articulos->setIdVentas($ventaRepo);
-                            $articulos->setTotal(floatval($value));
-
-                            $manager->persist($articulos);
-                            $manager->flush($articulos);  
-
-                            $manager->persist($stock);
-                            $manager->flush($stock);
-                        }                                                                      
-                    }                                        
-                    
-                    $this->addFlashSuccess('flash.ventas.new.success');
+        try {
+            if (array_key_exists('art', $data)){   
+                if ($data['art']['total0'] == 0){
+                    $this->addFlashError('flash.ventas.new.error');
+                    return $this->render('ventas/new.html.twig', array('form' => $handler->getForm()->createView()));
+                }                                 
+                $venta->setFecha(new \DateTime());        
+                $venta->setHora(date("h:i:sa"));                       
+                $venta->setEstado('ok');
     
-                    return $this->redirectToRoute('venta_show', ['id'=> $venta->getId()]);
-                }               
-                
-            }catch (\Exception $e) {
-                $this->addFlashError('flash.ventas.new.error');
-                $this->addFlashError($e->getMessage());
-            }                           
-        }
-
+                $numeroR = $numero->getResult();           
+                $venta->setNumero(intval($numeroR[0][1])+1);
+    
+                $venta->setCae('');
+                $venta->setTipo('R');
+                $total = 0;
+                foreach ($data['art'] as $key => $value) {
+                    (substr($key, 0, 5) == 'total') ? $total += floatval($value) : '';                         
+                }
+               
+                $venta->setTotal($total);
+    
+                if($handler->isSubmittedAndIsValidForm($request)){                                                                                          
+                        if ($handler->processForm()) {                     
+                            $ventaRepo = $this->getDoctrine()->getRepository('App:Ventas')->findOneBy([], ['id' => 'desc']);                                                            
+                            
+                            $manager = $this->getDoctrine()->getManager();                                        
+                            
+                            foreach ($data['art'] as $key => $value) {                                                                    
+                                if (substr($key, 0, 4) == 'cant') {
+                                    $articulos = new VentasArt();
+                                    $stock = new Stock();
+        
+                                    $articulos->setCant($value);    
+                                    $stock->setCantidad($value * -1);
+                                    $stock->setFecha(new \DateTime());
+                                    $stock->setUsuario("Venta: " . $user);
+                                } 
+                                
+                                if (substr($key, 0, 5) == 'idArt') {                           
+                                    $artRepo = $this->getDoctrine()->getRepository('App:Articulos');
+                                    $articulo  = $artRepo->findOneBy(["id" => intval($value)]);
+                                   
+                                    $articulos->setIdArt($articulo);
+                                    $stock->setIdArticulo($articulo);
+                                }                         
+                                (substr($key, 0, 6) == 'precio') ? $articulos->setPrecio(floatval($value)) : '';
+                                if (substr($key, 0, 5) == 'total') {
+                                    $articulos->setIdVentas($ventaRepo);
+                                    $articulos->setTotal(floatval($value));
+        
+                                    $manager->persist($articulos);
+                                    $manager->flush($articulos);  
+        
+                                    $manager->persist($stock);
+                                    $manager->flush($stock);
+                                }                                                                      
+                            }                                                                    
+                            $this->addFlashSuccess('flash.ventas.new.success');
+            
+                            return $this->redirectToRoute('venta_show', ['id'=> $venta->getId()]);
+                        }                                                                              
+                }else{
+                        $this->addFlashError('flash.ventas.new.error');
+                     }   
+            }   
+        } catch (\Exception $e) {
+            $this->addFlashError('flash.ventas.new.error');
+            $this->addFlashError($e->getMessage());
+        }                  
+       
         return $this->render('ventas/new.html.twig', array('form' => $handler->getForm()->createView()));
     }
 
@@ -228,8 +234,8 @@ class VentasController extends BaseController
 
         (($venta->getIdCliente()->getTipoIva() == 'responsable')) ? $TipoComp=1 : $TipoComp=6;                
         
-        $PtoVta=6;
-        $mi_cuit=  '27-31316689-4';               
+        $PtoVta=4;
+        $mi_cuit=  '20-30391056-6';               
 
             $cust_cuit = floatval(str_replace('-', '', $cuit_cliente)); 
             $subtotal = floatval(number_format($venta->getTotal() / 1.21, 2)); 
@@ -238,8 +244,8 @@ class VentasController extends BaseController
           
             $nro = 0;                         
             $FechaComp = date("Ymd");
-            $certificado = "JessyV2_3f77b088f7129c9.crt";
-            $clave = "jessy.key";
+            $certificado = "JessyV2_6038f9296162f8d7.crt";
+            $clave = "ClavePrivadaLucho.key";
             $cuit = str_replace('-', '', $mi_cuit);
             $urlwsaa = "https://wsaa.afip.gov.ar/ws/services/LoginCms";
 
@@ -300,7 +306,7 @@ class VentasController extends BaseController
 
      /** 
      * @Route(path="/venta/recibo/{id}", name="venta_recibo")
-     * @Security("user.hasRole(['ROLE_RECIBO'])")  
+     * @Security("user.hasRole(['ROLE_VENTAS_VIEW'])")  
      * @param Ventas $venta
      * @return Response
      */
@@ -325,4 +331,46 @@ class VentasController extends BaseController
     
             exit(0);               
     }
+
+     /**
+     * Eliminar una entidad Empleados.
+     *
+     * @Route(path="/admin/ventas/{id}/delete", name="ventas_delete")
+     * @Security("user.hasRole(['ROLE_VENTAS_DELETE'])")
+     * @param Ventas $entity
+     * @param EntityManagerHelper $helper
+     * @return RedirectResponse
+     * @throws \Exception
+     */
+    public function deleteAction(Ventas $entity, EntityManagerHelper $helper, UserInterface $user)
+    {
+        try {
+            $ventasArtRepo = $this->getDoctrine()->getRepository(VentasArt::class);
+            $ventasArt     = $ventasArtRepo->findBy(['idVentas' => $entity]);
+            
+            $em = $this->getDoctrine()->getManager();
+
+            foreach ($ventasArt as $key) {
+                $stock = new Stock();
+                
+                $stock->setIdArticulo(($key->getidArt())); 
+                $stock->setCantidad($key->getCant());
+                $stock->setFecha(new \DateTime());
+                $stock->setUsuario("Stock: " . $user);
+                
+                $em->persist($stock);
+                $em->flush();
+            
+                $em->remove($key);
+                $em->flush();
+            }
+                      
+             $helper->doDelete($entity);
+             $this->addFlashSuccess('flash.ventas.delete.success');
+        } catch (ForeignKeyConstraintViolationException $e) {
+            $this->addFlashError('flash.ventas.delete.error');
+        }
+
+        return $this->redirectToRoute('ventas_index');
+    }     
 }

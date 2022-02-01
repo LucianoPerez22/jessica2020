@@ -1,4 +1,4 @@
-		<div class="znv-line" id="div ~ {{ num_control }}">
+		<div class="znv-line" id="div{{ num_control }}">
 			<div class="znv-col">
 				<div class="znv-header">Cant</div>                            
 				{{ form_row(attribute(form, 'cant' ~ num_control)) }}				
@@ -21,7 +21,8 @@
 			<!-- znv-list-col -->		
 			<div class="znv-col">
 				<div class="znv-header"></div>
-					<button class="btn btn-danger" id="btnDelete{{ num_control }}">X</button>
+					{# <button class="btn btn-danger" id="btnDelete{{ num_control }}">X</button> #}
+					{{ form_row(attribute(form, 'delete' ~ num_control)) }}
 			</div>		
 			
 		</div>    		
@@ -83,19 +84,26 @@
 			});			
 		});
 
-		//Boton para eliminar articulo
-		$('#btnDelete' + {{ num_control }}).on('click', function(e) {									
-			event.preventDefault();	
-			
-			total()
-		});
+		//Boton para eliminar articulo		
+			$('.clickeable').on('click', function(e) {
+				event.preventDefault()
+				
+				cadena = e.target.id
+				$('#div' + cadena.charAt(cadena.length - 1)).remove()
+				
+				total()
+			});
+
 
 		function total (){
 			let total = parseFloat(0)				
 			let control = {{ num_control }}
 							
-			for (let i = 0; i < control; i++) {																
-				total += parseFloat($('#art_total' + i).val())				
+			for (let i = 0; i < control; i++) {	
+				if (typeof ($('#art_total' + i).val()) !== 'undefined'){
+					console.log ('Total: ' + $('#art_total' + i).val())
+					total += parseFloat($('#art_total' + i).val())				
+				}																			
 			}
 			$('#total').remove();
 			$('#divTotal').before(`<div id="total" class="znv-card-full">  <div class="znv-card d-flex flex-row-reverse"><span id="total" class="badge badge-danger mt-3" style="font-size:1.3em">Total $: ${total.toFixed(2)} </span></div> </div>`) 

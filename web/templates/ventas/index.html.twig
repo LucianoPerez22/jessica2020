@@ -24,7 +24,7 @@
     </div>    
 
     {% for ventas in entities %}
-        <div class="znv-line" data-path="{{ path('articulos_delete', { 'id' : ventas.id }) }}" data-name="{{ ventas.id }}">
+        <div class="znv-line" data-path="{{ path('ventas_delete', { 'id' : ventas.id }) }}" data-name="{{ ventas.id }}">
             <div class="znv-col">
                 <div class="znv-header">Cliente:</div>
                     {{ventas.idCliente.nombre}}
@@ -43,9 +43,8 @@
             </div>             
             <div class="znv-col-actions">
                 <div class="znv-group">                                        
-                    {{ macro_listActionButton(path('venta_show', {'id' : ventas.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_VENTAS_VIEW']) }}
-                    {# {{ macro_listActionButton(path('articulos_edit', {'id' : ventas.id}), 'page.list.buttons.edit', 'fa-pencil', ['ROLE_VENTAS_EDIT']) }}
-                    {{ macro_liConfirmButton('page.list.buttons.delete', 'znv-icon fa-trash', ['ROLE_ARTICULOS_DELETE'], 'setNameAndText') }} #}
+                    {{ macro_listActionButton(path('venta_show', {'id' : ventas.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_VENTAS_VIEW']) }}                    
+                    {{ macro_liConfirmButton('page.list.buttons.delete', 'znv-icon fa-trash', ['ROLE_VENTAS_DELETE'], 'setNameAndText') }} 
                 </div>
             </div>
         </div>

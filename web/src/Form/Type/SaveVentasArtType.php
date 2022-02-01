@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 
 class SaveVentasArtType extends AbstractType
 {
@@ -42,7 +43,11 @@ class SaveVentasArtType extends AbstractType
             ])                            
             ->add('precio' . $this->_additionalName, NumberType::class, ['label' => false, 'data' => 0, 'attr'=> [ 'readonly' => true ]])
             ->add('total' . $this->_additionalName, NumberType::class, ['label'  => false, 'data' => 0, 'attr'=> [ 'readonly' => true ]])
-        ;      
+            ->add('delete'. $options['algo'][0], ButtonType::class, [
+                'label' => 'X',
+                'attr' =>  ['class' => 'clickeable btn btn-danger']
+            ]);
+            ;      
     }
 
     public function configureOptions(OptionsResolver $resolver): void
