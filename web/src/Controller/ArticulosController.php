@@ -141,7 +141,8 @@ class ArticulosController extends BaseController
     public function ajaxAction(Articulos $articulo = null, Request $request)
     {                              
         if ($request->isXmlHttpRequest()) {
-            return new Response($articulo->getPrecio());
+            $precio = $articulo->getPrecio() * 1.21;
+            return new Response($precio);
         }
     }   
 }

@@ -20,24 +20,25 @@ class VentasRepository extends ServiceEntityRepository
     }
         
     public function findAllWithFilterAndOrderQuery(array $filters, array $order=null)
-    {       
-        $q = $this->createQueryBuilder('a')
-            ->select('a')          
-            ->addOrderBy("a.fecha", "desc");
+    {    
+        $q = $this->createQueryBuilder('v')
+            ->select('v', 'c')  
+            ->innerJoin('v.idCliente', 'c' )        
+            ->addOrderBy("v.id", "desc");
+
             if (!empty($filters['name'])) {
                 $name = '%' . $filters['name'] . '%';
-                $q->andWhere('a.numero LIKE :name')
+                $q->andWhere('c.nombre LIKE :name')
                 ->setParameter('name', $name);               
             }
-            
-           
+        
         return $q->getQuery();                                            
     }    
 
     public function findLastNumber()
     {              
-        $q = $this->createQueryBuilder('a')
-            ->select('Max(a.numero)');                                                                  
+        $q = $this->createQueryBuilder('v')
+            ->select('Max(v.numero)');                                                                  
            
         return $q->getQuery();                                            
     }    

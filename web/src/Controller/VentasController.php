@@ -38,7 +38,7 @@ class VentasController extends BaseController
     public function indexAction(FindEntitiesHelper $helper)
     {
         $form = $this->createForm(VentasFilterType::class, null, ['csrf_protection' => false]);        
-        $repo = $this->getDoctrine()->getRepository('App:Ventas');
+        $repo = $this->getDoctrine()->getRepository(Ventas::class);
        
         $dataResult = $helper->getDataResultFiltered($repo, $form);
         $dataResult['form'] = $form->createView();       
@@ -64,8 +64,9 @@ class VentasController extends BaseController
         
         //Recibo request y chequeo si existen los datos 
         //de articulos para guardar la venta
-        $data = $request->request->all();           
+        $data = $request->request->all();                   
 
+        $venta->setUser($user);                                                                                       
         try {
             if (array_key_exists('art', $data)){   
                 if ($data['art']['total0'] == 0){
@@ -88,7 +89,7 @@ class VentasController extends BaseController
                
                 $venta->setTotal($total);
     
-                if($handler->isSubmittedAndIsValidForm($request)){                                                                                          
+                if($handler->isSubmittedAndIsValidForm($request)){                           
                         if ($handler->processForm()) {                     
                             $ventaRepo = $this->getDoctrine()->getRepository('App:Ventas')->findOneBy([], ['id' => 'desc']);                                                            
                             
@@ -323,8 +324,9 @@ class VentasController extends BaseController
             $dompdf->loadHtml($html); 
             
             // (Opcional) Configure el tamaño del papel y la orientación 'vertical' o 'vertical'           
-            $dompdf->setPaper(array(0,0,720,600), 'portrait');
-            
+            //$dompdf->setPaper(array(0,0,720,600), 'portrait');
+            $dompdf->setPaper('A4', 'portrait');
+
             $dompdf->render();
             
             $dompdf->stream("recibo.pdf", array("Attachment" => false));
@@ -356,7 +358,7 @@ class VentasController extends BaseController
                 $stock->setIdArticulo(($key->getidArt())); 
                 $stock->setCantidad($key->getCant());
                 $stock->setFecha(new \DateTime());
-                $stock->setUsuario("Stock: " . $user);
+                $stock->setUsuario("Compra Cancelada: " . $user);
                 
                 $em->persist($stock);
                 $em->flush();

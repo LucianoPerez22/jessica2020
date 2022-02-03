@@ -34,6 +34,7 @@
 <div class="znv-card-full znv-two-column">
   {{ macro_cardHalfView('page.ventas.labels.fecha' | trans, venta.fecha|date('d-m-Y')) }}
   {{ macro_cardHalfView('page.ventas.labels.numero' | trans, venta.tipo ~ ' - ' ~ venta.numero) }}
+  {{ macro_cardHalfView('Usuario: ' | trans, venta.user) }}
 </div>
 
 <div class="znv-card-container">

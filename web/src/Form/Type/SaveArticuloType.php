@@ -31,8 +31,10 @@ class SaveArticuloType extends AbstractType
             ])    
             ->add('codigo', TextType::class, [])
             ->add('descripcion', TextType::class, [])
-            ->add('precio', NumberType::class, [])
-            ->add('ganancia', NumberType::class, [])            
+            ->add('precio', NumberType::class, [
+                'label' => 'Precio S/Iva',
+            ])
+            ->add('ganancia', NumberType::class, ['data'  => 0])            
         ;
     }
 

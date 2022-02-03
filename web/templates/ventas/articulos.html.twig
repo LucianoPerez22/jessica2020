@@ -39,8 +39,9 @@
 				url: urlAjaxFormFields + '/' + $('#art_idArt' + {{ num_control }}).val(),
 				type: "GET",
 				async: false,
-				success: function (response) {                              
-					$('#art_precio' + {{ num_control }}).val(response)
+				success: function (response) {  
+					precio = parseFloat(response)                        
+					$('#art_precio' + {{ num_control }}).val(precio.toFixed(2))
 					$('#art_total' + {{ num_control }}).val($('#art_precio' + {{ num_control }}).val() * $('#art_cant' + {{ num_control }}).val())                                                                  
 
 					total()
@@ -58,6 +59,18 @@
 		});
 
 		$('#art_cant' + {{ num_control }}).on('keypress', function(e) {
+			if (event.key === "Enter") {					
+				event.preventDefault();
+			}
+		});
+
+		$('#art_precio' + {{ num_control }}).on('change', function(e) {				
+				$('#art_total' + {{ num_control }}).val($('#art_precio' + {{ num_control }}).val() * $('#art_cant' + {{ num_control }}).val())               
+				
+				total()
+		});
+
+		$('#art_precio' + {{ num_control }}).on('keypress', function(e) {
 			if (event.key === "Enter") {					
 				event.preventDefault();
 			}
@@ -101,7 +114,7 @@
 							
 			for (let i = 0; i < control; i++) {	
 				if (typeof ($('#art_total' + i).val()) !== 'undefined'){
-					console.log ('Total: ' + $('#art_total' + i).val())
+					//console.log ('Total: ' + $('#art_total' + i).val())
 					total += parseFloat($('#art_total' + i).val())				
 				}																			
 			}

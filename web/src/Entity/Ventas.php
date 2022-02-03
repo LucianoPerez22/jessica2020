@@ -105,6 +105,11 @@ class Ventas
      */
     private $articulo;
 
+    /**   
+     * @ORM\Column(name="user", type="string", length=255, nullable=true)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->ventas = new ArrayCollection();
@@ -296,5 +301,15 @@ class Ventas
         return $this;
     }
 
+    public function getUser(): ?string
+    {
+        return $this->user;
+    }
 
+    public function setUser(?string $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

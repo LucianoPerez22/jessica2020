@@ -41,7 +41,7 @@ class SaveVentasArtType extends AbstractType
                              ;                                                                                                         
                     },                                
             ])                            
-            ->add('precio' . $this->_additionalName, NumberType::class, ['label' => false, 'data' => 0, 'attr'=> [ 'readonly' => true ]])
+            ->add('precio' . $this->_additionalName, NumberType::class, ['label' => false, 'data' => 0])
             ->add('total' . $this->_additionalName, NumberType::class, ['label'  => false, 'data' => 0, 'attr'=> [ 'readonly' => true ]])
             ->add('delete'. $options['algo'][0], ButtonType::class, [
                 'label' => 'X',

@@ -11,7 +11,7 @@ class VentasFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', TextType::class, ['label' => 'form.labels.name']);
+        $builder->add('name', TextType::class, ['label' => 'Cliente']);
     }
 
     /**
