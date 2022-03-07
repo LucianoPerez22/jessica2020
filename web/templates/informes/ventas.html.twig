@@ -21,7 +21,7 @@
     
 </div>    
             <div class="znv-card-full">           
-                <div class="znv-list-container">
+                <div class="znv-list-container">               
                     <div class="znv-header">
                         <div class="znv-col "> {{ 'page.informes.labels.fecha' | trans }}
                         </div>
@@ -48,19 +48,20 @@
 
                         <div class="znv-col">
                             <div class="znv-header">{{ 'page.informes.labels.importe' | trans() }}</div>                                                                              
-                                {{ venta.total }}                                
+                                {{ venta.total }}                             
                         </div>
 
                         <div class="znv-col">
                             <div class="znv-header">{{ 'page.informe.labels.formaPago' | trans() }}</div>                                                                                
-                                    {{ venta.formaPago }}     
-                                    {% if venta.formaPago == 'efectivo' %}
+                                    {{ venta.formaPago }}
+                                     
+                                    {% if venta.formaPago == 'Efectivo' %}
                                         {% set contado = contado + venta.total %}
 
-                                        {% elseif venta.formaPago == 'tarjeta' %}
+                                        {% elseif venta.formaPago == 'Tarjeta' %}
                                             {% set tarjetas = tarjetas + venta.total %}
 
-                                            {% elseif venta.formaPago == 'transferencia' %}
+                                            {% elseif venta.formaPago == 'Transferencia' %}
                                                 {% set transferencias = transferencias + venta.total %}
                                     {% endif %}                           
                         </div>   
@@ -85,6 +86,6 @@
                 </div>
         `)
     })
-</script>                     
+</script>                   
 {% endblock  %}
 

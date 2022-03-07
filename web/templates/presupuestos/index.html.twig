@@ -1,0 +1,53 @@
+{% extends 'global/layout_list.html.twig' %}
+
+{% set titlePage = "page.presupuestos.title.list" | trans %}
+{% set menu = "presupuestos" %}
+
+{% set formFilterAction = path('presupuestos_index') %}
+{% set pathNew = path('presupuestos_new') %}
+{% set labelButtonNew = 'page.presupuestos.buttons.add' %}
+{% set rolesNew = ['ROLE_PRESUPUESTOS_NEW'] %}
+
+{% block list %}
+    <div class="znv-header">    
+        <div class="znv-col"> Fecha
+        </div>       
+        <div class="znv-col"> Cliente
+        </div>       
+        <div class="znv-col"> Total
+        </div>       
+        <div class="znv-col"> User
+        </div>       
+       
+        <div class="znv-col-actions">
+        </div>
+    </div>    
+
+    {% for ventas in entities %}
+        <div class="znv-line" data-path="{{ path('ventas_delete', { 'id' : ventas.id }) }}" data-name="{{ ventas.id }}">
+            <div class="znv-col">
+                <div class="znv-header">Fecha:</div>
+                    {{presupuestos.fecha |date('d-m-Y')}} 
+            </div>    
+            <div class="znv-col">
+                <div class="znv-header">Cliente:</div>
+                    {{presupuestos.cliente}}
+            </div>          
+            <div class="znv-col">
+                <div class="znv-header">Total:</div>
+                    {{presupuestos.total |number_format(2, ',', '.') }}
+            </div>    
+            <div class="znv-col">
+                <div class="znv-header">User:</div>
+                    {{presupuestos.user }}
+            </div>             
+            <div class="znv-col-actions">
+                <div class="znv-group">                                        
+                    {{ macro_listActionButton(path('venta_show', {'id' : ventas.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_VENTAS_VIEW']) }}                    
+                    {{ macro_liConfirmButton('page.list.buttons.delete', 'znv-icon fa-trash', ['ROLE_VENTAS_DELETE'], 'setNameAndText') }} 
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock list %}

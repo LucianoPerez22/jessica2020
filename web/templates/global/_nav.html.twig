@@ -32,6 +32,10 @@
                 <li>
                     {{ macro_liNav((menu == "ventas"), 'ventas_index', 'page.menu.ventas'|trans, ['ROLE_VENTAS_LIST'], 'fa fa-shopping-cart') }}
                 </li>
+                 <hr />
+                <li>
+                    {{ macro_liNav((menu == "presupuestos"), 'presupuestos_index', 'page.menu.presupuestos'|trans, ['ROLE_PRESUESTOS_LIST'], 'fa fa-shopping-cart') }}
+                </li>
                 <hr />               
                 {{ macro_liNav((menu == "informes"), 'informes_tipo', 'page.menu.informesTipo'|trans, ['ROLE_INFORMES'], 'fa-list') }}  
             {% endif %}

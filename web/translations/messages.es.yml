@@ -108,6 +108,7 @@ page:
         marcas: Marcas
         articulos: Articulos
         ventas: Ventas
+        presupuestos: Presupuestos
         clientes: Clientes
         informes: Informes
         informesVentas: Ventas
@@ -238,6 +239,22 @@ page:
           
         buttons:
             add: Agregar Informe
+
+    presupuestos:
+        title:
+            list: Lista de Presupuestos
+            view: Vista de Presupuesto
+            edit: Edición de Presupuesto
+            new: Nuevo Presupuesto
+        labels:
+            actual: Presupuesto Actual
+            nombre: Nombre
+            total: Total
+            fecha: Fecha
+            numero: Numero
+            tipo: Tipo
+        buttons:
+            add: Agregar Presupuesto
    
 
     
