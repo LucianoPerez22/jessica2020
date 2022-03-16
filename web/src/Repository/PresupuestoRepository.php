@@ -22,13 +22,22 @@ class PresupuestoRepository extends ServiceEntityRepository
     public function findAllWithFilterAndOrderQuery(array $filters, array $order=null)
     {       
         $q = $this->createQueryBuilder('p')
-            ->select('p');          
+            ->select('p')
+            ->addOrderBy('p.id', 'desc');          
             
             if (!empty($filters['name'])) {
                 $name = '%' . $filters['name'] . '%';
-                $q->andWhere('p.cliente LIKE :name')
+                $q->andWhere('p.cliente LIKE :name')                   
                 ->setParameter('name', $name);
             }
+           
+        return $q->getQuery();                                            
+    }    
+
+    public function findLastNumber()
+    {              
+        $q = $this->createQueryBuilder('p')
+            ->select('Max(p.id)');                                                                  
            
         return $q->getQuery();                                            
     }    

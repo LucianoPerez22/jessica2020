@@ -14,10 +14,11 @@ class SaveClienteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nombre', TextType::class, [])
-            ->add('direccion', TextType::class, [])
-            ->add('telefono', TextType::class, [])
+            ->add('nombre', TextType::class, ['required' => true,])
+            ->add('direccion', TextType::class, ['required' => true,])
+            ->add('telefono', TextType::class, ['required' => true,])
             ->add('tipoIva', ChoiceType::class, [
+                'required' => true,
                 'choices' =>[
                     'Consumidor Final' => 'final',
                     'Responsable Inscripto' => 'responsable',
@@ -26,7 +27,7 @@ class SaveClienteType extends AbstractType
 
                 ]
             ])
-            ->add('documento', TextType::class, [])
+            ->add('documento', TextType::class, ['required' => true,])
             ;
     }
 

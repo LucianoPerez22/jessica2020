@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Service\Afip\WsFE;
 use App\Entity\Stock;
 use App\Entity\Ventas;
 use App\Entity\VentasArt;
@@ -10,10 +9,12 @@ use App\Form\Filter\VentasFilterType;
 use App\Form\Handler\SaveCommonFormHandler;
 use App\Form\Type\SaveVentasArtType;
 use App\Form\Type\SaveVentasType;
+use App\Handler\Afip;
+use App\Handler\NoAfip;
+use App\Handler\Recibos;
 use App\Zennovia\Common\BaseController;
 use App\Zennovia\Common\EntityManagerHelper;
 use App\Zennovia\Common\FindEntitiesHelper;
-use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -177,161 +178,33 @@ class VentasController extends BaseController
     /**
      * @Route(path="/venta/factura/{id}", name="venta_factura")
      * @Security("user.hasRole(['ROLE_VENTAS_VIEW'])") 
-     * @param Ventas $venta    
+     * @param Ventas $venta 
+     * @param Afip $afip    
      * @return Response
      */
-    public function facturaAction(Ventas $venta)
-    {      
-        $data = $this->afipAction($venta);  
-
-        $pdfOptions = new Options();
-        $pdfOptions->set('defaultFont', 'Arial');
-        $pdfOptions->set('isRemoteEnabled', TRUE);
-        
-        $dompdf = new Dompdf($pdfOptions);
-        
+    public function facturaAction(Ventas $venta, Afip $afip)
+    {              
+        $data = $afip->facturaElectronica($venta);        
+               
         // Recupere el HTML generado en nuestro archivo twig
-        $html = $this->renderView('ventas/factura.html.twig', ['venta' => $venta, 'data' =>$data]);        
-        
-        $dompdf->loadHtml($html); 
-        
-        // (Opcional) Configure el tamaño del papel y la orientación 'vertical' o 'vertical'
-        $dompdf->setPaper('A4', 'portrait');
-        
-        $dompdf->render();
-        
-        $dompdf->stream("factura.pdf", array("Attachment" => false));
+        $html = $this->renderView('ventas/factura.html.twig', ['venta' => $venta, 'data' =>$data]);                                       
 
-        exit(0);
+        $afip->imprimirFactura($html);
     }   
-
-     /** 
-     * @param Ventas $venta
-     * @return Response
-     */
-    public function afipAction(Ventas $venta){     
-        
-        if ($venta->getCaeVenc() != null ){
-            $data['invoice_num'] = sprintf('%05d-', '00006') . sprintf('%08d', $venta->getNumero());
-            $data['CAE'] = $venta->getCae(); 
-            $venCae = $venta->getCaeVenc();            
-
-            $data['Vto'] = $venCae;
-                                   
-            return $data;
-        }
-        
-        //INICIO FACTURA ELECTRONICA               
-
-        $cuit_cliente= $venta->getIdCliente()->getDocumento();
-
-        ($cuit_cliente == 0) ? $cuit_cliente = '99999999' : '';
-
-        if ($venta->getIdCliente()->getTipoIva() == 'final') {
-            $cust_doc_type=96;            
-        }else{
-            $cust_doc_type=80;            
-        }               
-
-        (($venta->getIdCliente()->getTipoIva() == 'responsable')) ? $TipoComp=1 : $TipoComp=6;                
-        
-        $PtoVta=4;
-        $mi_cuit=  '20-30391056-6';               
-
-            $cust_cuit = floatval(str_replace('-', '', $cuit_cliente)); 
-            $subtotal = floatval(number_format($venta->getTotal() / 1.21, 2)); 
-            $sum_tax = floatval(number_format($venta->getTotal() - ($venta->getTotal() / 1.21), 2)); 
-            $total = floatval(number_format($venta->getTotal(), 2)); 
-          
-            $nro = 0;                         
-            $FechaComp = date("Ymd");
-            $certificado = "JessyV2_6038f9296162f8d7.crt";
-            $clave = "ClavePrivadaLucho.key";
-            $cuit = str_replace('-', '', $mi_cuit);
-            $urlwsaa = "https://wsaa.afip.gov.ar/ws/services/LoginCms";
-
-            // Los parametros de metodos y propiedades estan en www.bitingenieria.com.ar/webhelp
-            $wsfe = new WsFE();
-            $wsfe->CUIT = floatval($cuit);
-            $wsfe->setURL("https://servicios1.afip.gov.ar/wsfev1/service.asmx");
-            if ($wsfe->Login($certificado, $clave, $urlwsaa)) {
-                if (!$wsfe->RecuperaLastCMP($PtoVta, $TipoComp)) {
-                    echo $wsfe->ErrorDesc;
-                } else {                    
-                    $wsfe->Reset();
-                    $nro = $wsfe->RespUltNro + 1;
-                    $wsfe->AgregaFactura(1, $cust_doc_type, $cust_cuit, $nro, $nro, $FechaComp, $total, 0.0, $subtotal, 0.0, "", "", "", "PES", 1);
-                    $wsfe->AgregaIVA(5, $subtotal, $sum_tax); //5 es 21% y 3 es 0%
-                    
-                    $auth = false;
-                                       
-                    try {
-                        if ($wsfe->Autorizar($PtoVta, $TipoComp)) {                            
-                            $auth = true;                                        
-                        } else {                                       
-                            echo $wsfe->ErrorDesc;
-                        }                       
-                    } catch (\Exception $e) {
-                        if ($wsfe->CmpConsultar($TipoComp, $PtoVta, $nro, $cbte)) {
-
-                            $auth = true;
-                        } else{
-                            echo $wsfe->ErrorDesc;
-                        }
-                    }
-                    
-                    if ($auth) {                        
-                        $data['invoice_num'] = sprintf('%05d-', $PtoVta) . sprintf('%08d', $nro);
-                        $data['CAE'] = $wsfe->RespCAE;   
-                        $venCae = date("Y-m-d", strtotime($wsfe->RespVencimiento));
-                        $data['Vto'] = new DateTime($venCae);
-                        
-                        $venta->setNumero($nro);
-                        $venta->setCae($data['CAE']);
-                        $venta->setCaeVenc($data['Vto']);
-                        ($TipoComp == 1) ? $venta->setTipo('A') : $venta->setTipo('B');
-                        
-                        $em = $this->getDoctrine()->getManager();
-                        $em->persist($venta);
-                        $em->flush();
-
-
-                        return $data;
-                    } 
-                }
-            } else {
-                echo $wsfe->ErrorDesc;
-            }
-        //FIN FACTURA ELECTRONICA
-    }
-
+    
      /** 
      * @Route(path="/venta/recibo/{id}", name="venta_recibo")
      * @Security("user.hasRole(['ROLE_VENTAS_VIEW'])")  
      * @param Ventas $venta
      * @return Response
      */
-    public function reciboAction(Ventas $venta){                                            
-            $pdfOptions = new Options();
-            $pdfOptions->set('defaultFont', 'Arial');
-            $pdfOptions->set('isRemoteEnabled', TRUE);
-            
-            $dompdf = new Dompdf($pdfOptions);
-            
-            // Recupere el HTML generado en nuestro archivo twig
-            $html = $this->renderView('ventas/recibo.html.twig', ['venta' => $venta]);        
-            
-            $dompdf->loadHtml($html); 
-            
-            // (Opcional) Configure el tamaño del papel y la orientación 'vertical' o 'vertical'           
-            //$dompdf->setPaper(array(0,0,720,600), 'portrait');
-            $dompdf->setPaper('A4', 'portrait');
-
-            $dompdf->render();
-            
-            $dompdf->stream("recibo.pdf", array("Attachment" => false));
-    
-            exit(0);               
+    public function reciboAction(Ventas $venta){  
+        $recibo = new Recibos;                                          
+        
+        // Recupere el HTML generado en nuestro archivo twig
+        $html = $this->renderView('ventas/recibo.html.twig', ['venta' => $venta]);        
+        
+        $recibo->imprimirRecibo($html);         
     }
 
      /**
@@ -349,7 +222,7 @@ class VentasController extends BaseController
         try {
             $ventasArtRepo = $this->getDoctrine()->getRepository(VentasArt::class);
             $ventasArt     = $ventasArtRepo->findBy(['idVentas' => $entity]);
-            
+                        
             $em = $this->getDoctrine()->getManager();
 
             foreach ($ventasArt as $key) {

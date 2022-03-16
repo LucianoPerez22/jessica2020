@@ -120,7 +120,7 @@ class Presupuestos
         return $this->articulo;
     }
 
-    public function addArticulo(PresupuestoArt $articulo): self
+    public function addArticulo(PresupuestosArt $articulo): self
     {
         if (!$this->articulo->contains($articulo)) {
             $this->articulo[] = $articulo;
@@ -130,7 +130,7 @@ class Presupuestos
         return $this;
     }
 
-    public function removeArticulo(PresupuestoArt $articulo): self
+    public function removeArticulo(PresupuestosArt $articulo): self
     {
         if ($this->articulo->removeElement($articulo)) {
             // set the owning side to null (unless already changed)

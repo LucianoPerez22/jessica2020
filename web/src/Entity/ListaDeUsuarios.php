@@ -24,19 +24,19 @@ class ListaDeUsuarios
     /**
      * @var string|null
      * @Assert\NotBlank()
-     * @ORM\Column(name="Nombre", type="string", length=46, nullable=true)
+     * @ORM\Column(name="Nombre", type="string", length=46, nullable=false)
      */
     private $nombre;
 
     /**
      * @var string|null
      * @Assert\NotBlank()
-     * @ORM\Column(name="Direccion", type="string", length=82, nullable=true)
+     * @ORM\Column(name="Direccion", type="string", length=82, nullable=false)
      */
     private $direccion;
 
     /**
-     * @var string
+     * @var string|null
      * @Assert\NotBlank()
      * @ORM\Column(name="Telefono", type="string", length=100, nullable=false)
      */
@@ -90,7 +90,7 @@ class ListaDeUsuarios
         return $this->telefono;
     }
 
-    public function setTelefono(string $telefono): self
+    public function setTelefono(?string $telefono): self
     {
         $this->telefono = $telefono;
 

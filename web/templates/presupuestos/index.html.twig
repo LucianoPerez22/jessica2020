@@ -11,6 +11,8 @@
 {% block list %}
     <div class="znv-header">    
         <div class="znv-col"> Fecha
+        </div>  
+        <div class="znv-col"> Num
         </div>       
         <div class="znv-col"> Cliente
         </div>       
@@ -23,11 +25,15 @@
         </div>
     </div>    
 
-    {% for ventas in entities %}
-        <div class="znv-line" data-path="{{ path('ventas_delete', { 'id' : ventas.id }) }}" data-name="{{ ventas.id }}">
+    {% for presupuestos in entities %}
+        <div class="znv-line" data-path="{{ path('presupuestos_delete', { 'id' : presupuestos.id }) }}" data-name="{{ presupuestos.id }}">
             <div class="znv-col">
                 <div class="znv-header">Fecha:</div>
                     {{presupuestos.fecha |date('d-m-Y')}} 
+            </div>   
+             <div class="znv-col">
+                <div class="znv-header">Num:</div>
+                    {{presupuestos.id}} 
             </div>    
             <div class="znv-col">
                 <div class="znv-header">Cliente:</div>
@@ -43,7 +49,7 @@
             </div>             
             <div class="znv-col-actions">
                 <div class="znv-group">                                        
-                    {{ macro_listActionButton(path('venta_show', {'id' : ventas.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_VENTAS_VIEW']) }}                    
+                    {{ macro_listActionButton(path('presupuestos_show', {'id' : presupuestos.id}), 'page.list.buttons.view', 'fa-eye', ['ROLE_VENTAS_VIEW']) }}                    
                     {{ macro_liConfirmButton('page.list.buttons.delete', 'znv-icon fa-trash', ['ROLE_VENTAS_DELETE'], 'setNameAndText') }} 
                 </div>
             </div>

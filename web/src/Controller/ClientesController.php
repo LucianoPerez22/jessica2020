@@ -93,6 +93,7 @@ class ClientesController extends BaseController
         $handler->setClassFormType(SaveClienteType::class);
         $handler->createForm($entity);
 
+        //dump($request->request->all()); die;
         if ($handler->isSubmittedAndIsValidForm($request)) {
             try {
                 if ($handler->processTransactionForm()) {

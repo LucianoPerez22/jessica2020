@@ -109,7 +109,7 @@ page:
         articulos: Articulos
         ventas: Ventas
         presupuestos: Presupuestos
-        clientes: Clientes
+        clientes: Clientes        
         informes: Informes
         informesVentas: Ventas
         informesTipo: Informes
@@ -198,7 +198,7 @@ page:
             total: Total
             fecha: Fecha
             numero: Numero
-            tipo: Tipo
+            tipo: Tipo      
         buttons:
             add: Agregar Venta
         

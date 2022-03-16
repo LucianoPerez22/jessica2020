@@ -98,3 +98,14 @@ flash:
         delete:
             success: Cliente eliminado con éxito
             error: Este cliente está relacionado con otra entidad. No se puede quitar
+
+    presupuestos:
+        new:
+            success: Presupuesto guardado correctamente
+            error: Se produjo un error al intentar guardar el presupuesto
+        edit:
+            success: Presupuesto editado con éxito. 
+            error: Se produjo un error al intentar editar el presupuesto
+        delete:
+            success: Presupuesto eliminado con éxito
+            error: Este presupuesto está relacionado con otra entidad. No se puede quitar

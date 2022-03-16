@@ -25,23 +25,36 @@ class PresupuestosArt
     /**
      * @var int
      *
-     * @ORM\Column(name="fecha", type="int", nullable=true)
+     * @ORM\Column(name="cant", type="integer", nullable=false)
      */
     private $cantidad;
-
-     /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=255, nullable=false)
-     */
-    private $descripcion;
+    
   
-    /**
-     * @var int
-     *@ORM\ManyToOne(targetEntity="Presupuestos", inversedBy="articulo")
-     * @ORM\Column(name="id_presupuesto", type="int", nullable=true)
+    /**     
+     * @ORM\ManyToOne(targetEntity="Presupuestos", inversedBy="articulo")
+     * @ORM\JoinColumn(name="id_presupuesto", referencedColumnName="id")     
      */
     private $presupuesto;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Articulos", inversedBy="articulo")
+     * @ORM\JoinColumn(name="id_art", referencedColumnName="id")   
+     */
+    private $idArt;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="precio", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $precio;
+
+     /**
+     * @var float
+     *
+     * @ORM\Column(name="total", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $total;
 
     public function getId(): ?int
     {
@@ -58,19 +71,7 @@ class PresupuestosArt
         $this->cantidad = $cantidad;
 
         return $this;
-    }
-
-    public function getDescripcion(): ?string
-    {
-        return $this->descripcion;
-    }
-
-    public function setDescripcion(string $descripcion): self
-    {
-        $this->descripcion = $descripcion;
-
-        return $this;
-    }
+    }    
 
     public function getPresupuesto()
     {
@@ -83,4 +84,40 @@ class PresupuestosArt
 
         return $this;
     }
+
+    public function getIdArt(): ?Articulos
+    {
+        return $this->idArt;
+    }
+
+    public function setIdArt(?Articulos $idArt): self
+    {
+        $this->idArt = $idArt;
+
+        return $this;
+    }
+
+    public function getPrecio(): ?float
+    {
+        return $this->precio;
+    }
+
+    public function setPrecio(float $precio): self
+    {
+        $this->precio = $precio;
+
+        return $this;
+    }
+
+    public function getTotal(): ?float
+    {
+        return $this->total;
+    }
+
+    public function setTotal(float $total): self
+    {
+        $this->total = $total;
+
+        return $this;
+    }  
 }

@@ -32,13 +32,13 @@
 
 				<td class="text-center" style="border: 1px solid black;">
 					<h1 style="text-align: center;" >
-						R
+						P
 					</h1>	
 				</td>
 
 				<td  style="border: 1px solid black;">
-					<h2>RECIBO</h2>											
-					<h5>Comp. Nro.: {{ venta.numero }}</h5>
+					<h2>PRESUPUESTO</h2>											
+					<h5>Comp. Nro.: {{ venta.id }}</h5>
 					<h5><strong>Fecha Emision:</strong> {{venta.fecha |date('d-m-Y')}}</h5>
 					<h5><strong> CUIT:</strong> 20-30391056-6</h5>
 					<h5><strong> IIBB:</strong> 000-102779/04</h5>
@@ -54,13 +54,13 @@
 			</tr>
 			<tr>
 				<td>
-					<h5><strong>CUIT:</strong> {{ venta.idCliente.documento }} </h5>																				  					
+					{# <h5><strong>CUIT:</strong> {{ venta.idCliente.documento }} </h5>																				  					
 					<h5><strong>Condicion Iva:</strong> {{ venta.idCliente.documento }}</h5>
-					<h5><strong>Tipo Venta: </strong> {{ venta.formaPago }}</h5>
+					<h5><strong>Tipo Venta: </strong> {{ venta.formaPago }}</h5> #}
 				</td>			
 				<td>
-				    <h5><strong>Razon Social: </strong> {{ venta.idCliente.nombre }}</h5>
-					<h5><strong>Direccion: </strong> {{ venta.idCliente.direccion }}</h5>						
+				    <h5><strong>Razon Social: </strong> {{ venta.cliente }}</h5>
+					{# <h5><strong>Direccion: </strong> {{ venta.idCliente.direccion }}</h5>						 #}
 				</td>				
 			</tr>			
 		</table> 
@@ -79,14 +79,14 @@
 			</thead>
 
 			<tbody>	
-			{% for articulo in venta.ventas %}	
+			{% for articulo in venta.articulo %}	
 				<tr>
-					<td class="text-center">{{ articulo.cant }}</td>			
+					<td class="text-center">{{ articulo.cantidad }}</td>			
 					<td>{{ articulo.idArt.descripcion }}</td>				
 					<td>${{ articulo.precio }}</td>				
-					<td>${{ articulo.precio * articulo.cant }}</td>	
+					<td>${{ articulo.precio * articulo.cantidad }}</td>	
 
-					{% set total = total + (articulo.precio * articulo.cant) %}			
+					{% set total = total + (articulo.precio * articulo.cantidad) %}			
 				</tr>	
 			{% endfor %}
 
@@ -102,6 +102,8 @@
                 <th style="border: 1px solid black; text-align: right;"><strong>Total: ${{ total }} </strong></th>											
 			</tr>	
 			</thead>			
-		</table> 		
+		</table> 	
+
+        <p>Presupuesto Valido por 7 dias desde la fecha de emision</p>	
 	</body>
 </html>

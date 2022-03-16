@@ -1,0 +1,79 @@
+{% extends 'global/layout_form.html.twig' %}
+
+{% set titlePage = 'page.presupuestos.title.new' | trans %}
+{% set menu = "ventas" %}
+{% set pathCancel = path('presupuestos_index') %}
+{% set num_control = 0 %}
+{% block formContent %}
+<div class="znv-half">
+    {{ form_row(form.cliente) }}
+</div>
+{# <div class="znv-half">
+    {{ form_row(form.formaPago) }}
+</div> #}
+
+{# INICIO FORM ART #}
+<div id="form_art + {{num_control}}" class="znv-full">
+	<div class="znv-card-container">
+		<!-- Card Column 100% -->
+				<div class="znv-card-header">
+					<div class="znv-title"></div>
+				</div>
+				<!-- znv-card-header -->
+				<!-- Card Body  -->
+				<div class="znv-card-body">
+					<!-- List Container -->
+					<div class="znv-list-container">
+						<div class="znv-header">
+							<div class="znv-col col-2">Cant</div>
+							<!-- znv-list-col -->
+							<div class="znv-col col-5">Descripcion</div>
+							<!-- znv-list-col -->
+							<div class="znv-col col-2">P Unit</div>
+							<!-- znv-list-col -->
+							<div class="znv-col col-2">P Total</div>
+							<div class="znv-col col-1"></div>
+							<!-- znv-list-col -->
+						</div>
+						<!-- znv-list-header -->
+                        {# DIV DONDE SE RENDERIZAN LOS ARTICULOS #}
+                        <div id="form_art" class="znv-full"></div>
+       </div>
+					<!-- znv-list-container -->
+					<!-- List Footer -->
+					<div class="znv-list-footer"></div>
+					<!-- znv-list-footer -->
+
+					<div class="znv-space"></div>
+
+				
+		</div>
+		{# DIV PARA TOTAL #}
+		<div id="divTotal" class=""></div>
+		<!-- znv-card-full -->
+	</div>	
+	<!-- znv-card-container -->
+</div>
+
+ {# ## JQuery ## #}
+    <script>        
+        $(document).ready(function() {              
+            $('#save_presupuestos_cliente').on('change', function(e) {
+                let urlAjaxFormFields = "{{ path('ajax_presupuestos_art') }}";          
+                $.ajax({
+                    url: urlAjaxFormFields + '/' + {{num_control}},
+                    type: "GET",
+                    async: false,
+                    success: function (response) {                              
+                        {% set num_control = num_control + 1 %}        
+                        $('#form_art').before(response);                                                                                   
+                    },
+                    error: function (err) {
+                        alert("An error ocurred while loading data ...");
+                    }
+                });
+            });
+
+        })       
+    </script>
+{% endblock %}

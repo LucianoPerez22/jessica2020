@@ -1,0 +1,100 @@
+{% extends 'global/layout_view.html.twig' %}
+
+{% set titlePage = "page.presupuestos.title.view" | trans %}
+{% set menu = "presupuestos" %}
+
+{% block buttonsTitle %}
+{% set referer = (app.request.server.get('HTTP_REFERER') is not null ?
+            app.request.server.get('HTTP_REFERER')|default('/') :
+            path('presupuestos_index')) %}
+<li>
+    {{ macro_buttonReturn(referer) }}
+</li>
+
+<li>
+    <a href="{{ path('presupuestos_imprimir', {'id' : venta.id}) }}" target="_blank" class="znv-btn">
+        <i class="fa-print"></i>
+        IMPRIMIR
+    </a>
+</li>
+{% endblock %}
+
+{% block viewContent %}
+<div class="znv-card-full znv-highlight">
+    <div class="znv-form-group-view">
+        <p>{{ 'page.ventas.labels.nombre'|trans }}</p>
+        <h3>{{ venta.cliente }}</h3>
+    </div>
+</div>
+<div class="znv-card-full znv-two-column">
+  {{ macro_cardHalfView('page.ventas.labels.fecha' | trans, venta.fecha|date('d-m-Y')) }}
+  {{ macro_cardHalfView('page.ventas.labels.numero' | trans,  venta.id) }}
+  {{ macro_cardHalfView('Usuario: ' | trans, venta.user) }}
+</div>
+
+<div class="znv-card-container">
+	<!-- Card Column 100% -->
+	<div class="znv-card-full">
+		<!-- Card -->
+		<div class="znv-card">			
+			<div class="znv-card-header">
+				<div class="znv-title">
+					{# <div class="znv-icon fa-wrench"></div>#}
+					<h3>Articulos</h3> 
+				</div>
+			</div><!-- znv-card-header -->
+			<!-- Card Body  -->
+			<div class="znv-card-body">
+				<!-- List Container -->
+				
+				<div class="znv-list-container">
+                    <div class="znv-header">
+                        <div class="znv-col">Cant</div><!-- znv-list-col -->
+                        <div class="znv-col">Descripcion</div><!-- znv-list-col -->           
+                        <div class="znv-col">P Unit</div><!-- znv-list-col -->        
+                        <div class="znv-col">P Total</div><!-- znv-list-col -->                        
+                    </div><!-- znv-list-header -->
+
+    {% for articulo in venta.articulo %}
+                    <div class="znv-line">
+                        <div class="znv-col">
+                            <div class="znv-header">Cant</div>
+                            {{articulo.cantidad}}
+                        </div><!-- znv-list-col -->
+                         <div class="znv-col">
+                            <div class="znv-header">Descripcion</div>
+                                {% if articulo.idArt is defined %}                                
+                                    {{articulo.idArt.descripcion}}
+                                {% endif %}
+                        </div><!-- znv-list-col -->
+                         <div class="znv-col">
+                            <div class="znv-header">P Unit</div>
+                            $ {{articulo.precio}}
+                        </div><!-- znv-list-col -->
+                         <div class="znv-col">
+                            <div class="znv-header">P Total</div>
+                            $ {{articulo.precio * articulo.cantidad}}
+                        </div><!-- znv-list-col -->    
+                    </div>                
+    {% endfor %}
+
+				</div><!-- znv-list-container -->
+				<!-- List Footer -->
+				<div class="znv-list-footer">
+					
+				</div><!-- znv-list-footer -->
+
+				<div class="znv-space"></div>				
+
+			</div><!-- znv-card-body -->
+		</div><!-- znv-card -->
+	</div><!-- znv-card-full -->
+</div><!-- znv-card-container -->
+<div class="znv-card-full znv-highlight">
+    <div class="znv-form-group-view">
+        <p>{{ 'page.ventas.labels.total'|trans }}</p>
+        <h3>{{ '$ ' ~ venta.total }}</h3>
+    </div>
+</div>
+
+{% endblock %}

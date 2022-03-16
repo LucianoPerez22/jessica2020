@@ -86,11 +86,19 @@
 			{% for articulo in venta.ventas %}	
 				<tr>
 					<td class="text-center">{{ articulo.cant }}</td>			
-					<td>{{ articulo.idArt.descripcion }}</td>				
-					<td>${{ articulo.precio }}</td>				
-					<td>${{ articulo.precio * articulo.cant }}</td>	
+					<td>{{ articulo.idArt.descripcion }}</td>	
+					
+					{% if venta.idCliente.tipoIva == 'responsable' %}
+						{% set precio = articulo.precio / 1.21 %} 					
+						{% else %}
+							{% set precio = articulo.precio %} 
+					{% endif %}
+					
+					{% set precioTotal = precio * articulo.cant  %}
+					<td>${{ precio |number_format(2) }}</td>				
+					<td>${{ precioTotal |number_format(2)  }}</td>	
 
-					{% set total = total + (articulo.precio * articulo.cant) %}			
+					{% set total = total + (precio / 1.21) * articulo.cant |number_format(2, '.', ',')  %}			
 				</tr>	
 			{% endfor %}
 
@@ -109,8 +117,7 @@
 							<th style="border: 1px solid black; text-align: left;"></th>	
 							<th style="border: 1px solid black; text-align: left;"></th>				
 							<th style="border: 1px solid black; text-align: right;"><strong>Total: ${{ total * 1.21 }} </strong></th>			
-					{% endif %}
-				
+					{% endif %}				
 			</tr>	
 			</thead>			
 		</table> 
