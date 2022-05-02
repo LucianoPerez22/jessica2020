@@ -217,7 +217,7 @@ class VentasController extends BaseController
      * @return RedirectResponse
      * @throws \Exception
      */
-    public function deleteAction(Ventas $entity, EntityManagerHelper $helper, UserInterface $user)
+    public function deleteAction(Ventas $entity, EntityManagerHelper $helper, UserInterface $user, Afip $afip)
     {
         try {
             $ventasArtRepo = $this->getDoctrine()->getRepository(VentasArt::class);
@@ -241,6 +241,14 @@ class VentasController extends BaseController
             }
                       
              $helper->doDelete($entity);
+
+             $data = $afip->facturaElectronica($entity);        
+               
+            // Recupere el HTML generado en nuestro archivo twig
+            $html = $this->renderView('ventas/notaCredito.html.twig', ['venta' => $entity, 'data' =>$data]);                                       
+
+            $afip->imprimirNotaCredito($html);
+
              $this->addFlashSuccess('flash.ventas.delete.success');
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->addFlashError('flash.ventas.delete.error');
@@ -248,4 +256,15 @@ class VentasController extends BaseController
 
         return $this->redirectToRoute('ventas_index');
     }     
+
+      /** 
+     * @Route(path="/admin/ventas/obtener", name="obtener_comprobantes")
+     * @Security("user.hasRole(['ROLE_VENTAS_VIEW'])")      
+     */
+    public function obtenerComprobantes(Afip $afip){
+        
+        $data = $afip->obtenerComprobantes();
+        dump($data);
+        die;
+    }
 }

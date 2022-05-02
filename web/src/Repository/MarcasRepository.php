@@ -26,7 +26,7 @@ class MarcasRepository extends ServiceEntityRepository
             
             if (!empty($filters['name'])) {
                 $name = '%' . $filters['name'] . '%';
-                $q->andWhere('m.name LIKE :name')
+                $q->andWhere('m.descripcion LIKE :name')
                 ->setParameter('name', $name);
             }
            
