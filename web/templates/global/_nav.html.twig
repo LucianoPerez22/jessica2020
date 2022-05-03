@@ -2,7 +2,7 @@
     {% set menu = "" %}
 {% endif %}
 
-{% set rolesMenu = ['ROLE_USER_LIST', 'ROLE_GROUP_LIST', 'ROLE_ARTICULOS_LIST', 'ROLE_CLIENTES_LIST', 'ROLE_VENTAS_LIST', 'ROLE_MARCAS_LIST'] %}
+{% set rolesMenu = ['ROLE_USER_LIST', 'ROLE_GROUP_LIST', 'ROLE_ARTICULOS_LIST', 'ROLE_CLIENTES_LIST', 'ROLE_VENTAS_LIST', 'ROLE_MARCAS_LIST', 'ROLE_PRESUPUESTOS_LIST'] %}
 
 {% set listMenu =  [] %}
 
@@ -34,7 +34,7 @@
                 </li>
                  <hr />
                 <li>
-                    {{ macro_liNav((menu == "presupuestos"), 'presupuestos_index', 'page.menu.presupuestos'|trans, ['ROLE_PRESUESTOS_LIST'], 'fa fa-shopping-cart') }}
+                    {{ macro_liNav((menu == "presupuestos"), 'presupuestos_index', 'page.menu.presupuestos'|trans, ['ROLE_PRESUPUESTOS_LIST'], 'fa fa-shopping-cart') }}
                 </li>
                 <hr />               
                 {{ macro_liNav((menu == "informes"), 'informes_tipo', 'page.menu.informesTipo'|trans, ['ROLE_INFORMES'], 'fa-list') }}  
