@@ -64,69 +64,64 @@ class PresupuestosController extends BaseController
         $numId  = $numero->getResult();
         ($numId[0][1] === null) ? $numId[0][1] = 1 : $numId[0][1] = intval($numId[0][1]) + 1;
         
-        $data = $request->request->all();  
-               
-        try {           
-            if (array_key_exists('art', $data)){   
+        $data = $request->request->all();
+
+
+        try {
+            if (array_key_exists('art', $data)){
                 if ($data['art']['total0'] == 0){
                     $this->addFlashError('flash.presupuestos.new.error');
                     return $this->render('presupuestos/new.html.twig', array('form' => $handler->getForm()->createView()));
-                }               
-                
+                }
                 $clienteRepo = $this->getDoctrine()->getRepository('App:ListaDeUsuarios')->findOneBy(['id' => $data['save_presupuestos']['cliente']]);
 
                 $presupuesto->setCliente($clienteRepo->getNombre());
                 $presupuesto->setUser($user);
                 $presupuesto->setFecha(new \DateTime());
-                
+
                 $total = 0;
                 foreach ($data['art'] as $key => $value) {
-                    (substr($key, 0, 5) == 'total') ? $total += floatval($value) : '';                         
+                    (substr($key, 0, 5) == 'total') ? $total += floatval($value) : '';
                 }
-               
+
                 $presupuesto->setTotal($total);
 
                 $manager = $this->getDoctrine()->getManager();
                 $manager->persist($presupuesto);
                 $manager->flush($presupuesto);
 
-                if($handler->isSubmittedAndIsValidForm($request)){                                                                                                                                                                                                                               
-                            foreach ($data['art'] as $key => $value) {                                                                    
-                                if (substr($key, 0, 4) == 'cant') {
-                                    $articulos = new PresupuestosArt();                                    
-        
-                                    $articulos->setCantidad($value);                                        
-                                } 
-                                
-                                if (substr($key, 0, 5) == 'idArt') {                           
-                                    $artRepo = $this->getDoctrine()->getRepository('App:Articulos');
-                                    $articulo  = $artRepo->findOneBy(["id" => intval($value)]);
-                                   
-                                    $articulos->setIdArt($articulo);                                    
-                                }                         
-                                (substr($key, 0, 6) == 'precio') ? $articulos->setPrecio(floatval($value)) : '';
-                                if (substr($key, 0, 5) == 'total') {
-                                    $articulos->setPresupuesto($presupuesto);
-                                    $articulos->setTotal(floatval($value));
-                                    
-                                    //dump($articulos); die;
-                                    $manager->persist($articulos);
-                                    $manager->flush($articulos);                                   
-                                }                                                                      
-                            }                                                         
-                                                                    
-                            $this->addFlashSuccess('flash.presupuestos.new.success');
-            
-                            return $this->redirectToRoute('presupuestos_show', ['id'=> $presupuesto->getId()]);
-                                                                                                                  
-                }else{
-                    $this->addFlashError('flash.presupuestos.new.error');
-                 }      
+                foreach ($data['art'] as $key => $value) {
+                    if (substr($key, 0, 4) == 'cant') {
+                        $articulos = new PresupuestosArt();
+
+                        $articulos->setCantidad($value);
+                    }
+
+                    if (substr($key, 0, 5) == 'idArt') {
+                        $artRepo = $this->getDoctrine()->getRepository('App:Articulos');
+                        $articulo  = $artRepo->findOneBy(["id" => intval($value)]);
+
+                        $articulos->setIdArt($articulo);
+                    }
+                    (substr($key, 0, 6) == 'precio') ? $articulos->setPrecio(floatval($value)) : '';
+                    if (substr($key, 0, 5) == 'total') {
+                        $articulos->setPresupuesto($presupuesto);
+                        $articulos->setTotal(floatval($value));
+
+                        //dump($articulos); die;
+                        $manager->persist($articulos);
+                        $manager->flush($articulos);
+                    }
+                }
+
+                $this->addFlashSuccess('flash.presupuestos.new.success');
+
+                return $this->redirectToRoute('presupuestos_show', ['id'=> $presupuesto->getId()]);
             }
         } catch (\Exception $e) {
             $this->addFlashError('flash.presupuestos.new.error');
             $this->addFlashError($e->getMessage());
-        }                  
+        }
        
         return $this->render('presupuestos/new.html.twig', array('form' => $handler->getForm()->createView()));  
     }

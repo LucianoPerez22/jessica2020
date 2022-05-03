@@ -81,8 +81,9 @@ class VentasController extends BaseController
                 $numeroR = $numero->getResult();           
                 $venta->setNumero(intval($numeroR[0][1])+1);
     
-                $venta->setCae('');
+                $venta->setCae(null);
                 $venta->setTipo('R');
+                $venta->setCaeVenc(null);
                 $total = 0;
                 foreach ($data['art'] as $key => $value) {
                     (substr($key, 0, 5) == 'total') ? $total += floatval($value) : '';                         
