@@ -73,9 +73,9 @@ class PresupuestosController extends BaseController
                     $this->addFlashError('flash.presupuestos.new.error');
                     return $this->render('presupuestos/new.html.twig', array('form' => $handler->getForm()->createView()));
                 }
-                $clienteRepo = $this->getDoctrine()->getRepository('App:ListaDeUsuarios')->findOneBy(['id' => $data['save_presupuestos']['cliente']]);
+                //$clienteRepo = $this->getDoctrine()->getRepository('App:ListaDeUsuarios')->findOneBy(['id' => $data['save_presupuestos']['cliente']]);
 
-                $presupuesto->setCliente($clienteRepo->getNombre());
+                $presupuesto->setCliente($data['save_presupuestos']['cliente']); //$clienteRepo->getNombre()
                 $presupuesto->setUser($user);
                 $presupuesto->setFecha(new \DateTime());
 

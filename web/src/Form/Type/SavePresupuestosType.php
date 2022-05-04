@@ -18,7 +18,7 @@ class SavePresupuestosType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('cliente', EntityType::class, [ 
+            /*->add('cliente', EntityType::class, [
                 'class'         => ListaDeUsuarios::class,
                 'required'      => true, 
                 'label'         => 'Cliente',                               
@@ -27,7 +27,10 @@ class SavePresupuestosType extends AbstractType
                 'attr'          => ['class' => 'js-select2'],    
                 'empty_data' => null,      
             ])                
-        ;
+        ;*/
+        ->add('cliente', TextType::class, [
+
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
