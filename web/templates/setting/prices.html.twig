@@ -1,0 +1,12 @@
+{% extends 'global/layout_form.html.twig' %}
+
+{% set titlePage = 'Ajustes Masivos'  %}
+{% set menu = "setting" %}
+{% set pathCancel = path('setting_index') %}
+
+{% block form %}
+    <div class="znv-half">
+        {{ form_row(form.descripcion) }}
+    </div>
+
+{% endblock %}

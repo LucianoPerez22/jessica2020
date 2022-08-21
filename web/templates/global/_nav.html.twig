@@ -14,7 +14,8 @@
             {{ macro_liNav((menu == "dashboard"), 'home', 'page.dashboard.title'|trans, ['ROLE_USER'], 'fa-home') }}
             {% if app.user.isSuperAdmin %}
                 {{ macro_liNav((menu == "user"), 'user_list', 'page.menu.user'|trans, ['ROLE_USER_LIST'], 'fa-user') }}
-                {{ macro_liNav((menu == "group"), 'group_list', 'page.menu.group'|trans, ['ROLE_GROUP_LIST'], 'fa-users') }}  
+                {{ macro_liNav((menu == "group"), 'group_list', 'page.menu.group'|trans, ['ROLE_GROUP_LIST'], 'fa-users') }}
+                {{ macro_liNav((menu == "setting"), 'setting_index', 'Ajustes Masivos', [''], 'fa-cog') }}
             {% endif %}
             <hr />
             {# PARA EL USUARIO COMUN #}
