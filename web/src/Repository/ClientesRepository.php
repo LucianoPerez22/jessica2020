@@ -18,7 +18,16 @@ class ClientesRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ListaDeUsuarios::class);
     }
-                    
+
+    public function findAllByDocumenteAndFinal()
+    {
+        $qb = $this->createQueryBuilder('v')
+            ->where('v.documento > 0')
+            ->andWhere('v.tipoIva = :tipoIva')
+            ->setParameter('tipoIva', 'final')
+            ;
+        return $qb->getQuery()->getResult();
+    }
     public function findAllWithFilterAndOrderQuery(array $filters, array $order=null)
     {       
         $q = $this->createQueryBuilder('c')

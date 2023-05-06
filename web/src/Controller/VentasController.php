@@ -155,13 +155,13 @@ class VentasController extends BaseController
     }   
 
      /**
-     * @Route(path="/venta/art/{num_control}", name="ajax_venta_art")
+     * @Route(path="/venta/art", name="ajax_venta_art")
      * @Security("user.hasRole(['ROLE_VENTAS_NEW'])")
      * @param Ventas $venta
      * @param Request $request
      * @return Response
      */
-    public function ajaxAction($num_control = null, Request $request)
+    public function ajaxAction($num_control = 0, Request $request)
     {           
         if ($request->isXmlHttpRequest()) {                
             $dato = [
