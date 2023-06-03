@@ -111,7 +111,7 @@ class Afip
     //FIN FACTURA ELECTRONICA
     }
 
-    public function facturaElectronicaGenerar(string $dni, float $amount){
+    public function facturaElectronicaGenerar(string $dni, float $amount, string $date){
         //INICIO FACTURA ELECTRONICA
         $cuit_cliente= $dni;
 
@@ -130,7 +130,7 @@ class Afip
         $total = floatval(round($amount,2));
 
         $nro = 0;
-        $FechaComp = date("Ymd");
+        $FechaComp = date("Ymd", strtotime($date));
         $certificado = "JessyV2_6038f9296162f8d7.crt";
         $clave = "ClavePrivadaLucho.key";
         $cuit = str_replace('-', '', $mi_cuit);
@@ -140,6 +140,8 @@ class Afip
         $wsfe = new WsFE();
         $wsfe->CUIT = floatval($cuit);
         $wsfe->setURL("https://servicios1.afip.gov.ar/wsfev1/service.asmx");
+
+        $data = [];
         if ($wsfe->Login($certificado, $clave, $urlwsaa)) {
             if (!$wsfe->RecuperaLastCMP($PtoVta, $TipoComp)) {
                 echo $wsfe->ErrorDesc;
@@ -167,18 +169,12 @@ class Afip
                 }
 
                 if ($auth) {
-                    $data['invoice_num'] = sprintf('%05d-', $PtoVta) . sprintf('%08d', $nro);
+                    ($TipoComp == 1) ? $typeInvoice = 'A' : $typeInvoice = 'B';
+                    $data['invoice_num'] = $typeInvoice . ' ' . sprintf('%05d-', $PtoVta) . sprintf('%08d', $nro);
                     $data['CAE'] = $wsfe->RespCAE;
                     $venCae = date("Y-m-d", strtotime($wsfe->RespVencimiento));
                     $data['Vto'] = new DateTime($venCae);
-
-                    $venta->setNumero($nro);
-                    $venta->setCae($data['CAE']);
-                    $venta->setCaeVenc($data['Vto']);
-                    ($TipoComp == 1) ? $venta->setTipo('A') : $venta->setTipo('B');
-
-                    $this->em->persist($venta);
-                    $this->em->flush();
+                    $data['amount'] = $total;
                 }
             }
 

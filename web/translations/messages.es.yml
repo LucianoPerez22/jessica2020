@@ -108,6 +108,7 @@ page:
         marcas: Marcas
         articulos: Articulos
         ventas: Ventas
+        ventas_recurrentes: Facturas Automaticas
         presupuestos: Presupuestos
         clientes: Clientes        
         informes: Informes
@@ -192,6 +193,7 @@ page:
             view: Vista de Venta
             edit: Edición de Venta
             new: Nueva Venta
+            ventas-recurrentes: Facturacion Automatica - Generar
         labels:
             actual: Venta Actual
             nombre: Nombre

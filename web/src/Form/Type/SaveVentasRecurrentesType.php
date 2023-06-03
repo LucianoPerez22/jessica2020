@@ -5,6 +5,8 @@ namespace App\Form\Type;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,18 +26,18 @@ class SaveVentasRecurrentesType extends AbstractType
                     new NotNull()
                 ),
             ])
+            /*
             ->add('hasta', DateType::class, [
                 'widget' => 'single_text',
                 'constraints' => array(
                     new NotNull()
                 ),
             ])
-            ->add('cantidad', NumberType::class, [
-                'label' => 'Cantidad',
-                //'data' => 0,
-                'constraints' => array(
-                    new NotNull()
-                ),
+            */
+            ->add('myfile', FileType::class, [
+                'label' => 'Select Document',
+                'mapped'    => false, // Tell that there is no Entity to link
+                'required'  => true,
             ])
             ->add('importe', NumberType::class, [
                 'label' => 'Importe',
@@ -47,10 +49,10 @@ class SaveVentasRecurrentesType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => null,
-        ]);
+        $resolver->setDefaults(array(
+            'csrf_protection' => false,
+        ));
     }
 }

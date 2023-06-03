@@ -1,24 +1,25 @@
-{% extends 'global/layout_form.html.twig' %}
+{% extends 'global/layout.html.twig' %}
 
-{% set titlePage = 'page.ventas-recurrentes.title.new' | trans %}
+{% set titlePage = 'page.ventas.title.ventas-recurrentes' | trans %}
 {% set menu = "ventas" %}
 {% set pathCancel = path('ventas_index') %}
 {% set num_control = 0 %}
-{% block formContent %}
-<div class="znv-half">
-    {{ form_row(form.desde) }}
-</div>
-<div class="znv-half">
-    {{ form_row(form.hasta) }}
-</div>
- <div class="znv-half">
-  {{ form_row(form.cantidad) }}
- </div>
- <div class="znv-half">
-  {{ form_row(form.importe) }}
- </div>
+{% block content %}
 
+
+ <div class="znv-half">
+
+ <form method="POST"  action="{{ path('venta_recurrentes_upload') }}" enctype="multipart/form-data">
+  <input type="date" name="date" required>
+  <input type="file" name="myCsv" required accept=".csv">
+  <input type="number" name="amount" required>
+
+  <button type="submit" class="znv-btn znv-greenDark">Subir!</button>
+
+ </form>
+ </div>
 
 
  {# ## JQuery ## #}
+
 {% endblock %}
