@@ -25,6 +25,9 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
+if (isset($_SERVER['REQUEST_URI']) && '/favicon.ico' === $_SERVER['REQUEST_URI']) {
+    return;
+}
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
