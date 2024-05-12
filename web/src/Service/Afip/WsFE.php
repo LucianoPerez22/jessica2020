@@ -3,6 +3,8 @@
 namespace App\Service\Afip;
 
 #==============================================================================
+use SoapClient;
+
 define ("WSDLWSAA", dirname(__FILE__)."/wsaa.wsdl");
 define ("WSDLWSW", dirname(__FILE__)."/wsfe.wsdl");
 define ("WSDLWSCDC", dirname(__FILE__)."/wscdc.wsdl");
@@ -94,7 +96,7 @@ class WsFE
 
     private function CallWSAA($CMS, $urlWsaa)
     {
-        $wsaaClient = new \SoapClient(WSDLWSAA, array(
+        $wsaaClient = new SoapClient(WSDLWSAA, array(
             'soap_version' => SOAP_1_2,
             'location' => $urlWsaa,
             'trace' => 1,
@@ -396,7 +398,7 @@ class WsFE
             )
         );
 
-        $this->client = new \SoapClient(WSDLWSW, array(
+        $this->client = new SoapClient(WSDLWSW, array(
                 'soap_version'=> SOAP_1_2,
                 'location' => $URL,
                 'trace' => 1,
@@ -490,18 +492,6 @@ class WsFE
         return true;
     }
 
-    function Invoice($data, $format = ''){
-        include("invoice.php");
-        $invoice = new Invoice();
-        return $invoice->Generate($data, $format);
-    }
-
-    function InvoiceTicket($data, $format = '')
-    {
-        include ("ticket.php");
-        $invoice = new Invoice();
-        return $invoice->Generate($data, $format);
-    }
     function AddChecksum($Prefix, $DNI)
     {
         $DNIStr = $Prefix.$DNI;
@@ -533,7 +523,7 @@ class WsFE
                 )
             );
 
-            $consultacuit = new \SoapClient(WSDLWSpersonaServiceA5, array(
+            $consultacuit = new SoapClient(WSDLWSpersonaServiceA5, array(
                     'soap_version' => SOAP_1_1,
                     'location' => $URL,
                     'trace' => 1,
@@ -724,7 +714,7 @@ class WsFE
             )
         );
 
-        $clientConstatar = new \SoapClient(WSDLWSCDC, array(
+        $clientConstatar = new SoapClient(WSDLWSCDC, array(
                 'soap_version'=> SOAP_1_2,
                 'location' => URLWSCDC,
                 'trace' => 1,

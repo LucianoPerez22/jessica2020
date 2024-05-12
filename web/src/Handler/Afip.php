@@ -53,7 +53,7 @@ class Afip
         
         $nro = 0;                         
         $FechaComp = date("Ymd");
-        $certificado = "JessyV2_6038f9296162f8d7.crt";
+        $certificado = "JessyV2_2024_3bb88d0d3b04ab4e.crt";
         $clave = "ClavePrivadaLucho.key";
         $cuit = str_replace('-', '', $mi_cuit);
         $urlwsaa = "https://wsaa.afip.gov.ar/ws/services/LoginCms";
@@ -77,14 +77,14 @@ class Afip
                     if ($wsfe->Autorizar($PtoVta, $TipoComp)) {                            
                         $auth = true;                                        
                     } else {                                       
-                        echo $wsfe->ErrorDesc;
+                        return $wsfe->ErrorDesc;
                     }                       
                 } catch (\Exception $e) {
                     if ($wsfe->CmpConsultar($TipoComp, $PtoVta, $nro, $cbte)) {
 
                         $auth = true;
                     } else{
-                        echo $wsfe->ErrorDesc;
+                        return $wsfe->ErrorDesc;
                     }
                 }
                 

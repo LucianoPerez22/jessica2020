@@ -9,6 +9,11 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        test:
+            pattern: ^/test*
+            security: false
+
         secured_area:
             pattern: ^/*
             provider: users
@@ -23,6 +28,7 @@ security:
 
             logout:
                 path: logout
+
             remember_me:
                 secret:   '%kernel.secret%'
                 lifetime: 604800 # 1 week in seconds
@@ -38,3 +44,4 @@ security:
         - { path: ^/recover-password, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: '%env(SECURE_SCHEME)%' }
         - { path: ^/reset-password/*, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: '%env(SECURE_SCHEME)%' }
         - { path: ^/*, roles: ROLE_USER, requires_channel: '%env(SECURE_SCHEME)%' }
+        - { path: ^/test, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: '%env(SECURE_SCHEME)%' }
