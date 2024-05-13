@@ -1,8 +1,8 @@
 registration:
     message:
-        subject: Registration for JessyStock V2
+        subject: Registration for BS-ERP|Lucho
         welcome: Welcome to
-        explanation: If you are receiving this mail it is because JessyStock V2 has registered this mail to <strong> create a user for you on the system. </strong>
+        explanation: If you are receiving this mail it is because BS-ERP|Lucho has registered this mail to <strong> create a user for you on the system. </strong>
         next_step: Select the following link and follow the corresponding steps to end the user registration process
         greeting: Yours faithfully
         email_empty: User does not have an email configured
@@ -10,9 +10,9 @@ registration:
 
 recover_password:
     message:
-        subject: Recover password from JessyStock V2
+        subject: Recover password from BS-ERP|Lucho
         title: Request for password recovery
-        explanation: We have received a password change request for the JessyStock V2 system user
+        explanation: We have received a password change request for the BS-ERP|Lucho system user
         next_step: Select the following link and follow the corresponding steps to end the password reset process
         greeting: Yours faithfully
         user_not_found: We do not have this registered user with the email entered.
