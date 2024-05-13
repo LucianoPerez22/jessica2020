@@ -32,7 +32,12 @@
         <div class="znv-line" data-path="{{ path('articulos_delete', { 'id' : articulo.id }) }}" data-name="{{ articulo.descripcion }}">
             <div class="znv-col">
                 <div class="znv-header">Marca:</div>
-                    {{articulo.idMarca.descripcion}}
+                {% if articulo.idMarca.descripcion is not defined %}
+                    ""
+                    {% else %}
+                        {{ articulo.idMarca.descripcion | default("") }}
+                {% endif %}
+
             </div>    
             <div class="znv-col">
                 <div class="znv-header">Codigo:</div>

@@ -15,9 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
-/**
- * @Route("/articulos")
- */
 class ArticulosController extends BaseController
 {
     /**
