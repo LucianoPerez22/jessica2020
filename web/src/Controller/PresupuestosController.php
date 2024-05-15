@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Presupuestos;
 use App\Entity\PresupuestosArt;
+use App\Form\Type\SavePresupuestosArtType;
 use App\Service\Afip\WsFE;
 use App\Entity\Stock;
 use App\Entity\Ventas;
@@ -18,6 +19,7 @@ use App\Zennovia\Common\BaseController;
 use App\Zennovia\Common\EntityManagerHelper;
 use App\Zennovia\Common\FindEntitiesHelper;
 use DateTime;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,15 +59,18 @@ class PresupuestosController extends BaseController
         $presupuesto = new Presupuestos();       
 
         $handler->setClassFormType(SavePresupuestosType::class);
-        $handler->createForm(null);
-        
+        $handler->createForm($presupuesto);
+
+        // Validate form first
+        if (!$handler->isSubmittedAndIsValidForm($request)) {
+            return $this->render('presupuestos/new.html.twig', ['form' => $handler->getForm()->createView()]);
+        }
         //Obtengo Ultimo id presupuesto
         $numero = $this->getDoctrine()->getRepository('App:Presupuestos')->findLastNumber();
         $numId  = $numero->getResult();
         ($numId[0][1] === null) ? $numId[0][1] = 1 : $numId[0][1] = intval($numId[0][1]) + 1;
         
         $data = $request->request->all();
-
 
         try {
             if (array_key_exists('art', $data)){
@@ -122,31 +127,36 @@ class PresupuestosController extends BaseController
             $this->addFlashError('flash.presupuestos.new.error');
             $this->addFlashError($e->getMessage());
         }
-       
-        return $this->render('presupuestos/new.html.twig', array('form' => $handler->getForm()->createView()));  
+
+        return $this->render('presupuestos/new.html.twig', array('form' => $handler->getForm()->createView()));
     }
 
      /**
      * @Route(path="/presupuestos/art/{num_control}", name="ajax_presupuestos_art")
      * @Security("user.hasRole(['ROLE_PRESUPUESTOS_NEW'])")
-     * @param Presupuestos $presupuestos
-     * @param Request $request
-     * @return Response
      */
-    public function ajaxAction($num_control = null, Request $request)
-    {           
-        if ($request->isXmlHttpRequest()) {                
-            $dato = [
-                0 => $num_control
-            ];                                                 
-            $form = $this->createForm(SaveVentasArtType::class, null, ['algo' => $dato]);              
-            
-            return $this->render('ventas/articulos.html.twig', [
-                'form'          => $form->createView(),
-                'num_control'          => $num_control,                                    
-            ]);
+    public function ajaxVentaArt(Request $request, int $num_control): Response
+    {
+        $form = $this->createForm(SavePresupuestosArtType::class, null, ['num_control' => $num_control]);
+
+        return $this->render('ventas/articulos.html.twig', [
+            'form' => $form->createView(),
+            'num_control' => $num_control
+        ]);
+    }
+
+    /**
+     * @Route("/presupuestos/articulo/precio/{id}", name="ajax_get_articulo_precio_presupuesto", methods={"GET"})
+     */
+    public function ajaxGetArticuloPrecioAction(Articulos $articulo)
+    {
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(['precio' => $articulo->getPrecio()]);
         }
-    }   
+
+        throw $this->createNotFoundException('This is not an AJAX request');
+    }
 
      /**
      * @Route(path="/presupuestos/view/{id}", name="presupuestos_show")

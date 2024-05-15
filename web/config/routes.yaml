@@ -8,3 +8,13 @@ logout:
 home:
    path: /
    defaults: { _controller: 'App\Controller\DashboardController::indexAction' }
+
+ajax_venta_art:
+  path: /venta/art/{num_control}
+  controller: App\Controller\VentasController::ajaxVentaArt
+  methods: [GET]
+
+ajax_get_articulo_precio:
+  path: /venta/articulo/precio/{id}
+  controller: App\Controller\VentasController::ajaxGetArticuloPrecioAction
+  methods: [GET]

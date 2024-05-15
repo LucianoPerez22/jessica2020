@@ -8,58 +8,69 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 class SaveVentasArtType extends AbstractType
 {
-    private $_additionalName;
-
-    public function __construct($additionalName= ''){
-        $this->_additionalName = $additionalName;
-    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
-    {       
-        $this->_additionalName = $options['algo'][0];                
+    {
+        $num_control = $options['num_control'];
+
         $builder
-            ->add('cant' . $options['algo'][0], NumberType::class, ['label'  => false, 'data'  => 1,])
-            ->add('idArt' . $options['algo'][0], EntityType::class, [ 
-                'class'         => 'App:Articulos',
-                'required'      => true, 
-                'label'         => false,                      
-                'choice_label'  => 'descripcion',    
-                'placeholder'   => 'Seleccione un Articulo',               
-                'attr'          => ['class' => 'js-select2'],    
-                'empty_data'    => null,                 
-                'query_builder' => function (EntityRepository $er) {                                            
-                      return $er->createQueryBuilder('a')  
-                             ->select('a')                         
-                             ->addSelect('sum(s.cantidad) HIDDEN cant')
-                             ->join('a.stock', 's' )
-                             ->having('cant > 0')
-                             ->groupBy("a.id")                            
-                             ->orderBy('cant', 'DESC')
-                             ;                                                                                                         
-                    },                                
-            ])                            
-            ->add('precio' . $this->_additionalName, NumberType::class, ['label' => false, 'data' => 0])
-            ->add('total' . $this->_additionalName, NumberType::class, ['label'  => false, 'data' => 0, 'attr'=> [ 'readonly' => true ]])
-            ->add('delete'. $options['algo'][0], ButtonType::class, [
-                'label' => 'X',
-                'attr' =>  ['class' => 'clickeable btn btn-danger']
+            ->add('cant' . $num_control, NumberType::class, [
+                'label' => false,
+                'data' => 1,
+                'constraints' => [
+                    new NotBlank(),
+                    new Type('numeric'),
+                ],
+                'attr' => [
+                    'id' => 'form_cant' . $num_control,
+                    'class' => 'form-control',
+                ],
+            ])
+            ->add('idArt' . $num_control, EntityType::class, [
+                'class' => 'App:Articulos',
+                'required' => true,
+                'label' => false,
+                'choice_label' => 'descripcion',
+                'placeholder' => 'Seleccione un Articulo',
+                'attr' => [
+                    'id' => 'form_idArt' . $num_control,
+                    'class' => 'form-control js-select2',
+                ],
+            ])
+            ->add('precio' . $num_control, NumberType::class, [
+                'label' => false,
+                'data' => 0,
+                'constraints' => [
+                    new NotBlank(),
+                    new Type('numeric'),
+                ],
+                'attr' => [
+                    'id' => 'form_precio' . $num_control,
+                    'class' => 'form-control, js-select2',
+                ],
+            ])
+            ->add('total' . $num_control, NumberType::class, [
+                'label' => false,
+                'data' => 0,
+                'attr' => [
+                    'id' => 'form_total' . $num_control,
+                    'class' => 'form-control',
+                    'readonly' => true,
+                ],
             ]);
-            ;      
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => null,
-            'algo' => null,            
+            'num_control' => 0,
         ]);
-    }
 
-    public function getBlockPrefix()
-    {
-        return "art" . $this->_additionalName ;
+        $resolver->setRequired(['num_control']);
     }
 }

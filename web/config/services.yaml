@@ -1,8 +1,4 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
-
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+# config/services.yaml
 parameters:
     email_from_no_reply: 'no_reply@zennovia.com'
     csv_directory: '%kernel.project_dir%/public'
@@ -19,7 +15,7 @@ services:
     App\:
         resource: '../src/*'
         exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
-           
+
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
@@ -71,4 +67,4 @@ services:
         class: App\Service\SwitchUserSubscriber
         arguments: ["@security.token_storage"]
         tags:
-          - { name: kernel.event_subscriber }
+            - { name: kernel.event_subscriber }

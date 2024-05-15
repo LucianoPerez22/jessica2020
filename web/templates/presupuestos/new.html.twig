@@ -3,7 +3,9 @@
 {% set titlePage = 'page.presupuestos.title.new' | trans %}
 {% set menu = "presupuestos" %}
 {% set pathCancel = path('presupuestos_index') %}
-{% set num_control = 0 %}
+
+{% set num_control = num_control is defined ? num_control : 0 %}
+
 {% block formContent %}
 <div class="znv-half">
     {{ form_row(form.cliente) }}
@@ -56,20 +58,46 @@
 </div>
 
  {# ## JQuery ## #}
+    <script>
+        var currentNumControl = {{ num_control }};
+        console.log('NUM_CONTROL' + currentNumControl);
+    </script>
+
     <script>        
         $(document).ready(function() {              
             $('#save_presupuestos_cliente').on('change', function(e) {
-                let urlAjaxFormFields = "{{ path('ajax_presupuestos_art') }}";          
                 $.ajax({
-                    url: urlAjaxFormFields + '/' + {{num_control}},
+                    url: "{{ path('ajax_presupuestos_art', { 'num_control': 'NUM_CONTROL' }) }}".replace('NUM_CONTROL', currentNumControl),
                     type: "GET",
                     async: false,
                     success: function (response) {                              
-                        {% set num_control = num_control + 1 %}        
-                        $('#form_art').before(response);                                                                                   
+                        $('#form_art').before(response);
+                        // Eliminar botón previamente agregar si existiera
+                        $('.btn-add-article').remove();
+                        $('#form_art').before('<button id="btn' + currentNumControl + '" class="btn-add-article" data-num-control="' + currentNumControl + '">Agregar Articulo</button>');
                     },
                     error: function (err) {
                         alert("An error ocurred while loading data ...");
+                    }
+                });
+            });
+
+            // Escuchar los clicks en los botones de agregar artículo
+            $(document).on('click', '.btn-add-article', function(e) {
+                e.preventDefault();
+                var currentNumControl = parseInt($(this).data('num-control'));
+                var nextNumControl = currentNumControl + 1;
+
+                $.ajax({
+                    url: "{{ path('ajax_presupuestos_art', { 'num_control': 'NUM_CONTROL' }) }}".replace('NUM_CONTROL', nextNumControl),
+                    type: "GET",
+                    success: function(response) {
+                        $('#btn' + currentNumControl).remove();
+                        $('#form_art').before(response);
+                        $('#form_art').before('<button id="btn' + nextNumControl + '" class="btn-add-article" data-num-control="' + nextNumControl + '">Agregar Articulo</button>');
+                    },
+                    error: function() {
+                        alert("An error occurred while loading data...");
                     }
                 });
             });
