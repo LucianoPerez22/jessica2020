@@ -18,3 +18,13 @@ ajax_get_articulo_precio:
   path: /venta/articulo/precio/{id}
   controller: App\Controller\VentasController::ajaxGetArticuloPrecioAction
   methods: [GET]
+
+ajax_presupuestos_art:
+  path: /presupuesto/art/{num_control}
+  controller: App\Controller\PresupuestosController::ajaxVentaArt
+  methods: [GET]
+
+ajax_get_articulo_precio_presupuesto:
+  path: /presupuesto/articulo/precio/{id}
+  controller: App\Controller\PresupuestosController::ajaxGetArticuloPrecioAction
+  methods: [GET]

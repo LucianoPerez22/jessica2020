@@ -26,7 +26,7 @@ class SavePresupuestosArtType extends AbstractType
                 'label'         => false,                      
                 'choice_label'  => 'descripcion',    
                 'placeholder'   => 'Seleccione un Articulo',               
-                'attr'          => ['class' => 'form-control, js-select2'],
+                'attr'          => ['class' => 'form-control js-select2'],
             ])                            
             ->add('precio' . $this->_additionalName, NumberType::class, ['label' => false, 'data' => 0])
             ->add('total' . $this->_additionalName, NumberType::class, ['label'  => false, 'data' => 0, 'attr'=> [ 'readonly' => true ]])

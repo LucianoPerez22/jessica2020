@@ -15,7 +15,7 @@
 </div> #}
 
 {# INICIO FORM ART #}
-<div id="form_art + {{num_control}}" class="znv-full">
+<div id="form_art{{num_control}}" class="znv-full">
 	<div class="znv-card-container">
 		<!-- Card Column 100% -->
 				<div class="znv-card-header">
@@ -64,8 +64,16 @@
     </script>
 
     <script>        
-        $(document).ready(function() {              
-            $('#save_presupuestos_cliente').on('change', function(e) {
+        $(document).ready(function() {
+            var currentValue = 0;
+
+            $('#save_presupuestos_cliente').on('blur', function(e) {
+                if (currentValue > 0) {
+                    return;
+                }
+
+                currentValue++;
+
                 $.ajax({
                     url: "{{ path('ajax_presupuestos_art', { 'num_control': 'NUM_CONTROL' }) }}".replace('NUM_CONTROL', currentNumControl),
                     type: "GET",

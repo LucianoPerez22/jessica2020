@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Articulos;
 use App\Entity\Presupuestos;
 use App\Entity\PresupuestosArt;
 use App\Form\Type\SavePresupuestosArtType;
@@ -72,6 +73,8 @@ class PresupuestosController extends BaseController
         
         $data = $request->request->all();
 
+        //dd($data);
+
         try {
             if (array_key_exists('art', $data)){
                 if ($data['art']['total0'] == 0){
@@ -132,21 +135,20 @@ class PresupuestosController extends BaseController
     }
 
      /**
-     * @Route(path="/presupuestos/art/{num_control}", name="ajax_presupuestos_art")
-     * @Security("user.hasRole(['ROLE_PRESUPUESTOS_NEW'])")
+     * @Route(path="/presupuesto/art/{num_control}", name="ajax_presupuestos_art")
      */
     public function ajaxVentaArt(Request $request, int $num_control): Response
     {
         $form = $this->createForm(SavePresupuestosArtType::class, null, ['num_control' => $num_control]);
 
-        return $this->render('ventas/articulos.html.twig', [
+        return $this->render('presupuestos/articulos.html.twig', [
             'form' => $form->createView(),
             'num_control' => $num_control
         ]);
     }
 
     /**
-     * @Route("/presupuestos/articulo/precio/{id}", name="ajax_get_articulo_precio_presupuesto", methods={"GET"})
+     * @Route("/presupuesto/articulo/precio/{id}", name="ajax_get_articulo_precio_presupuesto", methods={"GET"})
      */
     public function ajaxGetArticuloPrecioAction(Articulos $articulo)
     {
@@ -161,8 +163,6 @@ class PresupuestosController extends BaseController
      /**
      * @Route(path="/presupuestos/view/{id}", name="presupuestos_show")
      * @Security("user.hasRole(['ROLE_PRESUPUESTOS_VIEW'])")
-     * @param Presupuestos $venta
-     * @return Response
      */
     public function viewAction(Presupuestos $presupuesto)
     {                   
@@ -171,9 +171,7 @@ class PresupuestosController extends BaseController
 
      /** 
      * @Route(path="/presupuesto/imprimir/{id}", name="presupuestos_imprimir")
-     * @Security("user.hasRole(['ROLE_PRESUPUESTOS_VIEW'])")  
-     * @param Presupuestos $venta
-     * @return Response
+     * @Security("user.hasRole(['ROLE_PRESUPUESTOS_VIEW'])")
      */
     public function reciboAction(Presupuestos $venta){                                            
         $pdfOptions = new Options();
@@ -203,10 +201,6 @@ class PresupuestosController extends BaseController
      *
      * @Route(path="/admin/presupuestos/{id}/delete", name="presupuestos_delete")
      * @Security("user.hasRole(['ROLE_PRESUPUESTOS_DELETE'])")
-     * @param Presupuestos $entity
-     * @param EntityManagerHelper $helper
-     * @return RedirectResponse
-     * @throws \Exception
      */
     public function deleteAction(Presupuestos $entity, EntityManagerHelper $helper, UserInterface $user)
     {

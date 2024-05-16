@@ -6,7 +6,7 @@
 			<!-- znv-list-col -->
 			<div class="znv-col">
 				<div class="znv-header">Descripcion</div>
-				{{ form_row(attribute(form, 'idArt' ~ num_control)) }}							
+				{{ form_row(attribute(form, 'idArt' ~ num_control, {'data': ''})) }}
 			</div>
 			<!-- znv-list-col -->			
 			<div class="znv-col">
@@ -21,14 +21,13 @@
 			<!-- znv-list-col -->		
 			<div class="znv-col">
 				<div class="znv-header"></div>
-					{# <button class="btn btn-danger" id="btnDelete{{ num_control }}">X</button> #}
-					{{ form_row(attribute(form, 'delete' ~ num_control)) }}
+				  <button class="btn btn-danger" id="btnDelete{{ num_control }}">X</button>
 			</div>		
 			
 		</div>    		
 		<div> 
-			<button id="btn{{ num_control }}">Agregar Articulo</button> 			
-		</div>		
+			<button id="btn{{ num_control }}" class="btn-add-article">Agregar Articulo</button>
+		</div>
 <script>        
 	$(document).ready(function() {
 		function updateTotal() {
@@ -39,10 +38,11 @@
 
 		// Inicialización de Select2
 
-			$('#art_idArt' + {{ num_control }}).select2() //Se usa para agregar el estilo select2 
+	   $('#art_idArt{{ num_control }}').select2() //Se usa para agregar el estilo select2
 
 		$('#art_idArt{{ num_control }}').on('change', function(e) {
 			var artId = $(this).val();
+
 			if (!artId) {
 				return;
 			}
@@ -51,6 +51,7 @@
 				url: "{{ path('ajax_get_articulo_precio_presupuesto', { 'id': 'ART_ID' }) }}".replace('ART_ID', artId),
 				type: "GET",
 				success: function (response) {
+					console.log(response);
 					$('#art_precio{{ num_control }}').val(response.precio);
 					updateTotal();
 				},
@@ -59,6 +60,7 @@
 				}
 			});
 		});
+
 
 		$('#art_cant{{ num_control }}, #art_precio{{ num_control }}').on('change', function(e) {
 			updateTotal();
